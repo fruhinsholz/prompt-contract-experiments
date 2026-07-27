@@ -1,6 +1,6 @@
 # Prompt Contract Experiments
 
-This repository is the source of truth for prompt-contract drift experiments, scripts, raw results, generated reports, and result images. It is intentionally separate from the blog. The blog can cite or copy selected figures, but the experiment workflow lives here.
+This repository is the source of truth for prompt-contract drift experiments, scripts, raw results, generated reports, and result images. It is intentionally separate from the blog. Blog prose should link here for experiment detail instead of carrying graphs or extended result tables.
 
 ## What Is Here
 
@@ -41,25 +41,28 @@ Claude CLI on Bee:
 CLAUDE_MAX_BUDGET_USD=0.08 npm run thresholds:low -- --provider claude-cli --models claude-sonnet-5,claude-opus-4-8 --samples 1 --epochs 3 --scan 100,300,500 --max-calls 12 --reasoning-effort low --gzip-jsonl
 ```
 
-## Figures
+## Experiments And Results
 
-Regenerate result figures after adding or changing tracked results:
+The repository is meant to be cited as a whole, not copied into the article. Use the README and linked docs to reconstruct what was run, how it was run, and which artifacts support the claim.
+
+- Raw calls are the durable evidence: `experiments/**/results/**/calls.jsonl` and `calls.jsonl.gz`.
+- Each run keeps its local contract: `fixture.json`, `system-prompt.txt`, `user-template.txt`, and `metadata.json`.
+- Generated summaries are convenience views: `summary.csv`, `summary.md`, and `analysis.md`.
+- Result figures are generated artifacts, not hand-edited evidence. Rebuild them with `npm run results:graphs`.
+- The full result index is [docs/results.md](docs/results.md).
+- The price-versus-iteration figure index is [docs/price-vs-iteration.md](docs/price-vs-iteration.md).
+
+### Price Versus Iteration
+
+These charts plot refund amount against chronological iteration. Each chart groups only runs that belong together: same run directory and same context, with models plotted together when the run compares models under the same fixture. They are useful for spotting convergence, divergence, and unstable boundary behavior without turning the article into a model benchmark.
+
+Regenerate figures after adding or changing tracked results:
 
 ```bash
 npm run results:graphs
 ```
 
-### Price Versus Iteration
-
-These charts are scatter plots of refund amount against chronological iteration. Each chart groups only runs that belong together: same run directory and same context, with models plotted together when the run compares models under the same fixture.
-
-![gpt-5.6 fact-only LOW run](images/results/price-vs-iteration/2026-07-26t14-13-38-568z-gpt-56-128-low__fact_only.svg)
-
-![OpenAI explicit threshold positive control](images/results/price-vs-iteration/2026-07-26t20-30-30-599z-explicit-200-positive-control-all-openai-20260726-low__fact_only.svg)
-
-![Gemini clean LOW run, fact only](images/results/price-vs-iteration/2026-07-26t22-11-38-225z-gemini-clean-low-20260726-low__fact_only.svg)
-
-Full index: [docs/price-vs-iteration.md](docs/price-vs-iteration.md).
+Recommended article citation: link to this repository or to [docs/price-vs-iteration.md](docs/price-vs-iteration.md). Do not duplicate the graph set in the article unless a specific figure becomes necessary for the argument.
 
 ## Evidence Rule
 

@@ -56,4 +56,4 @@ git commit -m "Add <experiment> results"
 git push
 ```
 
-Committed raw results are the durable record. Blog prose should cite the commit or copied figures, not become the source of truth.
+Committed raw results are the durable record. Blog prose should link to this repository or a specific commit, not become the source of truth or duplicate the graph set.
