@@ -207,7 +207,11 @@ function count(rows, label) {
 }
 
 function majority(rows) {
-  return count(rows, "NOT_LOW") > count(rows, "LOW") ? "NOT_LOW" : "LOW";
+  const low = count(rows, "LOW");
+  const notLow = count(rows, "NOT_LOW");
+  const invalid = count(rows, "INVALID");
+  if (invalid > low && invalid > notLow) return "INVALID";
+  return notLow > low ? "NOT_LOW" : "LOW";
 }
 
 function summarizeBand(rows, lowAmount, highAmount) {
@@ -311,7 +315,9 @@ function renderMarkdown(groups, metadata) {
 function renderBandsMarkdown(bands, metadata) {
   const lines = ["# Low Threshold Bands", "", `Created: ${metadata.createdAt}`, `Commit: ${metadata.commitHash}`, "", "| Model | Context | Lower observed bound | Upper observed bound | Width | Lower label | Upper label | Notes |", "| --- | --- | ---: | ---: | ---: | --- | --- | --- |"];
   for (const item of bands.sort((a, b) => `${a.model}:${a.contextId}`.localeCompare(`${b.model}:${b.contextId}`, undefined, { numeric: true }))) {
-    const note = item.unbracketed ? "No LOW/NOT_LOW bracket inside the tested range." : "Estimated band, not an exact threshold.";
+    const note = item.lowLabel === "INVALID" || item.highLabel === "INVALID"
+      ? "Samples failed or did not return allowed labels."
+      : item.unbracketed ? "No LOW/NOT_LOW bracket inside the tested range." : "Estimated band, not an exact threshold.";
     lines.push(`| \`${item.model}\` | \`${item.contextId}\` | ${item.low} | ${item.high} | ${item.width} | ${item.lowLabel} | ${item.highLabel} | ${note} |`);
   }
   return `${lines.join("\n")}\n`;

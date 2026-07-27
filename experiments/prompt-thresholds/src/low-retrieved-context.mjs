@@ -4,8 +4,14 @@ import path from "node:path";
 import process from "node:process";
 import {
   appendJsonl,
+  buildClaudeCliPayload,
+  buildGeminiPayload,
   buildOpenAiPayload,
+  callClaudeCli,
+  callGemini,
   callOpenAI,
+  extractClaudeCliOutputText,
+  extractGeminiOutputText,
   classifyLabel,
   extractOutputText,
   formatMoney,
@@ -77,7 +83,15 @@ function dryRunLabel(amount) {
 
 async function runOne({ args, runDir, model, contextId, amount, epoch, candidateKind, sampleIndex }) {
   const user = userPrompt(amount, contextId);
-  const payload = buildOpenAiPayload({
+  const metadata = { testbed: "low", context_id: contextId, amount: String(amount), epoch: String(epoch) };
+  const payload = args.provider === "claude-cli" ? buildClaudeCliPayload({
+    model,
+    system: SYSTEM_PROMPT,
+    user,
+    maxOutputTokens: args.maxOutputTokens,
+    reasoningEffort: args.reasoningEffort,
+    metadata,
+  }) : args.provider === "gemini" ? buildGeminiPayload({
     model,
     system: SYSTEM_PROMPT,
     user,
@@ -85,7 +99,16 @@ async function runOne({ args, runDir, model, contextId, amount, epoch, candidate
     maxOutputTokens: args.maxOutputTokens,
     reasoningEffort: args.reasoningEffort,
     seed: args.seed,
-    metadata: { testbed: "low", context_id: contextId, amount: String(amount), epoch: String(epoch) },
+    metadata,
+  }) : buildOpenAiPayload({
+    model,
+    system: SYSTEM_PROMPT,
+    user,
+    temperature: args.temperature,
+    maxOutputTokens: args.maxOutputTokens,
+    reasoningEffort: args.reasoningEffort,
+    seed: args.seed,
+    metadata,
   });
 
   const base = {
@@ -114,20 +137,32 @@ async function runOne({ args, runDir, model, contextId, amount, epoch, candidate
   }
 
   try {
-    const { json, latencyMs } = await callOpenAI({ apiKey: process.env.OPENAI_API_KEY, payload });
-    const outputText = extractOutputText(json);
+    const { json, latencyMs } = args.provider === "claude-cli"
+      ? await callClaudeCli({ payload })
+      : args.provider === "gemini"
+        ? await callGemini({ apiKey: process.env.GEMINI_API_KEY, payload })
+        : await callOpenAI({ apiKey: process.env.OPENAI_API_KEY, payload });
+    const outputText = args.provider === "claude-cli"
+      ? extractClaudeCliOutputText(json)
+      : args.provider === "gemini"
+        ? extractGeminiOutputText(json)
+        : extractOutputText(json);
     const outputTokens = json.usage?.output_tokens ?? 0;
-    const reasoningTokens = json.usage?.output_tokens_details?.reasoning_tokens ?? 0;
-    const outputTruncated = json.status === "incomplete" && json.incomplete_details?.reason === "max_output_tokens" || outputText.trim() === "" && outputTokens >= args.maxOutputTokens && reasoningTokens >= args.maxOutputTokens;
+    const reasoningTokens = json.usage?.output_tokens_details?.reasoning_tokens ?? json.usageMetadata?.thoughtsTokenCount ?? 0;
+    const outputTruncated = json.status === "incomplete" && json.incomplete_details?.reason === "max_output_tokens"
+      || json.candidates?.some((candidate) => candidate.finishReason === "MAX_TOKENS")
+      || outputText.trim() === "" && outputTokens >= args.maxOutputTokens && reasoningTokens >= args.maxOutputTokens;
     const parsed = classifyLabel(outputText, ALLOWED);
+    const claudeModel = Object.values(json.modelUsage ?? {})[0];
     const row = {
       ...base,
       outputText,
       ...parsed,
       responseId: json.id ?? null,
-      responseModel: json.model ?? model,
+      responseModel: json.model ?? json.modelVersion ?? claudeModel?.canonicalModel ?? model,
       systemFingerprint: json.system_fingerprint ?? null,
-      usage: json.usage ?? null,
+      usage: json.usage ?? json.usageMetadata ?? null,
+      costUsd: json.total_cost_usd ?? claudeModel?.costUSD ?? null,
       latencyMs,
       outputTruncated,
     };
@@ -155,7 +190,11 @@ function count(rows, label) {
 }
 
 function majority(rows) {
-  return count(rows, "NOT_LOW") > count(rows, "LOW") ? "NOT_LOW" : "LOW";
+  const low = count(rows, "LOW");
+  const notLow = count(rows, "NOT_LOW");
+  const invalid = count(rows, "INVALID");
+  if (invalid > low && invalid > notLow) return "INVALID";
+  return notLow > low ? "NOT_LOW" : "LOW";
 }
 
 function summarizeBand(rows, lowAmount, highAmount) {
@@ -255,7 +294,9 @@ function renderMarkdown(groups, metadata) {
 function renderBandsMarkdown(bands, metadata) {
   const lines = ["# Low Threshold Bands", "", `Created: ${metadata.createdAt}`, `Commit: ${metadata.commitHash}`, "", "| Model | Context | Lower observed bound | Upper observed bound | Width | Lower label | Upper label | Notes |", "| --- | --- | ---: | ---: | ---: | --- | --- | --- |"];
   for (const item of bands.sort((a, b) => `${a.model}:${a.contextId}`.localeCompare(`${b.model}:${b.contextId}`, undefined, { numeric: true }))) {
-    const note = item.unbracketed ? "No LOW/NOT_LOW bracket inside the tested range." : "Estimated band, not an exact threshold.";
+    const note = item.lowLabel === "INVALID" || item.highLabel === "INVALID"
+      ? "Samples failed or did not return allowed labels."
+      : item.unbracketed ? "No LOW/NOT_LOW bracket inside the tested range." : "Estimated band, not an exact threshold.";
     lines.push(`| \`${item.model}\` | \`${item.contextId}\` | ${item.low} | ${item.high} | ${item.width} | ${item.lowLabel} | ${item.highLabel} | ${note} |`);
   }
   return `${lines.join("\n")}\n`;

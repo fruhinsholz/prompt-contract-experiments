@@ -11,7 +11,7 @@ const INDEX_FILE = path.join(ROOT, "docs/price-vs-iteration.md");
 const LABEL_COLORS = {
   LOW: "#0f766e",
   NOT_LOW: "#be123c",
-  INVALID: "#64748b",
+  INVALID: "#e5e7eb",
 };
 
 function escapeXml(value) {
@@ -45,6 +45,7 @@ async function findRunDirs() {
   return entries
     .filter((entry) => entry.isDirectory())
     .map((entry) => path.join(RESULTS_ROOT, entry.name))
+    .filter((runDir) => existsSync(path.join(runDir, "threshold-bands.json")))
     .sort();
 }
 
@@ -53,124 +54,108 @@ function groupRows(rows, runName) {
   for (const row of rows) {
     if (row.type !== "completion" || row.testbed !== "low" || !Number.isFinite(row.amount)) continue;
     const contextId = row.contextId ?? "unknown_context";
-    const key = `${runName}\t${contextId}`;
-    if (!groups.has(key)) groups.set(key, { runName, contextId, rows: [] });
+    const key = `${runName}\t${row.model}\t${contextId}`;
+    if (!groups.has(key)) groups.set(key, { runName, model: row.model, contextId, rows: [] });
     groups.get(key).rows.push(row);
   }
   return [...groups.values()];
 }
 
-function modelOffsets(models) {
-  const step = models.length <= 1 ? 0 : 0.16;
-  const center = (models.length - 1) / 2;
-  return new Map(models.map((model, index) => [model, (index - center) * step]));
-}
-
 function buildSvg(group) {
-  const models = [...new Set(group.rows.map((row) => row.model))].sort();
-  const offsets = modelOffsets(models);
   const rows = group.rows
     .slice()
-    .sort((a, b) => String(a.createdAt).localeCompare(String(b.createdAt)) || a.model.localeCompare(b.model) || a.sampleIndex - b.sampleIndex);
+    .sort((a, b) => a.epoch - b.epoch || a.amount - b.amount || a.sampleIndex - b.sampleIndex || String(a.createdAt).localeCompare(String(b.createdAt)));
 
-  const indexed = rows.map((row, index) => ({ ...row, iteration: index + 1 + (offsets.get(row.model) ?? 0) }));
-  const maxIteration = Math.max(1, rows.length);
-  const amounts = indexed.map((row) => row.amount);
-  const minAmount = Math.min(...amounts, 0);
-  const maxAmount = Math.max(...amounts, 1);
-  const padAmount = Math.max(1, (maxAmount - minAmount) * 0.08);
+  const epochs = [...new Set(rows.map((row) => row.epoch))].sort((a, b) => a - b);
+  const epochIndex = new Map(epochs.map((epoch, index) => [epoch, index]));
+  const maxEpochIndex = Math.max(1, epochs.length - 1);
+  const amounts = rows.map((row) => Math.max(1, row.amount));
+  const minAmount = Math.max(1, Math.min(...amounts));
+  const maxAmount = Math.max(...amounts, minAmount + 1);
+  const logMin = Math.log10(minAmount);
+  const logMax = Math.log10(maxAmount);
+  const pad = Math.max(0.08, (logMax - logMin) * 0.08);
 
-  const width = 980;
-  const height = 560;
-  const left = 86;
-  const right = 26;
-  const top = 70;
-  const bottom = 84;
+  const width = 920;
+  const height = 520;
+  const left = 92;
+  const right = 34;
+  const top = 72;
+  const bottom = 76;
   const plotW = width - left - right;
   const plotH = height - top - bottom;
+  const x = (epoch) => left + (epochIndex.get(epoch) / maxEpochIndex) * plotW;
+  const y = (amount) => top + (1 - ((Math.log10(Math.max(1, amount)) - logMin + pad) / (logMax - logMin + pad * 2))) * plotH;
 
-  const x = (value) => left + ((value - 1) / Math.max(1, maxIteration - 1)) * plotW;
-  const y = (value) => top + (1 - ((value - minAmount + padAmount) / (maxAmount - minAmount + padAmount * 2))) * plotH;
-
-  const yTicks = niceTicks(minAmount, maxAmount, 5);
-  const xTicks = niceTicks(1, maxIteration, 6).map((value) => Math.round(value));
-  const seenXTicks = [...new Set(xTicks.filter((value) => value >= 1 && value <= maxIteration))];
+  const yTicks = logTicks(minAmount, maxAmount);
+  const xTicks = epochs;
 
   const grid = [
-    ...yTicks.map((tick) => `<line x1="${left}" y1="${y(tick)}" x2="${width - right}" y2="${y(tick)}" stroke="#e2e8f0"/><text x="${left - 10}" y="${y(tick) + 4}" text-anchor="end" font-size="11" fill="#475569">${escapeXml(money(tick))}</text>`),
-    ...seenXTicks.map((tick) => `<line x1="${x(tick)}" y1="${top}" x2="${x(tick)}" y2="${height - bottom}" stroke="#f1f5f9"/><text x="${x(tick)}" y="${height - bottom + 22}" text-anchor="middle" font-size="11" fill="#64748b">${tick}</text>`),
+    ...yTicks.map((tick) => `<line x1="${left}" y1="${y(tick).toFixed(1)}" x2="${width - right}" y2="${y(tick).toFixed(1)}" stroke="#e5e7eb"/><text x="${left - 10}" y="${y(tick) + 4}" text-anchor="end" font-size="11" fill="#475569">${escapeXml(money(tick))}</text>`),
+    ...xTicks.map((tick) => `<line x1="${x(tick).toFixed(1)}" y1="${top}" x2="${x(tick).toFixed(1)}" y2="${height - bottom}" stroke="#f3f4f6"/><text x="${x(tick).toFixed(1)}" y="${height - bottom + 22}" text-anchor="middle" font-size="11" fill="#64748b">${escapeXml(tick)}</text>`),
   ].join("\n");
 
-  const modelIndex = new Map(models.map((model, index) => [model, index]));
-  const points = indexed.map((row) => {
-    const radius = 4 + (modelIndex.get(row.model) % 3);
-    const fill = LABEL_COLORS[row.label] ?? LABEL_COLORS.INVALID;
-    const stroke = modelStroke(modelIndex.get(row.model));
-    const title = `${row.model} / ${group.contextId} / iteration ${Math.round(row.iteration)} / ${money(row.amount)} / ${row.label}`;
-    return `<circle cx="${x(row.iteration).toFixed(1)}" cy="${y(row.amount).toFixed(1)}" r="${radius}" fill="${fill}" stroke="${stroke}" stroke-width="1.4" opacity="0.82"><title>${escapeXml(title)}</title></circle>`;
-  }).join("\n");
+  const byEpoch = new Map();
+  for (const row of rows) {
+    if (!byEpoch.has(row.epoch)) byEpoch.set(row.epoch, []);
+    byEpoch.get(row.epoch).push(row);
+  }
 
-  const modelLegend = models.map((model, index) => {
-    const lx = left + index * 178;
-    const ly = height - 28;
-    return `<circle cx="${lx}" cy="${ly - 4}" r="${4 + (index % 3)}" fill="#ffffff" stroke="${modelStroke(index)}" stroke-width="2"/><text x="${lx + 12}" y="${ly}" font-size="12" fill="#334155">${escapeXml(model)}</text>`;
-  }).join("\n");
+  const spark = [];
+  for (const [epoch, epochRows] of byEpoch.entries()) {
+    const sorted = epochRows.slice().sort((a, b) => a.sampleIndex - b.sampleIndex || a.amount - b.amount);
+    const center = (sorted.length - 1) / 2;
+    for (const [index, row] of sorted.entries()) {
+      const jitter = sorted.length <= 1 ? 0 : (index - center) * Math.min(4.8, 42 / sorted.length);
+      const fill = LABEL_COLORS[row.label] ?? LABEL_COLORS.INVALID;
+      const title = `${group.model}, ${group.contextId}, epoch ${row.epoch}, sample ${row.sampleIndex + 1}, ${money(row.amount)}, ${row.label}`;
+      spark.push(`<circle cx="${(x(epoch) + jitter).toFixed(1)}" cy="${y(row.amount).toFixed(1)}" r="3.5" fill="${fill}" opacity="0.86"><title>${escapeXml(title)}</title></circle>`);
+    }
+  }
 
-  const labelLegend = Object.entries(LABEL_COLORS).map(([label, color], index) => {
-    const lx = width - right - 236 + index * 82;
+  const linePoints = epochs.map((epoch) => {
+    const epochRows = byEpoch.get(epoch);
+    const amount = epochRows[0]?.amount ?? 1;
+    return `${x(epoch).toFixed(1)},${y(amount).toFixed(1)}`;
+  }).join(" ");
+
+  const labelLegend = [
+    ["LOW", LABEL_COLORS.LOW],
+    ["NOT_LOW", LABEL_COLORS.NOT_LOW],
+    ["failed", LABEL_COLORS.INVALID],
+  ].map(([label, color], index) => {
+    const lx = width - right - 220 + index * 78;
     const ly = 42;
     return `<circle cx="${lx}" cy="${ly}" r="5" fill="${color}"/><text x="${lx + 10}" y="${ly + 4}" font-size="12" fill="#334155">${escapeXml(label)}</text>`;
   }).join("\n");
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="title desc">
-<title id="title">${escapeXml(group.runName)} price versus iteration</title>
-<desc id="desc">Scatter plot of refund amount against chronological iteration for ${escapeXml(group.contextId)}.</desc>
+<title id="title">${escapeXml(group.runName)} binary discovery trace</title>
+<desc id="desc">Epoch-by-epoch binary threshold discovery for ${escapeXml(group.model)} and ${escapeXml(group.contextId)}. The y-axis is log-scaled refund amount. Green marks LOW, red marks NOT_LOW, and light gray marks invalid output.</desc>
 <rect width="100%" height="100%" fill="#ffffff"/>
-<text x="${left}" y="28" font-size="19" font-weight="700" fill="#0f172a">${escapeXml(group.runName)}</text>
-<text x="${left}" y="50" font-size="12" fill="#475569">Context: ${escapeXml(group.contextId)}. Y-axis is refund amount. X-axis is chronological iteration.</text>
+<text x="${left}" y="28" font-size="19" font-weight="700" fill="#0f172a">${escapeXml(group.model)} binary discovery</text>
+<text x="${left}" y="50" font-size="12" fill="#475569">Run: ${escapeXml(group.runName)}. Context: ${escapeXml(group.contextId)}. Y-axis is logarithmic dollars.</text>
 ${labelLegend}
-<rect x="${left}" y="${top}" width="${plotW}" height="${plotH}" fill="#ffffff" stroke="#cbd5e1"/>
+<rect x="${left}" y="${top}" width="${plotW}" height="${plotH}" fill="#ffffff"/>
 ${grid}
-${points}
-<text x="${left + plotW / 2}" y="${height - 42}" text-anchor="middle" font-size="12" fill="#334155">Iteration</text>
-<text transform="translate(24 ${top + plotH / 2}) rotate(-90)" text-anchor="middle" font-size="12" fill="#334155">Refund amount</text>
-${modelLegend}
-</svg>
-`;
+<polyline points="${linePoints}" fill="none" stroke="#94a3b8" stroke-width="1.4" opacity="0.55"/>
+${spark.join("\n")}
+<text x="${left + plotW / 2}" y="${height - 36}" text-anchor="middle" font-size="12" fill="#334155">Binary-search epoch</text>
+<text transform="translate(26 ${top + plotH / 2}) rotate(-90)" text-anchor="middle" font-size="12" fill="#334155">Refund amount, log scale</text>
+</svg>\n`;
 }
 
-function modelStroke(index) {
-  const colors = ["#1d4ed8", "#7c3aed", "#ea580c", "#0f766e", "#be123c", "#334155"];
-  return colors[index % colors.length];
-}
-
-function niceTicks(min, max, count) {
-  if (min === max) return [min];
-  const span = niceNumber(max - min, false);
-  const step = niceNumber(span / Math.max(1, count - 1), true);
-  const start = Math.floor(min / step) * step;
-  const end = Math.ceil(max / step) * step;
+function logTicks(min, max) {
+  const start = Math.floor(Math.log10(Math.max(1, min)));
+  const end = Math.ceil(Math.log10(Math.max(1, max)));
   const ticks = [];
-  for (let value = start; value <= end + step / 2; value += step) {
-    ticks.push(Number(value.toFixed(6)));
+  for (let exponent = start; exponent <= end; exponent += 1) {
+    for (const multiplier of [1, 2, 5]) {
+      const value = multiplier * 10 ** exponent;
+      if (value >= min && value <= max) ticks.push(value);
+    }
   }
-  return ticks;
-}
-
-function niceNumber(value, round) {
-  const exponent = Math.floor(Math.log10(value));
-  const fraction = value / Math.pow(10, exponent);
-  let niceFraction;
-  if (round) {
-    if (fraction < 1.5) niceFraction = 1;
-    else if (fraction < 3) niceFraction = 2;
-    else if (fraction < 7) niceFraction = 5;
-    else niceFraction = 10;
-  } else if (fraction <= 1) niceFraction = 1;
-  else if (fraction <= 2) niceFraction = 2;
-  else if (fraction <= 5) niceFraction = 5;
-  else niceFraction = 10;
-  return niceFraction * Math.pow(10, exponent);
+  return [...new Set(ticks)].sort((a, b) => a - b);
 }
 
 async function main() {
@@ -186,19 +171,19 @@ async function main() {
 
   const written = [];
   for (const group of groups.filter((item) => item.rows.length > 0)) {
-    const fileName = `${slug(group.runName)}__${slug(group.contextId)}.svg`;
+    const fileName = `${slug(group.runName)}__${slug(group.model)}__${slug(group.contextId)}.svg`;
     await writeFile(path.join(OUT_DIR, fileName), buildSvg(group), "utf8");
-    written.push({ ...group, fileName, models: [...new Set(group.rows.map((row) => row.model))].sort() });
+    written.push({ ...group, fileName });
   }
 
-  const lines = ["# Price Versus Iteration", ""];
-  lines.push("Each SVG is generated from raw LOW test-bed JSONL. Runs are grouped by run directory and context, with comparable models kept together.");
+  const lines = ["# Binary Discovery Traces", ""];
+  lines.push("Each SVG is generated from raw LOW test-bed JSONL. X is binary-search epoch, Y is refund amount on a log scale. Each epoch contains repeated samples at the tested amount.");
   lines.push("");
   for (const item of written.sort((a, b) => a.fileName.localeCompare(b.fileName))) {
-    lines.push(`- [${item.runName} / ${item.contextId}](../images/results/price-vs-iteration/${item.fileName}) - models: ${item.models.map((model) => `\`${model}\``).join(", ")}`);
+    lines.push(`- [${item.runName} / ${item.model} / ${item.contextId}](../images/results/price-vs-iteration/${item.fileName})`);
   }
   await writeFile(INDEX_FILE, `${lines.join("\n")}\n`, "utf8");
-  console.log(`Wrote ${written.length} price-versus-iteration SVGs.`);
+  console.log(`Wrote ${written.length} binary-discovery SVGs.`);
 }
 
 main().catch((error) => {

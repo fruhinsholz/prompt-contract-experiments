@@ -367,7 +367,7 @@ export async function callClaudeCli({ payload }) {
   ];
 
   return new Promise((resolve, reject) => {
-    const child = spawn("claude", args, { cwd: ROOT, env: process.env });
+    const child = spawn("claude", args, { cwd: ROOT, env: process.env, stdio: ["ignore", "pipe", "pipe"] });
     const timeout = setTimeout(() => {
       child.kill("SIGTERM");
       reject(new Error(`Claude CLI request timed out after ${timeoutMs}ms`));

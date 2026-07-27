@@ -1,0 +1,159 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="520" viewBox="0 0 920 520" role="img" aria-labelledby="title desc">
+<title id="title">2026-07-27T03-57-19-402Z-bounded-retrieved-20260726-low binary discovery trace</title>
+<desc id="desc">Epoch-by-epoch binary threshold discovery for gemini-3.5-flash-lite and retrieved_5_gift_card. The y-axis is log-scaled refund amount. Green marks LOW, red marks NOT_LOW, and light gray marks invalid output.</desc>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="92" y="28" font-size="19" font-weight="700" fill="#0f172a">gemini-3.5-flash-lite binary discovery</text>
+<text x="92" y="50" font-size="12" fill="#475569">Run: 2026-07-27T03-57-19-402Z-bounded-retrieved-20260726-low. Context: retrieved_5_gift_card. Y-axis is logarithmic dollars.</text>
+<circle cx="666" cy="42" r="5" fill="#0f766e"/><text x="676" y="46" font-size="12" fill="#334155">LOW</text>
+<circle cx="744" cy="42" r="5" fill="#be123c"/><text x="754" y="46" font-size="12" fill="#334155">NOT_LOW</text>
+<circle cx="822" cy="42" r="5" fill="#e5e7eb"/><text x="832" y="46" font-size="12" fill="#334155">failed</text>
+<rect x="92" y="72" width="794" height="372" fill="#ffffff"/>
+<line x1="92" y1="418.3" x2="886" y2="418.3" stroke="#e5e7eb"/><text x="82" y="422.34482758620686" text-anchor="end" font-size="11" fill="#475569">$1</text>
+<line x1="92" y1="395.9" x2="886" y2="395.9" stroke="#e5e7eb"/><text x="82" y="399.8996910483641" text-anchor="end" font-size="11" fill="#475569">$2</text>
+<line x1="92" y1="366.2" x2="886" y2="366.2" stroke="#e5e7eb"/><text x="82" y="370.2288344654069" text-anchor="end" font-size="11" fill="#475569">$5</text>
+<line x1="92" y1="343.8" x2="886" y2="343.8" stroke="#e5e7eb"/><text x="82" y="347.78369792756416" text-anchor="end" font-size="11" fill="#475569">$10</text>
+<line x1="92" y1="321.3" x2="886" y2="321.3" stroke="#e5e7eb"/><text x="82" y="325.33856138972135" text-anchor="end" font-size="11" fill="#475569">$20</text>
+<line x1="92" y1="291.7" x2="886" y2="291.7" stroke="#e5e7eb"/><text x="82" y="295.66770480676416" text-anchor="end" font-size="11" fill="#475569">$50</text>
+<line x1="92" y1="269.2" x2="886" y2="269.2" stroke="#e5e7eb"/><text x="82" y="273.22256826892135" text-anchor="end" font-size="11" fill="#475569">$100</text>
+<line x1="92" y1="246.8" x2="886" y2="246.8" stroke="#e5e7eb"/><text x="82" y="250.77743173107862" text-anchor="end" font-size="11" fill="#475569">$200</text>
+<line x1="92" y1="217.1" x2="886" y2="217.1" stroke="#e5e7eb"/><text x="82" y="221.1065751481214" text-anchor="end" font-size="11" fill="#475569">$500</text>
+<line x1="92" y1="194.7" x2="886" y2="194.7" stroke="#e5e7eb"/><text x="82" y="198.66143861027862" text-anchor="end" font-size="11" fill="#475569">$1,000</text>
+<line x1="92" y1="172.2" x2="886" y2="172.2" stroke="#e5e7eb"/><text x="82" y="176.21630207243587" text-anchor="end" font-size="11" fill="#475569">$2,000</text>
+<line x1="92" y1="142.5" x2="886" y2="142.5" stroke="#e5e7eb"/><text x="82" y="146.54544548947862" text-anchor="end" font-size="11" fill="#475569">$5,000</text>
+<line x1="92" y1="120.1" x2="886" y2="120.1" stroke="#e5e7eb"/><text x="82" y="124.10030895163582" text-anchor="end" font-size="11" fill="#475569">$10,000</text>
+<line x1="92" y1="97.7" x2="886" y2="97.7" stroke="#e5e7eb"/><text x="82" y="101.65517241379307" text-anchor="end" font-size="11" fill="#475569">$20,000</text>
+<line x1="92.0" y1="72" x2="92.0" y2="444" stroke="#f3f4f6"/><text x="92.0" y="466" text-anchor="middle" font-size="11" fill="#64748b">0</text>
+<line x1="171.4" y1="72" x2="171.4" y2="444" stroke="#f3f4f6"/><text x="171.4" y="466" text-anchor="middle" font-size="11" fill="#64748b">1</text>
+<line x1="250.8" y1="72" x2="250.8" y2="444" stroke="#f3f4f6"/><text x="250.8" y="466" text-anchor="middle" font-size="11" fill="#64748b">2</text>
+<line x1="330.2" y1="72" x2="330.2" y2="444" stroke="#f3f4f6"/><text x="330.2" y="466" text-anchor="middle" font-size="11" fill="#64748b">3</text>
+<line x1="409.6" y1="72" x2="409.6" y2="444" stroke="#f3f4f6"/><text x="409.6" y="466" text-anchor="middle" font-size="11" fill="#64748b">4</text>
+<line x1="489.0" y1="72" x2="489.0" y2="444" stroke="#f3f4f6"/><text x="489.0" y="466" text-anchor="middle" font-size="11" fill="#64748b">5</text>
+<line x1="568.4" y1="72" x2="568.4" y2="444" stroke="#f3f4f6"/><text x="568.4" y="466" text-anchor="middle" font-size="11" fill="#64748b">6</text>
+<line x1="647.8" y1="72" x2="647.8" y2="444" stroke="#f3f4f6"/><text x="647.8" y="466" text-anchor="middle" font-size="11" fill="#64748b">7</text>
+<line x1="727.2" y1="72" x2="727.2" y2="444" stroke="#f3f4f6"/><text x="727.2" y="466" text-anchor="middle" font-size="11" fill="#64748b">8</text>
+<line x1="806.6" y1="72" x2="806.6" y2="444" stroke="#f3f4f6"/><text x="806.6" y="466" text-anchor="middle" font-size="11" fill="#64748b">9</text>
+<line x1="886.0" y1="72" x2="886.0" y2="444" stroke="#f3f4f6"/><text x="886.0" y="466" text-anchor="middle" font-size="11" fill="#64748b">10</text>
+<polyline points="92.0,418.3 171.4,120.1 250.8,142.5 330.2,165.0 409.6,187.4 489.0,209.9 568.4,232.3 647.8,254.8 727.2,277.2 806.6,299.7 886.0,286.5" fill="none" stroke="#94a3b8" stroke-width="1.4" opacity="0.55"/>
+<circle cx="72.0" cy="418.3" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 0, sample 1, $0, LOW</title></circle>
+<circle cx="74.2" cy="97.7" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 0, sample 1, $20,000, NOT_LOW</title></circle>
+<circle cx="76.3" cy="418.3" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 0, sample 2, $0, LOW</title></circle>
+<circle cx="78.3" cy="97.7" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 0, sample 2, $20,000, NOT_LOW</title></circle>
+<circle cx="80.5" cy="418.3" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 0, sample 3, $0, LOW</title></circle>
+<circle cx="82.5" cy="97.7" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 0, sample 3, $20,000, NOT_LOW</title></circle>
+<circle cx="84.7" cy="418.3" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 0, sample 4, $0, LOW</title></circle>
+<circle cx="86.8" cy="97.7" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 0, sample 4, $20,000, NOT_LOW</title></circle>
+<circle cx="88.8" cy="418.3" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 0, sample 5, $0, LOW</title></circle>
+<circle cx="91.0" cy="97.7" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 0, sample 5, $20,000, NOT_LOW</title></circle>
+<circle cx="93.0" cy="418.3" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 0, sample 6, $0, LOW</title></circle>
+<circle cx="95.2" cy="97.7" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 0, sample 6, $20,000, NOT_LOW</title></circle>
+<circle cx="97.3" cy="418.3" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 0, sample 7, $0, LOW</title></circle>
+<circle cx="99.3" cy="97.7" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 0, sample 7, $20,000, NOT_LOW</title></circle>
+<circle cx="101.5" cy="418.3" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 0, sample 8, $0, LOW</title></circle>
+<circle cx="103.5" cy="97.7" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 0, sample 8, $20,000, NOT_LOW</title></circle>
+<circle cx="105.7" cy="418.3" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 0, sample 9, $0, LOW</title></circle>
+<circle cx="107.8" cy="97.7" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 0, sample 9, $20,000, NOT_LOW</title></circle>
+<circle cx="109.8" cy="418.3" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 0, sample 10, $0, LOW</title></circle>
+<circle cx="112.0" cy="97.7" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 0, sample 10, $20,000, NOT_LOW</title></circle>
+<circle cx="152.5" cy="120.1" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 1, sample 1, $10,000, NOT_LOW</title></circle>
+<circle cx="156.7" cy="120.1" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 1, sample 2, $10,000, NOT_LOW</title></circle>
+<circle cx="160.9" cy="120.1" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 1, sample 3, $10,000, NOT_LOW</title></circle>
+<circle cx="165.1" cy="120.1" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 1, sample 4, $10,000, NOT_LOW</title></circle>
+<circle cx="169.3" cy="120.1" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 1, sample 5, $10,000, NOT_LOW</title></circle>
+<circle cx="173.5" cy="120.1" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 1, sample 6, $10,000, NOT_LOW</title></circle>
+<circle cx="177.7" cy="120.1" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 1, sample 7, $10,000, NOT_LOW</title></circle>
+<circle cx="181.9" cy="120.1" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 1, sample 8, $10,000, NOT_LOW</title></circle>
+<circle cx="186.1" cy="120.1" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 1, sample 9, $10,000, NOT_LOW</title></circle>
+<circle cx="190.3" cy="120.1" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 1, sample 10, $10,000, NOT_LOW</title></circle>
+<circle cx="231.9" cy="142.5" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 2, sample 1, $5,000, NOT_LOW</title></circle>
+<circle cx="236.1" cy="142.5" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 2, sample 2, $5,000, NOT_LOW</title></circle>
+<circle cx="240.3" cy="142.5" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 2, sample 3, $5,000, NOT_LOW</title></circle>
+<circle cx="244.5" cy="142.5" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 2, sample 4, $5,000, NOT_LOW</title></circle>
+<circle cx="248.7" cy="142.5" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 2, sample 5, $5,000, NOT_LOW</title></circle>
+<circle cx="252.9" cy="142.5" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 2, sample 6, $5,000, NOT_LOW</title></circle>
+<circle cx="257.1" cy="142.5" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 2, sample 7, $5,000, NOT_LOW</title></circle>
+<circle cx="261.3" cy="142.5" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 2, sample 8, $5,000, NOT_LOW</title></circle>
+<circle cx="265.5" cy="142.5" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 2, sample 9, $5,000, NOT_LOW</title></circle>
+<circle cx="269.7" cy="142.5" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 2, sample 10, $5,000, NOT_LOW</title></circle>
+<circle cx="311.3" cy="165.0" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 3, sample 1, $2,500, NOT_LOW</title></circle>
+<circle cx="315.5" cy="165.0" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 3, sample 2, $2,500, NOT_LOW</title></circle>
+<circle cx="319.7" cy="165.0" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 3, sample 3, $2,500, NOT_LOW</title></circle>
+<circle cx="323.9" cy="165.0" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 3, sample 4, $2,500, NOT_LOW</title></circle>
+<circle cx="328.1" cy="165.0" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 3, sample 5, $2,500, NOT_LOW</title></circle>
+<circle cx="332.3" cy="165.0" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 3, sample 6, $2,500, NOT_LOW</title></circle>
+<circle cx="336.5" cy="165.0" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 3, sample 7, $2,500, NOT_LOW</title></circle>
+<circle cx="340.7" cy="165.0" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 3, sample 8, $2,500, NOT_LOW</title></circle>
+<circle cx="344.9" cy="165.0" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 3, sample 9, $2,500, NOT_LOW</title></circle>
+<circle cx="349.1" cy="165.0" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 3, sample 10, $2,500, NOT_LOW</title></circle>
+<circle cx="390.7" cy="187.4" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 4, sample 1, $1,250, NOT_LOW</title></circle>
+<circle cx="394.9" cy="187.4" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 4, sample 2, $1,250, NOT_LOW</title></circle>
+<circle cx="399.1" cy="187.4" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 4, sample 3, $1,250, NOT_LOW</title></circle>
+<circle cx="403.3" cy="187.4" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 4, sample 4, $1,250, NOT_LOW</title></circle>
+<circle cx="407.5" cy="187.4" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 4, sample 5, $1,250, NOT_LOW</title></circle>
+<circle cx="411.7" cy="187.4" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 4, sample 6, $1,250, NOT_LOW</title></circle>
+<circle cx="415.9" cy="187.4" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 4, sample 7, $1,250, NOT_LOW</title></circle>
+<circle cx="420.1" cy="187.4" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 4, sample 8, $1,250, NOT_LOW</title></circle>
+<circle cx="424.3" cy="187.4" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 4, sample 9, $1,250, NOT_LOW</title></circle>
+<circle cx="428.5" cy="187.4" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 4, sample 10, $1,250, NOT_LOW</title></circle>
+<circle cx="470.1" cy="209.9" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 5, sample 1, $625, NOT_LOW</title></circle>
+<circle cx="474.3" cy="209.9" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 5, sample 2, $625, NOT_LOW</title></circle>
+<circle cx="478.5" cy="209.9" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 5, sample 3, $625, NOT_LOW</title></circle>
+<circle cx="482.7" cy="209.9" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 5, sample 4, $625, NOT_LOW</title></circle>
+<circle cx="486.9" cy="209.9" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 5, sample 5, $625, NOT_LOW</title></circle>
+<circle cx="491.1" cy="209.9" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 5, sample 6, $625, NOT_LOW</title></circle>
+<circle cx="495.3" cy="209.9" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 5, sample 7, $625, NOT_LOW</title></circle>
+<circle cx="499.5" cy="209.9" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 5, sample 8, $625, NOT_LOW</title></circle>
+<circle cx="503.7" cy="209.9" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 5, sample 9, $625, NOT_LOW</title></circle>
+<circle cx="507.9" cy="209.9" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 5, sample 10, $625, NOT_LOW</title></circle>
+<circle cx="549.5" cy="232.3" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 6, sample 1, $312.5, NOT_LOW</title></circle>
+<circle cx="553.7" cy="232.3" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 6, sample 2, $312.5, NOT_LOW</title></circle>
+<circle cx="557.9" cy="232.3" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 6, sample 3, $312.5, NOT_LOW</title></circle>
+<circle cx="562.1" cy="232.3" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 6, sample 4, $312.5, NOT_LOW</title></circle>
+<circle cx="566.3" cy="232.3" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 6, sample 5, $312.5, NOT_LOW</title></circle>
+<circle cx="570.5" cy="232.3" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 6, sample 6, $312.5, NOT_LOW</title></circle>
+<circle cx="574.7" cy="232.3" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 6, sample 7, $312.5, NOT_LOW</title></circle>
+<circle cx="578.9" cy="232.3" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 6, sample 8, $312.5, NOT_LOW</title></circle>
+<circle cx="583.1" cy="232.3" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 6, sample 9, $312.5, NOT_LOW</title></circle>
+<circle cx="587.3" cy="232.3" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 6, sample 10, $312.5, NOT_LOW</title></circle>
+<circle cx="628.9" cy="254.8" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 7, sample 1, $156.25, NOT_LOW</title></circle>
+<circle cx="633.1" cy="254.8" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 7, sample 2, $156.25, NOT_LOW</title></circle>
+<circle cx="637.3" cy="254.8" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 7, sample 3, $156.25, NOT_LOW</title></circle>
+<circle cx="641.5" cy="254.8" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 7, sample 4, $156.25, NOT_LOW</title></circle>
+<circle cx="645.7" cy="254.8" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 7, sample 5, $156.25, NOT_LOW</title></circle>
+<circle cx="649.9" cy="254.8" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 7, sample 6, $156.25, NOT_LOW</title></circle>
+<circle cx="654.1" cy="254.8" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 7, sample 7, $156.25, NOT_LOW</title></circle>
+<circle cx="658.3" cy="254.8" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 7, sample 8, $156.25, NOT_LOW</title></circle>
+<circle cx="662.5" cy="254.8" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 7, sample 9, $156.25, NOT_LOW</title></circle>
+<circle cx="666.7" cy="254.8" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 7, sample 10, $156.25, NOT_LOW</title></circle>
+<circle cx="708.3" cy="277.2" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 8, sample 1, $78.13, NOT_LOW</title></circle>
+<circle cx="712.5" cy="277.2" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 8, sample 2, $78.13, NOT_LOW</title></circle>
+<circle cx="716.7" cy="277.2" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 8, sample 3, $78.13, NOT_LOW</title></circle>
+<circle cx="720.9" cy="277.2" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 8, sample 4, $78.13, NOT_LOW</title></circle>
+<circle cx="725.1" cy="277.2" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 8, sample 5, $78.13, NOT_LOW</title></circle>
+<circle cx="729.3" cy="277.2" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 8, sample 6, $78.13, NOT_LOW</title></circle>
+<circle cx="733.5" cy="277.2" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 8, sample 7, $78.13, NOT_LOW</title></circle>
+<circle cx="737.7" cy="277.2" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 8, sample 8, $78.13, NOT_LOW</title></circle>
+<circle cx="741.9" cy="277.2" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 8, sample 9, $78.13, NOT_LOW</title></circle>
+<circle cx="746.1" cy="277.2" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 8, sample 10, $78.13, NOT_LOW</title></circle>
+<circle cx="787.7" cy="299.7" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 9, sample 1, $39.06, LOW</title></circle>
+<circle cx="791.9" cy="299.7" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 9, sample 2, $39.06, LOW</title></circle>
+<circle cx="796.1" cy="299.7" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 9, sample 3, $39.06, LOW</title></circle>
+<circle cx="800.3" cy="299.7" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 9, sample 4, $39.06, LOW</title></circle>
+<circle cx="804.5" cy="299.7" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 9, sample 5, $39.06, NOT_LOW</title></circle>
+<circle cx="808.7" cy="299.7" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 9, sample 6, $39.06, LOW</title></circle>
+<circle cx="812.9" cy="299.7" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 9, sample 7, $39.06, NOT_LOW</title></circle>
+<circle cx="817.1" cy="299.7" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 9, sample 8, $39.06, LOW</title></circle>
+<circle cx="821.3" cy="299.7" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 9, sample 9, $39.06, LOW</title></circle>
+<circle cx="825.5" cy="299.7" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 9, sample 10, $39.06, LOW</title></circle>
+<circle cx="867.1" cy="286.5" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 10, sample 1, $58.59, NOT_LOW</title></circle>
+<circle cx="871.3" cy="286.5" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 10, sample 2, $58.59, NOT_LOW</title></circle>
+<circle cx="875.5" cy="286.5" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 10, sample 3, $58.59, NOT_LOW</title></circle>
+<circle cx="879.7" cy="286.5" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 10, sample 4, $58.59, NOT_LOW</title></circle>
+<circle cx="883.9" cy="286.5" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 10, sample 5, $58.59, NOT_LOW</title></circle>
+<circle cx="888.1" cy="286.5" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 10, sample 6, $58.59, NOT_LOW</title></circle>
+<circle cx="892.3" cy="286.5" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 10, sample 7, $58.59, NOT_LOW</title></circle>
+<circle cx="896.5" cy="286.5" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 10, sample 8, $58.59, NOT_LOW</title></circle>
+<circle cx="900.7" cy="286.5" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 10, sample 9, $58.59, NOT_LOW</title></circle>
+<circle cx="904.9" cy="286.5" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_5_gift_card, epoch 10, sample 10, $58.59, NOT_LOW</title></circle>
+<text x="489" y="484" text-anchor="middle" font-size="12" fill="#334155">Binary-search epoch</text>
+<text transform="translate(26 258) rotate(-90)" text-anchor="middle" font-size="12" fill="#334155">Refund amount, log scale</text>
+</svg>

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="520" viewBox="0 0 920 520" role="img" aria-labelledby="title desc">
+<title id="title">2026-07-27T04-07-02-428Z-bounded-retrieved-claude-sonnet-20260726-low binary discovery trace</title>
+<desc id="desc">Epoch-by-epoch binary threshold discovery for sonnet and retrieved_100000_contract. The y-axis is log-scaled refund amount. Green marks LOW, red marks NOT_LOW, and light gray marks invalid output.</desc>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="92" y="28" font-size="19" font-weight="700" fill="#0f172a">sonnet binary discovery</text>
+<text x="92" y="50" font-size="12" fill="#475569">Run: 2026-07-27T04-07-02-428Z-bounded-retrieved-claude-sonnet-20260726-low. Context: retrieved_100000_contract. Y-axis is logarithmic dollars.</text>
+<circle cx="666" cy="42" r="5" fill="#0f766e"/><text x="676" y="46" font-size="12" fill="#334155">LOW</text>
+<circle cx="744" cy="42" r="5" fill="#be123c"/><text x="754" y="46" font-size="12" fill="#334155">NOT_LOW</text>
+<circle cx="822" cy="42" r="5" fill="#e5e7eb"/><text x="832" y="46" font-size="12" fill="#334155">failed</text>
+<rect x="92" y="72" width="794" height="372" fill="#ffffff"/>
+<line x1="92" y1="418.3" x2="886" y2="418.3" stroke="#e5e7eb"/><text x="82" y="422.34482758620686" text-anchor="end" font-size="11" fill="#475569">$1</text>
+<line x1="92" y1="395.9" x2="886" y2="395.9" stroke="#e5e7eb"/><text x="82" y="399.8996910483641" text-anchor="end" font-size="11" fill="#475569">$2</text>
+<line x1="92" y1="366.2" x2="886" y2="366.2" stroke="#e5e7eb"/><text x="82" y="370.2288344654069" text-anchor="end" font-size="11" fill="#475569">$5</text>
+<line x1="92" y1="343.8" x2="886" y2="343.8" stroke="#e5e7eb"/><text x="82" y="347.78369792756416" text-anchor="end" font-size="11" fill="#475569">$10</text>
+<line x1="92" y1="321.3" x2="886" y2="321.3" stroke="#e5e7eb"/><text x="82" y="325.33856138972135" text-anchor="end" font-size="11" fill="#475569">$20</text>
+<line x1="92" y1="291.7" x2="886" y2="291.7" stroke="#e5e7eb"/><text x="82" y="295.66770480676416" text-anchor="end" font-size="11" fill="#475569">$50</text>
+<line x1="92" y1="269.2" x2="886" y2="269.2" stroke="#e5e7eb"/><text x="82" y="273.22256826892135" text-anchor="end" font-size="11" fill="#475569">$100</text>
+<line x1="92" y1="246.8" x2="886" y2="246.8" stroke="#e5e7eb"/><text x="82" y="250.77743173107862" text-anchor="end" font-size="11" fill="#475569">$200</text>
+<line x1="92" y1="217.1" x2="886" y2="217.1" stroke="#e5e7eb"/><text x="82" y="221.1065751481214" text-anchor="end" font-size="11" fill="#475569">$500</text>
+<line x1="92" y1="194.7" x2="886" y2="194.7" stroke="#e5e7eb"/><text x="82" y="198.66143861027862" text-anchor="end" font-size="11" fill="#475569">$1,000</text>
+<line x1="92" y1="172.2" x2="886" y2="172.2" stroke="#e5e7eb"/><text x="82" y="176.21630207243587" text-anchor="end" font-size="11" fill="#475569">$2,000</text>
+<line x1="92" y1="142.5" x2="886" y2="142.5" stroke="#e5e7eb"/><text x="82" y="146.54544548947862" text-anchor="end" font-size="11" fill="#475569">$5,000</text>
+<line x1="92" y1="120.1" x2="886" y2="120.1" stroke="#e5e7eb"/><text x="82" y="124.10030895163582" text-anchor="end" font-size="11" fill="#475569">$10,000</text>
+<line x1="92" y1="97.7" x2="886" y2="97.7" stroke="#e5e7eb"/><text x="82" y="101.65517241379307" text-anchor="end" font-size="11" fill="#475569">$20,000</text>
+<line x1="92.0" y1="72" x2="92.0" y2="444" stroke="#f3f4f6"/><text x="92.0" y="466" text-anchor="middle" font-size="11" fill="#64748b">0</text>
+<polyline points="92.0,418.3" fill="none" stroke="#94a3b8" stroke-width="1.4" opacity="0.55"/>
+<circle cx="72.0" cy="418.3" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, retrieved_100000_contract, epoch 0, sample 1, $0, INVALID</title></circle>
+<circle cx="74.2" cy="97.7" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, retrieved_100000_contract, epoch 0, sample 1, $20,000, INVALID</title></circle>
+<circle cx="76.3" cy="418.3" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, retrieved_100000_contract, epoch 0, sample 2, $0, INVALID</title></circle>
+<circle cx="78.3" cy="97.7" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, retrieved_100000_contract, epoch 0, sample 2, $20,000, INVALID</title></circle>
+<circle cx="80.5" cy="418.3" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, retrieved_100000_contract, epoch 0, sample 3, $0, INVALID</title></circle>
+<circle cx="82.5" cy="97.7" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, retrieved_100000_contract, epoch 0, sample 3, $20,000, INVALID</title></circle>
+<circle cx="84.7" cy="418.3" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, retrieved_100000_contract, epoch 0, sample 4, $0, INVALID</title></circle>
+<circle cx="86.8" cy="97.7" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, retrieved_100000_contract, epoch 0, sample 4, $20,000, INVALID</title></circle>
+<circle cx="88.8" cy="418.3" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, retrieved_100000_contract, epoch 0, sample 5, $0, INVALID</title></circle>
+<circle cx="91.0" cy="97.7" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, retrieved_100000_contract, epoch 0, sample 5, $20,000, INVALID</title></circle>
+<circle cx="93.0" cy="418.3" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, retrieved_100000_contract, epoch 0, sample 6, $0, INVALID</title></circle>
+<circle cx="95.2" cy="97.7" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, retrieved_100000_contract, epoch 0, sample 6, $20,000, INVALID</title></circle>
+<circle cx="97.3" cy="418.3" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, retrieved_100000_contract, epoch 0, sample 7, $0, INVALID</title></circle>
+<circle cx="99.3" cy="97.7" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, retrieved_100000_contract, epoch 0, sample 7, $20,000, INVALID</title></circle>
+<circle cx="101.5" cy="418.3" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, retrieved_100000_contract, epoch 0, sample 8, $0, INVALID</title></circle>
+<circle cx="103.5" cy="97.7" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, retrieved_100000_contract, epoch 0, sample 8, $20,000, INVALID</title></circle>
+<circle cx="105.7" cy="418.3" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, retrieved_100000_contract, epoch 0, sample 9, $0, INVALID</title></circle>
+<circle cx="107.8" cy="97.7" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, retrieved_100000_contract, epoch 0, sample 9, $20,000, INVALID</title></circle>
+<circle cx="109.8" cy="418.3" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, retrieved_100000_contract, epoch 0, sample 10, $0, INVALID</title></circle>
+<circle cx="112.0" cy="97.7" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, retrieved_100000_contract, epoch 0, sample 10, $20,000, INVALID</title></circle>
+<text x="489" y="484" text-anchor="middle" font-size="12" fill="#334155">Binary-search epoch</text>
+<text transform="translate(26 258) rotate(-90)" text-anchor="middle" font-size="12" fill="#334155">Refund amount, log scale</text>
+</svg>

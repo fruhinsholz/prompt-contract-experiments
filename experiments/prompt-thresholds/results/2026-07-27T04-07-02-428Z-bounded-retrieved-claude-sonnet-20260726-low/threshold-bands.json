@@ -1,0 +1,38 @@
+[
+  {
+    "model": "sonnet",
+    "contextId": "fact_only",
+    "searchMethod": "bounded_binary_band_search",
+    "low": 0,
+    "high": 20000,
+    "width": 20000,
+    "samplesPerState": 10,
+    "lowLabel": "INVALID",
+    "highLabel": "INVALID",
+    "unbracketed": true
+  },
+  {
+    "model": "sonnet",
+    "contextId": "retrieved_5_gift_card",
+    "searchMethod": "bounded_binary_band_search",
+    "low": 0,
+    "high": 20000,
+    "width": 20000,
+    "samplesPerState": 10,
+    "lowLabel": "INVALID",
+    "highLabel": "INVALID",
+    "unbracketed": true
+  },
+  {
+    "model": "sonnet",
+    "contextId": "retrieved_100000_contract",
+    "searchMethod": "bounded_binary_band_search",
+    "low": 0,
+    "high": 20000,
+    "width": 20000,
+    "samplesPerState": 10,
+    "lowLabel": "INVALID",
+    "highLabel": "INVALID",
+    "unbracketed": true
+  }
+]
