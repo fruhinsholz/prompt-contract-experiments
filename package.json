@@ -1,0 +1,20 @@
+{
+  "name": "prompt-contract-experiments",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "drift:run": "node experiments/prompt-drift/run.mjs",
+    "drift:report": "node experiments/prompt-drift/report.mjs",
+    "drift:dry": "node experiments/prompt-drift/run.mjs --dry-run",
+    "thresholds:low": "node experiments/prompt-thresholds/src/low.mjs",
+    "thresholds:low:dry": "node experiments/prompt-thresholds/src/low.mjs --dry-run",
+    "thresholds:enough": "node experiments/prompt-thresholds/src/enough.mjs",
+    "thresholds:enough:dry": "node experiments/prompt-thresholds/src/enough.mjs --dry-run",
+    "thresholds:low:retrieved-context": "node experiments/prompt-thresholds/src/low-retrieved-context.mjs",
+    "thresholds:graphs": "node experiments/prompt-thresholds/src/visualize-readme.mjs",
+    "results:price-iteration": "node scripts/plot-price-vs-iteration.mjs",
+    "results:graphs": "npm run thresholds:graphs && npm run results:price-iteration",
+    "check": "node --check experiments/prompt-drift/run.mjs && node --check experiments/prompt-drift/report.mjs && node --check experiments/prompt-thresholds/src/shared/harness.mjs && node --check scripts/plot-price-vs-iteration.mjs && npm run results:graphs"
+  }
+}

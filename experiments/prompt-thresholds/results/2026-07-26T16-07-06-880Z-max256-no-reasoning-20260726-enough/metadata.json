@@ -1,0 +1,55 @@
+{
+  "testbed": "enough",
+  "createdAt": "2026-07-26T16:07:06.881Z",
+  "commitHash": "78b7695a83bd092b2159f0d1e707681e1d92e287",
+  "commandLine": "/usr/bin/node /home/eric/workspace/us-blog/src/content/posts/llm-reliability/prompt-determinism-boundary/examples/prompt-thresholds/src/enough.mjs --models gpt-4.1,gpt-5.5,gpt-5.6 --samples 10 --epochs 10 --max-output-tokens 256 --reasoning-effort none --max-calls 1000 --label max256-no-reasoning-20260726 --gzip-jsonl",
+  "provider": "openai",
+  "requestedModels": [
+    "gpt-4.1",
+    "gpt-5.5",
+    "gpt-5.6"
+  ],
+  "apiParameters": {
+    "temperature": 0,
+    "maxOutputTokens": 256,
+    "reasoningEffort": "none",
+    "seed": null
+  },
+  "samplesPerState": 10,
+  "epochs": 10,
+  "maxCalls": 1000,
+  "dryRun": false,
+  "convergenceRule": "average mode binary search stops after 10 epochs or when high-low <= 0.1; passing mode scans 0..10 counts",
+  "binarySearchRange": {
+    "average": [
+      0,
+      10
+    ],
+    "passingCount": [
+      0,
+      10
+    ],
+    "initialAverageScan": [
+      0,
+      2,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ]
+  },
+  "promptFiles": [
+    "system-prompt.txt",
+    "user-template.txt"
+  ],
+  "fixtureFile": "fixture.json",
+  "resultFiles": {
+    "rawJsonl": "calls.jsonl",
+    "summaryCsv": "summary.csv",
+    "summaryMarkdown": "summary.md",
+    "analysis": "analysis.md"
+  }
+}

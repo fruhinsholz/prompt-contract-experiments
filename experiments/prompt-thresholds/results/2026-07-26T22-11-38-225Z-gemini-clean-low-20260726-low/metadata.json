@@ -1,0 +1,55 @@
+{
+  "testbed": "low",
+  "createdAt": "2026-07-26T22:11:38.225Z",
+  "commitHash": "6df5bc992fabae7dced9379ee3b23801465a6405",
+  "commandLine": "/usr/bin/node /home/eric/workspace/us-blog/src/content/posts/llm-reliability/prompt-determinism-boundary/examples/prompt-thresholds/src/low.mjs --provider gemini --models gemini-3.5-flash-lite,gemini-3.6-flash --contexts all --samples 10 --epochs 10 --max-output-tokens 256 --reasoning-effort none --max-calls 2000 --label gemini-clean-low-20260726 --gzip-jsonl",
+  "provider": "gemini",
+  "requestedModels": [
+    "gemini-3.5-flash-lite",
+    "gemini-3.6-flash"
+  ],
+  "apiParameters": {
+    "temperature": 0,
+    "maxOutputTokens": 256,
+    "reasoningEffort": "none",
+    "seed": null
+  },
+  "samplesPerState": 10,
+  "epochs": 10,
+  "maxCalls": 2000,
+  "dryRun": false,
+  "convergenceRule": "binary search stops after 10 epochs or when high-low <= 1",
+  "binarySearchRange": {
+    "min": 0,
+    "max": 10000,
+    "initialScan": [
+      0,
+      10,
+      25,
+      50,
+      75,
+      100,
+      150,
+      200,
+      300,
+      500,
+      750,
+      1000,
+      1500,
+      2500,
+      5000,
+      10000
+    ]
+  },
+  "promptFiles": [
+    "system-prompt.txt",
+    "user-template.txt"
+  ],
+  "fixtureFile": "fixture.json",
+  "resultFiles": {
+    "rawJsonl": "calls.jsonl",
+    "summaryCsv": "summary.csv",
+    "summaryMarkdown": "summary.md",
+    "analysis": "analysis.md"
+  }
+}

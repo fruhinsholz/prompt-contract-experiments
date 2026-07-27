@@ -1,0 +1,53 @@
+{
+  "testbed": "low",
+  "createdAt": "2026-07-26T20:30:30.599Z",
+  "commitHash": "0b1f4624d8f6315732ccae13a4e296cd898c34b0",
+  "commandLine": "npm run thresholds:low -- --models gpt-4.1,gpt-4.1-mini,gpt-4.1-nano,gpt-5.5,gpt-5.6 --contexts fact_only --samples 10 --epochs 1 --scan 0,10,100,199,200,201,300,500,1000,10000 --max-output-tokens 256 --reasoning-effort none --max-calls 600 --explicit-threshold 200 --label explicit-200-positive-control-all-openai-20260726 --gzip-jsonl",
+  "provider": "openai",
+  "requestedModels": [
+    "gpt-4.1",
+    "gpt-4.1-mini",
+    "gpt-4.1-nano",
+    "gpt-5.5",
+    "gpt-5.6"
+  ],
+  "apiParameters": {
+    "temperature": 0,
+    "maxOutputTokens": 256,
+    "reasoningEffort": "none",
+    "seed": null
+  },
+  "samplesPerState": 10,
+  "epochs": 1,
+  "maxCalls": 120,
+  "dryRun": false,
+  "convergenceRule": "binary search stops after 1 epochs or when high-low <= 1",
+  "binarySearchRange": {
+    "min": 0,
+    "max": 10000,
+    "initialScan": [
+      0,
+      10,
+      100,
+      199,
+      200,
+      201,
+      300,
+      500,
+      1000,
+      10000
+    ]
+  },
+  "promptFiles": [
+    "system-prompt.txt",
+    "user-template.txt"
+  ],
+  "fixtureFile": "fixture.json",
+  "resultFiles": {
+    "rawJsonl": "calls.jsonl",
+    "summaryCsv": "summary.csv",
+    "summaryMarkdown": "summary.md",
+    "analysis": "analysis.md",
+    "rawJsonlGzip": "calls.jsonl.gz"
+  }
+}

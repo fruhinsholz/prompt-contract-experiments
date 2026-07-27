@@ -1,0 +1,10 @@
+Use this deterministic rule: classify the amount as LOW if and only if it is less than or equal to $200. Classify it as NOT_LOW if it is greater than $200.
+
+Case:
+A customer submitted a refund claim for $NaN for a consumer purchase.
+
+Classify the claim amount as exactly one label:
+LOW
+NOT_LOW
+
+Return only the label.

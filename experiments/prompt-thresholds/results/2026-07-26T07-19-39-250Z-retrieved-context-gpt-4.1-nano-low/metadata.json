@@ -1,0 +1,53 @@
+{
+  "testbed": "low",
+  "createdAt": "2026-07-26T07:19:39.250Z",
+  "commitHash": "c20df040b6bdaa8cc0a7b213ffbb588c676069e7",
+  "commandLine": "/usr/bin/node /home/eric/workspace/us-blog/src/content/posts/llm-reliability/prompt-determinism-boundary/examples/prompt-thresholds/src/low-retrieved-context.mjs --models gpt-4.1-nano --samples 10 --epochs 10 --temperature 0 --max-output-tokens 16 --max-calls 1000 --contexts all --label retrieved-context-gpt-4.1-nano --gzip-jsonl",
+  "provider": "openai",
+  "requestedModels": [
+    "gpt-4.1-nano"
+  ],
+  "apiParameters": {
+    "temperature": 0,
+    "maxOutputTokens": 16,
+    "seed": null
+  },
+  "samplesPerState": 10,
+  "epochs": 10,
+  "maxCalls": 1000,
+  "dryRun": false,
+  "convergenceRule": "binary search stops after 10 epochs or when high-low <= 1",
+  "binarySearchRange": {
+    "min": 0,
+    "max": 10000,
+    "initialScan": [
+      0,
+      10,
+      25,
+      50,
+      75,
+      100,
+      150,
+      200,
+      300,
+      500,
+      750,
+      1000,
+      1500,
+      2500,
+      5000,
+      10000
+    ]
+  },
+  "promptFiles": [
+    "system-prompt.txt",
+    "user-template.txt"
+  ],
+  "fixtureFile": "fixture.json",
+  "resultFiles": {
+    "rawJsonl": "calls.jsonl",
+    "summaryCsv": "summary.csv",
+    "summaryMarkdown": "summary.md",
+    "analysis": "analysis.md"
+  }
+}

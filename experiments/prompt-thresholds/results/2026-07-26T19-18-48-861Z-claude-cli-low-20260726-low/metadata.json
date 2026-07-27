@@ -1,0 +1,44 @@
+{
+  "testbed": "low",
+  "createdAt": "2026-07-26T19:18:48.861Z",
+  "commitHash": "62eed776a879d91dedc4a1b1eaae3edbdad79812",
+  "commandLine": "/usr/bin/node /home/eric/workspace/us-blog/src/content/posts/llm-reliability/prompt-determinism-boundary/examples/prompt-thresholds/src/low.mjs --provider claude-cli --models sonnet,opus --samples 1 --epochs 4 --scan 50,100,150,200,500 --max-calls 20 --reasoning-effort low --label claude-cli-low-20260726 --gzip-jsonl",
+  "provider": "claude-cli",
+  "requestedModels": [
+    "sonnet",
+    "opus"
+  ],
+  "apiParameters": {
+    "temperature": 0,
+    "maxOutputTokens": 256,
+    "reasoningEffort": "low",
+    "seed": null
+  },
+  "samplesPerState": 1,
+  "epochs": 4,
+  "maxCalls": 20,
+  "dryRun": false,
+  "convergenceRule": "binary search stops after 4 epochs or when high-low <= 1",
+  "binarySearchRange": {
+    "min": 0,
+    "max": 10000,
+    "initialScan": [
+      50,
+      100,
+      150,
+      200,
+      500
+    ]
+  },
+  "promptFiles": [
+    "system-prompt.txt",
+    "user-template.txt"
+  ],
+  "fixtureFile": "fixture.json",
+  "resultFiles": {
+    "rawJsonl": "calls.jsonl",
+    "summaryCsv": "summary.csv",
+    "summaryMarkdown": "summary.md",
+    "analysis": "analysis.md"
+  }
+}

@@ -1,0 +1,5 @@
+model,response_models,context_id,amount,total,low,not_low,invalid,low_pct,not_low_pct,errors
+gpt-4.1-mini,gpt-4.1-mini-2025-04-14,fact_only,0,1,1,0,0,100.0%,0.0%,0
+gpt-4.1-mini,gpt-4.1-mini-2025-04-14,fact_only,100,1,1,0,0,100.0%,0.0%,0
+gpt-4.1-mini,gpt-4.1-mini-2025-04-14,fact_only,150,1,1,0,0,100.0%,0.0%,0
+gpt-4.1-mini,gpt-4.1-mini-2025-04-14,fact_only,200,1,1,0,0,100.0%,0.0%,0

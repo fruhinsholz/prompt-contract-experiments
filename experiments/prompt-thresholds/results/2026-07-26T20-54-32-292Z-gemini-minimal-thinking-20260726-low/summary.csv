@@ -1,0 +1,10 @@
+model,response_models,context_id,amount,expected,total,low,not_low,invalid,mismatches,output_truncated,low_pct,not_low_pct,errors
+gemini-3.5-flash-lite,gemini-3.5-flash-lite,fact_only,100,,1,1,0,0,0,0,100.0%,0.0%,0
+gemini-3.5-flash-lite,gemini-3.5-flash-lite,fact_only,150,,1,1,0,0,0,0,100.0%,0.0%,0
+gemini-3.5-flash-lite,gemini-3.5-flash-lite,fact_only,175,,1,1,0,0,0,1,100.0%,0.0%,0
+gemini-3.5-flash-lite,gemini-3.5-flash-lite,fact_only,200,,1,0,1,0,0,0,0.0%,100.0%,0
+gemini-3.5-flash-lite,gemini-3.5-flash-lite,fact_only,300,,1,0,1,0,0,0,0.0%,100.0%,0
+gemini-3.5-flash-lite,gemini-3.5-flash-lite,fact_only,500,,1,0,1,0,0,0,0.0%,100.0%,0
+gemini-3.6-flash,gemini-3.6-flash,fact_only,100,,1,0,1,0,0,0,0.0%,100.0%,0
+gemini-3.6-flash,gemini-3.6-flash,fact_only,300,,1,0,1,0,0,0,0.0%,100.0%,0
+gemini-3.6-flash,gemini-3.6-flash,fact_only,500,,1,0,1,0,0,0,0.0%,100.0%,0
