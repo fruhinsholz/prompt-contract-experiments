@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="920" height="520" viewBox="0 0 920 520" role="img" aria-labelledby="title desc">
 <title id="title">2026-07-27T03-57-19-402Z-bounded-retrieved-20260726-low binary discovery trace</title>
-<desc id="desc">Chronological binary threshold discovery for gemini-3.5-flash-lite and retrieved_100000_contract. Repeated epoch numbers from separate scenarios are laid out as consecutive trace columns. The y-axis is log-scaled refund amount. Green marks LOW, red marks NOT_LOW, and light gray marks invalid output.</desc>
+<desc id="desc">Chronological binary threshold discovery for gemini-3.5-flash-lite and retrieved_100000_contract. Independent contexts and probe phases are separated visually; lines are drawn only across comparable binary-search points. The y-axis is log-scaled refund amount. Green marks LOW, red marks NOT_LOW, and light gray marks invalid output.</desc>
 <rect width="100%" height="100%" fill="#ffffff"/>
 <text x="92" y="28" font-size="19" font-weight="700" fill="#0f172a">gemini-3.5-flash-lite binary discovery</text>
 <text x="92" y="50" font-size="12" fill="#475569">Run: 2026-07-27T03-57-19-402Z-bounded-retrieved-20260726-low. Context: retrieved_100000_contract. Y-axis is logarithmic dollars.</text>
@@ -34,7 +34,8 @@
 <line x1="741.6" y1="72" x2="741.6" y2="418" stroke="#f3f4f6"/><text x="741.6" y="440" text-anchor="middle" font-size="11" fill="#64748b">t9</text>
 <line x1="813.8" y1="72" x2="813.8" y2="418" stroke="#f3f4f6"/><text x="813.8" y="440" text-anchor="middle" font-size="11" fill="#64748b">t10</text>
 <line x1="886.0" y1="72" x2="886.0" y2="418" stroke="#f3f4f6"/><text x="886.0" y="440" text-anchor="middle" font-size="11" fill="#64748b">t11</text>
-<polyline points="92.0,394.1 164.2,95.9 236.4,116.7 308.5,104.5 380.7,110.0 452.9,113.2 525.1,111.6 597.3,110.8 669.5,110.4 741.6,110.2 813.8,110.1 886.0,110.1" fill="none" stroke="#94a3b8" stroke-width="1.4" opacity="0.55"/>
+<line x1="200.3" y1="72" x2="200.3" y2="418" stroke="#cbd5e1" stroke-dasharray="4 5"/>
+<polyline points="236.4,116.7 308.5,104.5 380.7,110.0 452.9,113.2 525.1,111.6 597.3,110.8 669.5,110.4 741.6,110.2 813.8,110.1 886.0,110.1" fill="none" stroke="#94a3b8" stroke-width="1.4" opacity="0.55"/>
 <circle cx="73.1" cy="394.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t0, epoch 0, sample 1, $0, LOW</title></circle>
 <circle cx="77.3" cy="394.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t0, epoch 0, sample 2, $0, LOW</title></circle>
 <circle cx="81.5" cy="394.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t0, epoch 0, sample 3, $0, LOW</title></circle>
@@ -155,7 +156,8 @@
 <circle cx="896.5" cy="110.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t11, epoch 10, sample 8, $12,480.47, LOW</title></circle>
 <circle cx="900.7" cy="110.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t11, epoch 10, sample 9, $12,480.47, LOW</title></circle>
 <circle cx="904.9" cy="110.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t11, epoch 10, sample 10, $12,480.47, LOW</title></circle>
-<text x="489.0" y="462" text-anchor="middle" font-size="10" fill="#64748b">100k contract</text>
+<text x="128.1" y="462" text-anchor="middle" font-size="10" fill="#64748b">100k contract / boundary probes</text>
+<text x="561.2" y="462" text-anchor="middle" font-size="10" fill="#64748b">100k contract / binary search</text>
 <text x="489" y="484" text-anchor="middle" font-size="12" fill="#334155">Chronological scenario/epoch trace</text>
 <text transform="translate(26 245) rotate(-90)" text-anchor="middle" font-size="12" fill="#334155">Refund amount, log scale</text>
 </svg>

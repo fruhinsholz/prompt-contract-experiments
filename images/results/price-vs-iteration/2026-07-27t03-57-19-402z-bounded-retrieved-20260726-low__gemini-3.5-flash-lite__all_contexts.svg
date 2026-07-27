@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="920" height="520" viewBox="0 0 920 520" role="img" aria-labelledby="title desc">
 <title id="title">2026-07-27T03-57-19-402Z-bounded-retrieved-20260726-low binary discovery trace</title>
-<desc id="desc">Chronological binary threshold discovery for gemini-3.5-flash-lite and all_contexts. Repeated epoch numbers from separate scenarios are laid out as consecutive trace columns. The y-axis is log-scaled refund amount. Green marks LOW, red marks NOT_LOW, and light gray marks invalid output.</desc>
+<desc id="desc">Chronological binary threshold discovery for gemini-3.5-flash-lite and all_contexts. Independent contexts and probe phases are separated visually; lines are drawn only across comparable binary-search points. The y-axis is log-scaled refund amount. Green marks LOW, red marks NOT_LOW, and light gray marks invalid output.</desc>
 <rect width="100%" height="100%" fill="#ffffff"/>
 <text x="92" y="28" font-size="19" font-weight="700" fill="#0f172a">gemini-3.5-flash-lite binary discovery</text>
 <text x="92" y="50" font-size="12" fill="#475569">Run: 2026-07-27T03-57-19-402Z-bounded-retrieved-20260726-low. Context: all_contexts. Y-axis is logarithmic dollars.</text>
@@ -35,9 +35,14 @@
 <line x1="772.6" y1="72" x2="772.6" y2="418" stroke="#f3f4f6"/><text x="772.6" y="440" text-anchor="middle" font-size="11" fill="#64748b">t30</text>
 <line x1="840.6" y1="72" x2="840.6" y2="418" stroke="#f3f4f6"/><text x="840.6" y="440" text-anchor="middle" font-size="11" fill="#64748b">t33</text>
 <line x1="886.0" y1="72" x2="886.0" y2="418" stroke="#f3f4f6"/><text x="886.0" y="440" text-anchor="middle" font-size="11" fill="#64748b">t35</text>
-<line x1="364.2" y1="72" x2="364.2" y2="418" stroke="#cbd5e1" stroke-dasharray="4 5"/>
-<line x1="636.5" y1="72" x2="636.5" y2="418" stroke="#cbd5e1" stroke-dasharray="4 5"/>
-<polyline points="92.0,394.1 114.7,95.9 137.4,116.7 160.1,137.6 182.7,158.5 205.4,179.4 228.1,200.2 250.8,221.1 273.5,208.9 296.2,214.4 318.9,217.6 341.5,219.3 364.2,394.1 386.9,95.9 409.6,116.7 432.3,137.6 455.0,158.5 477.7,179.4 500.3,200.2 523.0,221.1 545.7,242.0 568.4,262.9 591.1,283.8 613.8,271.5 636.5,394.1 659.1,95.9 681.8,116.7 704.5,104.5 727.2,110.0 749.9,113.2 772.6,111.6 795.3,110.8 817.9,110.4 840.6,110.2 863.3,110.1 886.0,110.1" fill="none" stroke="#94a3b8" stroke-width="1.4" opacity="0.55"/>
+<line x1="126.0" y1="72" x2="126.0" y2="418" stroke="#cbd5e1" stroke-dasharray="4 5"/>
+<line x1="352.9" y1="72" x2="352.9" y2="418" stroke="#cbd5e1" stroke-dasharray="4 5"/>
+<line x1="398.3" y1="72" x2="398.3" y2="418" stroke="#cbd5e1" stroke-dasharray="4 5"/>
+<line x1="625.1" y1="72" x2="625.1" y2="418" stroke="#cbd5e1" stroke-dasharray="4 5"/>
+<line x1="670.5" y1="72" x2="670.5" y2="418" stroke="#cbd5e1" stroke-dasharray="4 5"/>
+<polyline points="137.4,116.7 160.1,137.6 182.7,158.5 205.4,179.4 228.1,200.2 250.8,221.1 273.5,208.9 296.2,214.4 318.9,217.6 341.5,219.3" fill="none" stroke="#94a3b8" stroke-width="1.4" opacity="0.55"/>
+<polyline points="409.6,116.7 432.3,137.6 455.0,158.5 477.7,179.4 500.3,200.2 523.0,221.1 545.7,242.0 568.4,262.9 591.1,283.8 613.8,271.5" fill="none" stroke="#94a3b8" stroke-width="1.4" opacity="0.55"/>
+<polyline points="681.8,116.7 704.5,104.5 727.2,110.0 749.9,113.2 772.6,111.6 795.3,110.8 817.9,110.4 840.6,110.2 863.3,110.1 886.0,110.1" fill="none" stroke="#94a3b8" stroke-width="1.4" opacity="0.55"/>
 <circle cx="73.1" cy="394.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, all_contexts, t0, epoch 0, sample 1, $0, LOW</title></circle>
 <circle cx="77.3" cy="394.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, all_contexts, t0, epoch 0, sample 2, $0, LOW</title></circle>
 <circle cx="81.5" cy="394.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, all_contexts, t0, epoch 0, sample 3, $0, LOW</title></circle>
@@ -398,9 +403,12 @@
 <circle cx="896.5" cy="110.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, all_contexts, t35, epoch 10, sample 8, $12,480.47, LOW</title></circle>
 <circle cx="900.7" cy="110.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, all_contexts, t35, epoch 10, sample 9, $12,480.47, LOW</title></circle>
 <circle cx="904.9" cy="110.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, all_contexts, t35, epoch 10, sample 10, $12,480.47, LOW</title></circle>
-<text x="216.8" y="462" text-anchor="middle" font-size="10" fill="#64748b">fact only</text>
-<text x="489.0" y="462" text-anchor="middle" font-size="10" fill="#64748b">5 gift card</text>
-<text x="761.2" y="462" text-anchor="middle" font-size="10" fill="#64748b">100k contract</text>
+<text x="103.3" y="462" text-anchor="middle" font-size="10" fill="#64748b">fact only / boundary probes</text>
+<text x="239.5" y="462" text-anchor="middle" font-size="10" fill="#64748b">fact only / binary search</text>
+<text x="375.6" y="462" text-anchor="middle" font-size="10" fill="#64748b">5 gift card / boundary probes</text>
+<text x="511.7" y="462" text-anchor="middle" font-size="10" fill="#64748b">5 gift card / binary search</text>
+<text x="647.8" y="462" text-anchor="middle" font-size="10" fill="#64748b">100k contract / boundary probes</text>
+<text x="783.9" y="462" text-anchor="middle" font-size="10" fill="#64748b">100k contract / binary search</text>
 <text x="489" y="484" text-anchor="middle" font-size="12" fill="#334155">Chronological scenario/epoch trace</text>
 <text transform="translate(26 245) rotate(-90)" text-anchor="middle" font-size="12" fill="#334155">Refund amount, log scale</text>
 </svg>

@@ -1,6 +1,6 @@
 # Binary Discovery Traces
 
-Each SVG is generated from raw LOW test-bed JSONL. X is chronological trace position, Y is refund amount on a log scale. Repeated epoch numbers from separate scenarios are laid out as consecutive columns instead of being stacked at the same t0-t9 positions.
+Each SVG is generated from raw LOW test-bed JSONL. X is chronological trace position, Y is refund amount on a log scale. Independent contexts and probe phases are separated visually. Lines are drawn only across comparable binary-search midpoint probes, never between unrelated boundary checks or different contexts.
 
 - [2026-07-27T03-57-19-402Z-bounded-retrieved-20260726-low / gemini-3.5-flash-lite / all_contexts](../images/results/price-vs-iteration/2026-07-27t03-57-19-402z-bounded-retrieved-20260726-low__gemini-3.5-flash-lite__all_contexts.svg)
 - [2026-07-27T03-57-19-402Z-bounded-retrieved-20260726-low / gemini-3.5-flash-lite / fact_only](../images/results/price-vs-iteration/2026-07-27t03-57-19-402z-bounded-retrieved-20260726-low__gemini-3.5-flash-lite__fact_only.svg)

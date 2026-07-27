@@ -96,17 +96,17 @@ function buildSvg(group) {
 
   const yTicks = logTicks(minAmount, maxAmount);
   const xTickGroups = xGroups.length <= 14 ? xGroups : xGroups.filter((_, index) => index === 0 || index === xGroups.length - 1 || index % Math.ceil(xGroups.length / 12) === 0);
-  const contextBands = buildContextBands(xGroups);
+  const experimentBands = buildExperimentBands(xGroups);
 
   const grid = [
     ...yTicks.map((tick) => `<line x1="${left}" y1="${y(tick).toFixed(1)}" x2="${width - right}" y2="${y(tick).toFixed(1)}" stroke="#e5e7eb"/><text x="${left - 10}" y="${y(tick) + 4}" text-anchor="end" font-size="11" fill="#475569">${escapeXml(money(tick))}</text>`),
     ...xTickGroups.map((group) => `<line x1="${x(group.xIndex).toFixed(1)}" y1="${top}" x2="${x(group.xIndex).toFixed(1)}" y2="${height - bottom}" stroke="#f3f4f6"/><text x="${x(group.xIndex).toFixed(1)}" y="${height - bottom + 22}" text-anchor="middle" font-size="11" fill="#64748b">${escapeXml(group.label)}</text>`),
-    ...contextBands.slice(1).map((band) => `<line x1="${x(band.start).toFixed(1)}" y1="${top}" x2="${x(band.start).toFixed(1)}" y2="${height - bottom}" stroke="#cbd5e1" stroke-dasharray="4 5"/>`),
+    ...experimentBands.slice(1).map((band) => `<line x1="${x(band.start - 0.5).toFixed(1)}" y1="${top}" x2="${x(band.start - 0.5).toFixed(1)}" y2="${height - bottom}" stroke="#cbd5e1" stroke-dasharray="4 5"/>`),
   ].join("\n");
 
-  const bandLabels = contextBands.map((band) => {
+  const bandLabels = experimentBands.map((band) => {
     const center = (band.start + band.end) / 2;
-    return `<text x="${x(center).toFixed(1)}" y="${height - bottom + 44}" text-anchor="middle" font-size="10" fill="#64748b">${escapeXml(shortContextLabel(band.contextId))}</text>`;
+    return `<text x="${x(center).toFixed(1)}" y="${height - bottom + 44}" text-anchor="middle" font-size="10" fill="#64748b">${escapeXml(experimentLabel(band))}</text>`;
   }).join("\n");
 
   const spark = [];
@@ -121,10 +121,15 @@ function buildSvg(group) {
     }
   }
 
-  const linePoints = xGroups.map((xGroup) => {
-    const amount = xGroup.rows[0]?.amount ?? 1;
-    return `${x(xGroup.xIndex).toFixed(1)},${y(amount).toFixed(1)}`;
-  }).join(" ");
+  const traceLines = buildTraceLineSegments(xGroups)
+    .map((segment) => {
+      const points = segment.map((xGroup) => {
+        const amount = xGroup.rows[0]?.amount ?? 1;
+        return `${x(xGroup.xIndex).toFixed(1)},${y(amount).toFixed(1)}`;
+      }).join(" ");
+      return `<polyline points="${points}" fill="none" stroke="#94a3b8" stroke-width="1.4" opacity="0.55"/>`;
+    })
+    .join("\n");
 
   const labelLegend = [
     ["LOW", LABEL_COLORS.LOW],
@@ -138,14 +143,14 @@ function buildSvg(group) {
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="title desc">
 <title id="title">${escapeXml(group.runName)} binary discovery trace</title>
-<desc id="desc">Chronological binary threshold discovery for ${escapeXml(group.model)} and ${escapeXml(group.contextId)}. Repeated epoch numbers from separate scenarios are laid out as consecutive trace columns. The y-axis is log-scaled refund amount. Green marks LOW, red marks NOT_LOW, and light gray marks invalid output.</desc>
+<desc id="desc">Chronological binary threshold discovery for ${escapeXml(group.model)} and ${escapeXml(group.contextId)}. Independent contexts and probe phases are separated visually; lines are drawn only across comparable binary-search points. The y-axis is log-scaled refund amount. Green marks LOW, red marks NOT_LOW, and light gray marks invalid output.</desc>
 <rect width="100%" height="100%" fill="#ffffff"/>
 <text x="${left}" y="28" font-size="19" font-weight="700" fill="#0f172a">${escapeXml(group.model)} binary discovery</text>
 <text x="${left}" y="50" font-size="12" fill="#475569">Run: ${escapeXml(group.runName)}. Context: ${escapeXml(group.contextId)}. Y-axis is logarithmic dollars.</text>
 ${labelLegend}
 <rect x="${left}" y="${top}" width="${plotW}" height="${plotH}" fill="#ffffff"/>
 ${grid}
-<polyline points="${linePoints}" fill="none" stroke="#94a3b8" stroke-width="1.4" opacity="0.55"/>
+${traceLines}
 ${spark.join("\n")}
 ${bandLabels}
 <text x="${left + plotW / 2}" y="${height - 36}" text-anchor="middle" font-size="12" fill="#334155">Chronological scenario/epoch trace</text>
@@ -183,17 +188,48 @@ function buildXGroups(rows) {
   return groups;
 }
 
-function buildContextBands(groups) {
+function buildExperimentBands(groups) {
   const bands = [];
   for (const group of groups) {
     const previous = bands.at(-1);
-    if (previous?.contextId === group.contextId) {
+    const phase = experimentPhase(group);
+    if (previous?.contextId === group.contextId && previous?.phase === phase) {
       previous.end = group.xIndex;
     } else {
-      bands.push({ contextId: group.contextId, start: group.xIndex, end: group.xIndex });
+      bands.push({ contextId: group.contextId, phase, start: group.xIndex, end: group.xIndex });
     }
   }
   return bands;
+}
+
+function buildTraceLineSegments(groups) {
+  const segments = [];
+  let current = [];
+  for (const group of groups) {
+    const previous = current.at(-1);
+    const comparable = group.rows[0]?.candidateKind === "binary_midpoint"
+      && previous?.rows[0]?.candidateKind === "binary_midpoint"
+      && previous.contextId === group.contextId;
+    if (comparable) {
+      current.push(group);
+    } else {
+      if (current.length > 1) segments.push(current);
+      current = group.rows[0]?.candidateKind === "binary_midpoint" ? [group] : [];
+    }
+  }
+  if (current.length > 1) segments.push(current);
+  return segments;
+}
+
+function experimentPhase(group) {
+  const kind = group.rows[0]?.candidateKind ?? "unknown";
+  if (kind === "boundary_low" || kind === "boundary_high") return "boundary probes";
+  if (kind === "binary_midpoint") return "binary search";
+  return kind.replaceAll("_", " ");
+}
+
+function experimentLabel(band) {
+  return shortContextLabel(band.contextId) + " / " + band.phase;
 }
 
 function shortContextLabel(contextId) {
@@ -235,7 +271,7 @@ async function main() {
   }
 
   const lines = ["# Binary Discovery Traces", ""];
-  lines.push("Each SVG is generated from raw LOW test-bed JSONL. X is chronological trace position, Y is refund amount on a log scale. Repeated epoch numbers from separate scenarios are laid out as consecutive columns instead of being stacked at the same t0-t9 positions.");
+  lines.push("Each SVG is generated from raw LOW test-bed JSONL. X is chronological trace position, Y is refund amount on a log scale. Independent contexts and probe phases are separated visually. Lines are drawn only across comparable binary-search midpoint probes, never between unrelated boundary checks or different contexts.");
   lines.push("");
   for (const item of written.sort((a, b) => a.fileName.localeCompare(b.fileName))) {
     lines.push(`- [${item.runName} / ${item.model} / ${item.contextId}](../images/results/price-vs-iteration/${item.fileName})`);
