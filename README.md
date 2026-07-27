@@ -25,14 +25,14 @@ OpenAI:
 
 ```bash
 export OPENAI_API_KEY="..."
-npm run thresholds:low -- --models gpt-4.1-mini,gpt-4.1 --samples 10 --epochs 10 --max-calls 1000 --gzip-jsonl
+npm run thresholds:low -- --models gpt-4.1-mini,gpt-4.1 --samples 10 --epochs 10 --max 20000 --max-calls 1000 --gzip-jsonl
 ```
 
 Gemini:
 
 ```bash
 export GEMINI_API_KEY="..."
-npm run thresholds:low -- --provider gemini --models gemini-3.5-flash-lite,gemini-3.6-flash --contexts all --samples 10 --epochs 10 --max-output-tokens 256 --reasoning-effort none --max-calls 2000 --gzip-jsonl
+npm run thresholds:low -- --provider gemini --models gemini-3.5-flash-lite,gemini-3.6-flash --contexts all --samples 10 --epochs 10 --max 20000 --max-output-tokens 256 --reasoning-effort none --max-calls 2000 --gzip-jsonl
 ```
 
 Claude CLI on Bee:
@@ -61,6 +61,8 @@ Regenerate figures after adding or changing tracked results:
 ```bash
 npm run results:graphs
 ```
+
+New LOW runs use bounded binary band search by default, so the useful interpretation is interval contraction, not a complete list of scanned prices.
 
 Recommended article citation: link to this repository or to [docs/price-vs-iteration.md](docs/price-vs-iteration.md). Do not duplicate the graph set in the article unless a specific figure becomes necessary for the argument.
 

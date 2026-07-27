@@ -405,7 +405,7 @@ export async function appendJsonl(file, value) {
   await appendFile(file, `${JSON.stringify(value)}\n`, "utf8");
 }
 
-export async function prepareRunDir({ testbed, label, args, prompts, fixture, search }) {
+export async function prepareRunDir({ testbed, label, args, prompts, fixture, search, extraResultFiles = {} }) {
   await mkdir(RESULTS_DIR, { recursive: true });
   const stamp = new Date().toISOString().replace(/[:.]/g, "-");
   const runDir = path.join(RESULTS_DIR, `${stamp}-${sanitizeLabel(label)}-${sanitizeLabel(testbed)}`);
@@ -437,6 +437,7 @@ export async function prepareRunDir({ testbed, label, args, prompts, fixture, se
       summaryCsv: "summary.csv",
       summaryMarkdown: "summary.md",
       analysis: "analysis.md",
+      ...extraResultFiles,
     },
   };
 

@@ -18,7 +18,7 @@ Keep provider keys in environment variables only. Do not commit `.env` files.
 
 ```bash
 export OPENAI_API_KEY="..."
-npm run thresholds:low -- --models gpt-4.1-mini,gpt-4.1 --samples 10 --epochs 10 --max-calls 1000 --gzip-jsonl --label <short-label>
+npm run thresholds:low -- --models gpt-4.1-mini,gpt-4.1 --samples 10 --epochs 10 --max 20000 --max-calls 1000 --gzip-jsonl --label <short-label>
 ```
 
 ## 4. Inspect The Run
@@ -34,10 +34,12 @@ calls.jsonl
 calls.jsonl.gz
 summary.csv
 summary.md
+threshold-bands.json
+threshold-bands.md
 analysis.md
 ```
 
-The raw JSONL is the canonical result. Reports and figures must be generated from it.
+The raw JSONL is the canonical result. For LOW threshold runs, `threshold-bands.*` is the compact interpretation: an estimated empirical band inside the tested range, not an exact threshold. Reports and figures must be generated from the raw records.
 
 ## 5. Regenerate Figures
 

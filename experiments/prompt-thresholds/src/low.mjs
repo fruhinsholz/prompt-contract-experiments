@@ -38,16 +38,16 @@ const CONTEXTS = {
 
 function extraOptions() {
   return `  --min <n>                   Lower dollar bound for binary search. Defaults to 0.
-  --max <n>                   Upper dollar bound for binary search. Defaults to 10000.
-  --scan <a,b,c>              Initial dollar scan points.
-  --converge-width <n>        Stop binary search when the band is this narrow. Defaults to 1.
+  --max <n>                   Upper dollar bound for binary search. Defaults to 20000.
+  --scan <a,b,c>              Legacy fixed scan points. If supplied, scan first, then refine.
+  --converge-width <n>        Stop binary search when the band is this narrow. Defaults to 25.
   --contexts <list|all>       Context variants. Defaults to fact_only.
   --explicit-threshold <n>    State LOW iff amount is at or below this dollar value.
 `;
 }
 
 function parseArgs(argv) {
-  return parseCommonArgs(argv, { min: 0, max: 10000, scan: null, convergeWidth: 1, contexts: "fact_only", explicitThreshold: null, label: "low" }, (args, raw, i) => {
+  return parseCommonArgs(argv, { min: 0, max: 20000, scan: null, convergeWidth: 25, contexts: "fact_only", explicitThreshold: null, label: "low" }, (args, raw, i) => {
     switch (raw[i]) {
       case "--min": args.min = Number.parseFloat(raw[i + 1]); return i + 1;
       case "--max": args.max = Number.parseFloat(raw[i + 1]); return i + 1;
@@ -210,6 +210,17 @@ function majority(rows) {
   return count(rows, "NOT_LOW") > count(rows, "LOW") ? "NOT_LOW" : "LOW";
 }
 
+function summarizeBand(rows, lowAmount, highAmount) {
+  return {
+    low: lowAmount,
+    high: highAmount,
+    width: Number((highAmount - lowAmount).toFixed(2)),
+    samplesPerState: rows.length ? Math.max(...rows.map((row) => row.sampleIndex + 1)) : 0,
+    lowLabel: majority(rows.filter((row) => row.amount === lowAmount)),
+    highLabel: majority(rows.filter((row) => row.amount === highAmount)),
+  };
+}
+
 function findInitialBand(byAmount) {
   const points = [...byAmount.keys()].sort((a, b) => a - b);
   for (let i = 1; i < points.length; i += 1) {
@@ -220,6 +231,61 @@ function findInitialBand(byAmount) {
   const firstNotLow = points.find((point) => majority(byAmount.get(point)) === "NOT_LOW");
   if (firstNotLow !== undefined) return { low: points[0], high: firstNotLow };
   return { low: points.at(-2) ?? points[0], high: points.at(-1) ?? points[0] };
+}
+
+async function runLegacyScanSearch(ctx) {
+  const rows = [];
+  const byAmount = new Map();
+  for (const amount of ctx.fixture.scanPoints) {
+    const sampled = await sampleCandidate(ctx, { amount, epoch: 0, candidateKind: "initial_scan" });
+    byAmount.set(amount, sampled);
+    rows.push(...sampled);
+  }
+
+  let band = findInitialBand(byAmount);
+  for (let epoch = 1; epoch <= ctx.args.epochs && band.high - band.low > ctx.args.convergeWidth; epoch += 1) {
+    const amount = Number(((band.low + band.high) / 2).toFixed(2));
+    const sampled = await sampleCandidate(ctx, { amount, epoch, candidateKind: "binary_midpoint" });
+    rows.push(...sampled);
+    if (majority(sampled) === "NOT_LOW") band = { ...band, high: amount };
+    else band = { ...band, low: amount };
+  }
+  return { rows, band: summarizeBand(rows, band.low, band.high) };
+}
+
+async function runAdaptiveBandSearch(ctx) {
+  const rows = [];
+  const sampledByAmount = new Map();
+  const sample = async (amount, epoch, candidateKind) => {
+    const key = Number(amount.toFixed(2));
+    if (sampledByAmount.has(key)) return sampledByAmount.get(key);
+    const sampled = await sampleCandidate(ctx, { amount: key, epoch, candidateKind });
+    sampledByAmount.set(key, sampled);
+    rows.push(...sampled);
+    return sampled;
+  };
+
+  const minRows = await sample(ctx.args.min, 0, "boundary_low");
+  const maxRows = await sample(ctx.args.max, 0, "boundary_high");
+  const minLabel = majority(minRows);
+  const maxLabel = majority(maxRows);
+  if (minLabel === maxLabel) {
+    return { rows, band: { low: ctx.args.min, high: ctx.args.max, width: ctx.args.max - ctx.args.min, samplesPerState: ctx.args.samples, lowLabel: minLabel, highLabel: maxLabel, unbracketed: true } };
+  }
+
+  let band = minLabel === "LOW"
+    ? { low: ctx.args.min, high: ctx.args.max }
+    : { low: ctx.args.max, high: ctx.args.min };
+
+  for (let epoch = 1; epoch <= ctx.args.epochs && Math.abs(band.high - band.low) > ctx.args.convergeWidth; epoch += 1) {
+    const amount = Number(((band.low + band.high) / 2).toFixed(2));
+    const sampled = await sample(amount, epoch, "binary_midpoint");
+    if (majority(sampled) === "NOT_LOW") band = { ...band, high: amount };
+    else band = { ...band, low: amount };
+  }
+  const low = Math.min(band.low, band.high);
+  const high = Math.max(band.low, band.high);
+  return { rows, band: summarizeBand(rows, low, high) };
 }
 
 function renderCsv(groups) {
@@ -238,6 +304,15 @@ function renderMarkdown(groups, metadata) {
     const expected = g.expectedLabel ?? "";
     const mismatches = g.mismatches ?? 0;
     lines.push(`| \`${g.model}\` | \`${g.modelVersions.join(", ") || g.model}\` | \`${g.contextId}\` | ${g.amount} | ${expected} | ${g.total} | ${g.counts.LOW} (${pct(g.counts.LOW, g.total)}) | ${g.counts.NOT_LOW} (${pct(g.counts.NOT_LOW, g.total)}) | ${g.counts.INVALID} | ${mismatches} | ${g.outputTruncations} |`);
+  }
+  return `${lines.join("\n")}\n`;
+}
+
+function renderBandsMarkdown(bands, metadata) {
+  const lines = ["# Low Threshold Bands", "", `Created: ${metadata.createdAt}`, `Commit: ${metadata.commitHash}`, "", "| Model | Context | Lower observed bound | Upper observed bound | Width | Lower label | Upper label | Notes |", "| --- | --- | ---: | ---: | ---: | --- | --- | --- |"];
+  for (const item of bands.sort((a, b) => `${a.model}:${a.contextId}`.localeCompare(`${b.model}:${b.contextId}`, undefined, { numeric: true }))) {
+    const note = item.unbracketed ? "No LOW/NOT_LOW bracket inside the tested range." : "Estimated band, not an exact threshold.";
+    lines.push(`| \`${item.model}\` | \`${item.contextId}\` | ${item.low} | ${item.high} | ${item.width} | ${item.lowLabel} | ${item.highLabel} | ${note} |`);
   }
   return `${lines.join("\n")}\n`;
 }
@@ -274,43 +349,36 @@ async function main() {
   if (args.max <= args.min) throw new Error("--max must be greater than --min.");
   if (args.explicitThreshold !== null && !Number.isFinite(args.explicitThreshold)) throw new Error("--explicit-threshold must be a finite number.");
 
-  const fixture = { contexts: Object.fromEntries(contextIds(args).map((id) => [id, CONTEXTS[id]])), scanPoints: scanPoints(args), min: args.min, max: args.max, explicitThreshold: args.explicitThreshold };
+  const fixture = { contexts: Object.fromEntries(contextIds(args).map((id) => [id, CONTEXTS[id]])), scanPoints: args.scan ? scanPoints(args) : null, min: args.min, max: args.max, explicitThreshold: args.explicitThreshold, searchMethod: args.scan ? "fixed_scan_then_binary_refinement" : "bounded_binary_band_search" };
   const { runDir, metadata } = await prepareRunDir({
     testbed: "low",
     label: args.label,
     args,
     prompts: ["system-prompt.txt", "user-template.txt"],
     fixture,
-    search: { range: { min: args.min, max: args.max, initialScan: fixture.scanPoints }, convergenceRule: `binary search stops after ${args.epochs} epochs or when high-low <= ${args.convergeWidth}` },
+    search: { range: { min: args.min, max: args.max, initialScan: fixture.scanPoints }, convergenceRule: `${fixture.searchMethod} stops after ${args.epochs} epochs or when high-low <= ${args.convergeWidth}` },
+    extraResultFiles: { thresholdBandsJson: "threshold-bands.json", thresholdBandsMarkdown: "threshold-bands.md" },
   });
   await writePromptFiles(runDir, { "system-prompt.txt": SYSTEM_PROMPT, "user-template.txt": userPrompt("X", "fact_only", args) });
 
   const allRows = [];
+  const bandSummaries = [];
   let callCount = 0;
   for (const model of modelsFromArgs(args)) {
     for (const contextId of contextIds(args)) {
-      const byAmount = new Map();
-      for (const amount of fixture.scanPoints) {
-        const rows = await sampleCandidate({ args, runDir, model, contextId, callCount }, { amount, epoch: 0, candidateKind: "initial_scan" });
-        callCount += rows.length;
-        byAmount.set(amount, rows);
-        allRows.push(...rows);
-      }
-      let band = findInitialBand(byAmount);
-      for (let epoch = 1; epoch <= args.epochs && band.high - band.low > args.convergeWidth; epoch += 1) {
-        const amount = Number(((band.low + band.high) / 2).toFixed(2));
-        const rows = await sampleCandidate({ args, runDir, model, contextId, callCount }, { amount, epoch, candidateKind: "binary_midpoint" });
-        callCount += rows.length;
-        allRows.push(...rows);
-        if (majority(rows) === "NOT_LOW") band = { ...band, high: amount };
-        else band = { ...band, low: amount };
-      }
+      const searchCtx = { args, runDir, model, contextId, callCount, fixture };
+      const result = args.scan ? await runLegacyScanSearch(searchCtx) : await runAdaptiveBandSearch(searchCtx);
+      callCount = searchCtx.callCount;
+      allRows.push(...result.rows);
+      bandSummaries.push({ model, contextId, searchMethod: fixture.searchMethod, ...result.band });
     }
   }
 
   const groups = addExpectedSummary(summarizeRows(allRows, ALLOWED, ["model", "contextId", "amount"]), allRows);
   await writeFile(path.join(runDir, "summary.csv"), renderCsv(groups), "utf8");
   await writeFile(path.join(runDir, "summary.md"), renderMarkdown(groups, metadata), "utf8");
+  await writeFile(path.join(runDir, "threshold-bands.json"), `${JSON.stringify(bandSummaries, null, 2)}\n`, "utf8");
+  await writeFile(path.join(runDir, "threshold-bands.md"), renderBandsMarkdown(bandSummaries, metadata), "utf8");
   await writeFile(path.join(runDir, "analysis.md"), renderAnalysis(), "utf8");
   if (args.gzipJsonl) await maybeWriteGzip(runDir);
   console.log(`Wrote ${path.relative(process.cwd(), runDir)}`);

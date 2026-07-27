@@ -78,13 +78,21 @@ Claude CLI records must be read with care: the requested model and the response 
 
 Primary fixture: fact-only refund amount classification. The prompt asks whether `$X` is `LOW` or `NOT_LOW` and gives no dollar threshold.
 
-Default initial scan:
+Default search method:
 
 ```text
-0, 10, 25, 50, 75, 100, 150, 200, 300, 500, 750, 1000, 1500, 2500, 5000, 10000
+bounded binary band search over $0..$20,000
 ```
 
-The program samples each initial point, finds the first majority flip from `LOW` to `NOT_LOW`, then runs binary midpoints until `--epochs` is exhausted or `--converge-width` is reached.
+The program samples each tested amount 10 times by default. It samples the lower and upper bounds first, then bisects the current empirical LOW/NOT_LOW band until `--epochs` is exhausted or `--converge-width` is reached. The output is an approximate band, not an exact threshold. Each run writes `threshold-bands.json` and `threshold-bands.md` next to the raw JSONL and regular summaries.
+
+The `$20,000` upper bound is an artificial experiment ceiling. If a model still returns `LOW` at both ends, the run is marked unbracketed inside the tested range rather than treated as evidence of a known infinite threshold.
+
+Legacy fixed scan mode is still available when a specific coarse grid is needed:
+
+```bash
+npm run thresholds:low -- --models gpt-4.1-mini --scan 0,10,25,50,75,100,150,200,300,500,750,1000,1500,2500,5000,10000
+```
 
 Optional claimant-fact context perturbation:
 
