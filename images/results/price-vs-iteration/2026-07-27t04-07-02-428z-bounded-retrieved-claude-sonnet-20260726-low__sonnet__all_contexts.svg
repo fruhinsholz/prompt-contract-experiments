@@ -4,96 +4,97 @@
 <rect width="100%" height="100%" fill="#ffffff"/>
 <text x="92" y="28" font-size="19" font-weight="700" fill="#0f172a">sonnet binary discovery</text>
 <text x="92" y="50" font-size="12" fill="#475569">Run: 2026-07-27T04-07-02-428Z-bounded-retrieved-claude-sonnet-20260726-low. Context: all_contexts. Y-axis is logarithmic dollars.</text>
-<circle cx="666" cy="42" r="5" fill="#0f766e"/><text x="676" y="46" font-size="12" fill="#334155">LOW</text>
-<circle cx="744" cy="42" r="5" fill="#be123c"/><text x="754" y="46" font-size="12" fill="#334155">NOT_LOW</text>
-<circle cx="822" cy="42" r="5" fill="#e5e7eb"/><text x="832" y="46" font-size="12" fill="#334155">failed</text>
-<rect x="92" y="72" width="794" height="346" fill="#ffffff"/>
-<line x1="92" y1="394.1" x2="886" y2="394.1" stroke="#e5e7eb"/><text x="82" y="398.13793103448273" text-anchor="end" font-size="11" fill="#475569">$1</text>
-<line x1="92" y1="373.3" x2="886" y2="373.3" stroke="#e5e7eb"/><text x="82" y="377.2615405987473" text-anchor="end" font-size="11" fill="#475569">$2</text>
-<line x1="92" y1="345.7" x2="886" y2="345.7" stroke="#e5e7eb"/><text x="82" y="349.66445356191076" text-anchor="end" font-size="11" fill="#475569">$5</text>
-<line x1="92" y1="324.8" x2="886" y2="324.8" stroke="#e5e7eb"/><text x="82" y="328.7880631261753" text-anchor="end" font-size="11" fill="#475569">$10</text>
-<line x1="92" y1="303.9" x2="886" y2="303.9" stroke="#e5e7eb"/><text x="82" y="307.9116726904398" text-anchor="end" font-size="11" fill="#475569">$20</text>
-<line x1="92" y1="276.3" x2="886" y2="276.3" stroke="#e5e7eb"/><text x="82" y="280.3145856536032" text-anchor="end" font-size="11" fill="#475569">$50</text>
-<line x1="92" y1="255.4" x2="886" y2="255.4" stroke="#e5e7eb"/><text x="82" y="259.4381952178677" text-anchor="end" font-size="11" fill="#475569">$100</text>
-<line x1="92" y1="234.6" x2="886" y2="234.6" stroke="#e5e7eb"/><text x="82" y="238.56180478213227" text-anchor="end" font-size="11" fill="#475569">$200</text>
-<line x1="92" y1="207.0" x2="886" y2="207.0" stroke="#e5e7eb"/><text x="82" y="210.96471774529573" text-anchor="end" font-size="11" fill="#475569">$500</text>
-<line x1="92" y1="186.1" x2="886" y2="186.1" stroke="#e5e7eb"/><text x="82" y="190.0883273095602" text-anchor="end" font-size="11" fill="#475569">$1,000</text>
-<line x1="92" y1="165.2" x2="886" y2="165.2" stroke="#e5e7eb"/><text x="82" y="169.21193687382475" text-anchor="end" font-size="11" fill="#475569">$2,000</text>
-<line x1="92" y1="137.6" x2="886" y2="137.6" stroke="#e5e7eb"/><text x="82" y="141.61484983698818" text-anchor="end" font-size="11" fill="#475569">$5,000</text>
-<line x1="92" y1="116.7" x2="886" y2="116.7" stroke="#e5e7eb"/><text x="82" y="120.73845940125267" text-anchor="end" font-size="11" fill="#475569">$10,000</text>
-<line x1="92" y1="95.9" x2="886" y2="95.9" stroke="#e5e7eb"/><text x="82" y="99.86206896551721" text-anchor="end" font-size="11" fill="#475569">$20,000</text>
-<line x1="92.0" y1="72" x2="92.0" y2="418" stroke="#f3f4f6"/><text x="92.0" y="440" text-anchor="middle" font-size="11" fill="#64748b">t0</text>
-<line x1="250.8" y1="72" x2="250.8" y2="418" stroke="#f3f4f6"/><text x="250.8" y="440" text-anchor="middle" font-size="11" fill="#64748b">t1</text>
-<line x1="409.6" y1="72" x2="409.6" y2="418" stroke="#f3f4f6"/><text x="409.6" y="440" text-anchor="middle" font-size="11" fill="#64748b">t2</text>
-<line x1="568.4" y1="72" x2="568.4" y2="418" stroke="#f3f4f6"/><text x="568.4" y="440" text-anchor="middle" font-size="11" fill="#64748b">t3</text>
-<line x1="727.2" y1="72" x2="727.2" y2="418" stroke="#f3f4f6"/><text x="727.2" y="440" text-anchor="middle" font-size="11" fill="#64748b">t4</text>
-<line x1="886.0" y1="72" x2="886.0" y2="418" stroke="#f3f4f6"/><text x="886.0" y="440" text-anchor="middle" font-size="11" fill="#64748b">t5</text>
-<line x1="330.2" y1="72" x2="330.2" y2="418" stroke="#cbd5e1" stroke-dasharray="4 5"/>
-<line x1="647.8" y1="72" x2="647.8" y2="418" stroke="#cbd5e1" stroke-dasharray="4 5"/>
+<circle cx="604" cy="42" r="5" fill="#0f766e"/><text x="614" y="46" font-size="12" fill="#334155">LOW</text>
+<circle cx="682" cy="42" r="5" fill="#be123c"/><text x="692" y="46" font-size="12" fill="#334155">NOT_LOW</text>
+<circle cx="760" cy="42" r="5" fill="#e5e7eb"/><text x="770" y="46" font-size="12" fill="#334155">failed</text>
+<rect x="92" y="72" width="732" height="346" fill="#ffffff"/>
+<line x1="92" y1="394.1" x2="824" y2="394.1" stroke="#e5e7eb"/><text x="82" y="398.13793103448273" text-anchor="end" font-size="11" fill="#475569">$1</text>
+<line x1="92" y1="373.3" x2="824" y2="373.3" stroke="#e5e7eb"/><text x="82" y="377.2615405987473" text-anchor="end" font-size="11" fill="#475569">$2</text>
+<line x1="92" y1="345.7" x2="824" y2="345.7" stroke="#e5e7eb"/><text x="82" y="349.66445356191076" text-anchor="end" font-size="11" fill="#475569">$5</text>
+<line x1="92" y1="324.8" x2="824" y2="324.8" stroke="#e5e7eb"/><text x="82" y="328.7880631261753" text-anchor="end" font-size="11" fill="#475569">$10</text>
+<line x1="92" y1="303.9" x2="824" y2="303.9" stroke="#e5e7eb"/><text x="82" y="307.9116726904398" text-anchor="end" font-size="11" fill="#475569">$20</text>
+<line x1="92" y1="276.3" x2="824" y2="276.3" stroke="#e5e7eb"/><text x="82" y="280.3145856536032" text-anchor="end" font-size="11" fill="#475569">$50</text>
+<line x1="92" y1="255.4" x2="824" y2="255.4" stroke="#e5e7eb"/><text x="82" y="259.4381952178677" text-anchor="end" font-size="11" fill="#475569">$100</text>
+<line x1="92" y1="234.6" x2="824" y2="234.6" stroke="#e5e7eb"/><text x="82" y="238.56180478213227" text-anchor="end" font-size="11" fill="#475569">$200</text>
+<line x1="92" y1="207.0" x2="824" y2="207.0" stroke="#e5e7eb"/><text x="82" y="210.96471774529573" text-anchor="end" font-size="11" fill="#475569">$500</text>
+<line x1="92" y1="186.1" x2="824" y2="186.1" stroke="#e5e7eb"/><text x="82" y="190.0883273095602" text-anchor="end" font-size="11" fill="#475569">$1,000</text>
+<line x1="92" y1="165.2" x2="824" y2="165.2" stroke="#e5e7eb"/><text x="82" y="169.21193687382475" text-anchor="end" font-size="11" fill="#475569">$2,000</text>
+<line x1="92" y1="137.6" x2="824" y2="137.6" stroke="#e5e7eb"/><text x="82" y="141.61484983698818" text-anchor="end" font-size="11" fill="#475569">$5,000</text>
+<line x1="92" y1="116.7" x2="824" y2="116.7" stroke="#e5e7eb"/><text x="82" y="120.73845940125267" text-anchor="end" font-size="11" fill="#475569">$10,000</text>
+<line x1="92" y1="95.9" x2="824" y2="95.9" stroke="#e5e7eb"/><text x="82" y="99.86206896551721" text-anchor="end" font-size="11" fill="#475569">$20,000</text>
+<line x1="92.0" y1="72" x2="92.0" y2="418" stroke="#f3f4f6"/><text x="92.0" y="440" text-anchor="middle" font-size="11" fill="#64748b">b0</text>
+<line x1="238.4" y1="72" x2="238.4" y2="418" stroke="#f3f4f6"/><text x="238.4" y="440" text-anchor="middle" font-size="11" fill="#64748b">b1</text>
+<line x1="384.8" y1="72" x2="384.8" y2="418" stroke="#f3f4f6"/><text x="384.8" y="440" text-anchor="middle" font-size="11" fill="#64748b">b0</text>
+<line x1="531.2" y1="72" x2="531.2" y2="418" stroke="#f3f4f6"/><text x="531.2" y="440" text-anchor="middle" font-size="11" fill="#64748b">b1</text>
+<line x1="677.6" y1="72" x2="677.6" y2="418" stroke="#f3f4f6"/><text x="677.6" y="440" text-anchor="middle" font-size="11" fill="#64748b">b0</text>
+<line x1="824.0" y1="72" x2="824.0" y2="418" stroke="#f3f4f6"/><text x="824.0" y="440" text-anchor="middle" font-size="11" fill="#64748b">b1</text>
+<line x1="311.6" y1="72" x2="311.6" y2="418" stroke="#cbd5e1" stroke-dasharray="4 5"/>
+<line x1="604.4" y1="72" x2="604.4" y2="418" stroke="#cbd5e1" stroke-dasharray="4 5"/>
 
-<circle cx="73.1" cy="394.1" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t0, epoch 0, sample 1, $0, INVALID</title></circle>
-<circle cx="77.3" cy="394.1" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t0, epoch 0, sample 2, $0, INVALID</title></circle>
-<circle cx="81.5" cy="394.1" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t0, epoch 0, sample 3, $0, INVALID</title></circle>
-<circle cx="85.7" cy="394.1" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t0, epoch 0, sample 4, $0, INVALID</title></circle>
-<circle cx="89.9" cy="394.1" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t0, epoch 0, sample 5, $0, INVALID</title></circle>
-<circle cx="94.1" cy="394.1" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t0, epoch 0, sample 6, $0, INVALID</title></circle>
-<circle cx="98.3" cy="394.1" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t0, epoch 0, sample 7, $0, INVALID</title></circle>
-<circle cx="102.5" cy="394.1" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t0, epoch 0, sample 8, $0, INVALID</title></circle>
-<circle cx="106.7" cy="394.1" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t0, epoch 0, sample 9, $0, INVALID</title></circle>
-<circle cx="110.9" cy="394.1" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t0, epoch 0, sample 10, $0, INVALID</title></circle>
-<circle cx="231.9" cy="95.9" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t1, epoch 0, sample 1, $20,000, INVALID</title></circle>
-<circle cx="236.1" cy="95.9" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t1, epoch 0, sample 2, $20,000, INVALID</title></circle>
-<circle cx="240.3" cy="95.9" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t1, epoch 0, sample 3, $20,000, INVALID</title></circle>
-<circle cx="244.5" cy="95.9" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t1, epoch 0, sample 4, $20,000, INVALID</title></circle>
-<circle cx="248.7" cy="95.9" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t1, epoch 0, sample 5, $20,000, INVALID</title></circle>
-<circle cx="252.9" cy="95.9" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t1, epoch 0, sample 6, $20,000, INVALID</title></circle>
-<circle cx="257.1" cy="95.9" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t1, epoch 0, sample 7, $20,000, INVALID</title></circle>
-<circle cx="261.3" cy="95.9" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t1, epoch 0, sample 8, $20,000, INVALID</title></circle>
-<circle cx="265.5" cy="95.9" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t1, epoch 0, sample 9, $20,000, INVALID</title></circle>
-<circle cx="269.7" cy="95.9" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t1, epoch 0, sample 10, $20,000, INVALID</title></circle>
-<circle cx="390.7" cy="394.1" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t2, epoch 0, sample 1, $0, INVALID</title></circle>
-<circle cx="394.9" cy="394.1" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t2, epoch 0, sample 2, $0, INVALID</title></circle>
-<circle cx="399.1" cy="394.1" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t2, epoch 0, sample 3, $0, INVALID</title></circle>
-<circle cx="403.3" cy="394.1" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t2, epoch 0, sample 4, $0, INVALID</title></circle>
-<circle cx="407.5" cy="394.1" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t2, epoch 0, sample 5, $0, INVALID</title></circle>
-<circle cx="411.7" cy="394.1" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t2, epoch 0, sample 6, $0, INVALID</title></circle>
-<circle cx="415.9" cy="394.1" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t2, epoch 0, sample 7, $0, INVALID</title></circle>
-<circle cx="420.1" cy="394.1" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t2, epoch 0, sample 8, $0, INVALID</title></circle>
-<circle cx="424.3" cy="394.1" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t2, epoch 0, sample 9, $0, INVALID</title></circle>
-<circle cx="428.5" cy="394.1" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t2, epoch 0, sample 10, $0, INVALID</title></circle>
-<circle cx="549.5" cy="95.9" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t3, epoch 0, sample 1, $20,000, INVALID</title></circle>
-<circle cx="553.7" cy="95.9" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t3, epoch 0, sample 2, $20,000, INVALID</title></circle>
-<circle cx="557.9" cy="95.9" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t3, epoch 0, sample 3, $20,000, INVALID</title></circle>
-<circle cx="562.1" cy="95.9" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t3, epoch 0, sample 4, $20,000, INVALID</title></circle>
-<circle cx="566.3" cy="95.9" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t3, epoch 0, sample 5, $20,000, INVALID</title></circle>
-<circle cx="570.5" cy="95.9" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t3, epoch 0, sample 6, $20,000, INVALID</title></circle>
-<circle cx="574.7" cy="95.9" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t3, epoch 0, sample 7, $20,000, INVALID</title></circle>
-<circle cx="578.9" cy="95.9" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t3, epoch 0, sample 8, $20,000, INVALID</title></circle>
-<circle cx="583.1" cy="95.9" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t3, epoch 0, sample 9, $20,000, INVALID</title></circle>
-<circle cx="587.3" cy="95.9" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t3, epoch 0, sample 10, $20,000, INVALID</title></circle>
-<circle cx="708.3" cy="394.1" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t4, epoch 0, sample 1, $0, INVALID</title></circle>
-<circle cx="712.5" cy="394.1" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t4, epoch 0, sample 2, $0, INVALID</title></circle>
-<circle cx="716.7" cy="394.1" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t4, epoch 0, sample 3, $0, INVALID</title></circle>
-<circle cx="720.9" cy="394.1" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t4, epoch 0, sample 4, $0, INVALID</title></circle>
-<circle cx="725.1" cy="394.1" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t4, epoch 0, sample 5, $0, INVALID</title></circle>
-<circle cx="729.3" cy="394.1" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t4, epoch 0, sample 6, $0, INVALID</title></circle>
-<circle cx="733.5" cy="394.1" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t4, epoch 0, sample 7, $0, INVALID</title></circle>
-<circle cx="737.7" cy="394.1" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t4, epoch 0, sample 8, $0, INVALID</title></circle>
-<circle cx="741.9" cy="394.1" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t4, epoch 0, sample 9, $0, INVALID</title></circle>
-<circle cx="746.1" cy="394.1" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t4, epoch 0, sample 10, $0, INVALID</title></circle>
-<circle cx="867.1" cy="95.9" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t5, epoch 0, sample 1, $20,000, INVALID</title></circle>
-<circle cx="871.3" cy="95.9" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t5, epoch 0, sample 2, $20,000, INVALID</title></circle>
-<circle cx="875.5" cy="95.9" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t5, epoch 0, sample 3, $20,000, INVALID</title></circle>
-<circle cx="879.7" cy="95.9" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t5, epoch 0, sample 4, $20,000, INVALID</title></circle>
-<circle cx="883.9" cy="95.9" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t5, epoch 0, sample 5, $20,000, INVALID</title></circle>
-<circle cx="888.1" cy="95.9" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t5, epoch 0, sample 6, $20,000, INVALID</title></circle>
-<circle cx="892.3" cy="95.9" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t5, epoch 0, sample 7, $20,000, INVALID</title></circle>
-<circle cx="896.5" cy="95.9" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t5, epoch 0, sample 8, $20,000, INVALID</title></circle>
-<circle cx="900.7" cy="95.9" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t5, epoch 0, sample 9, $20,000, INVALID</title></circle>
-<circle cx="904.9" cy="95.9" r="3.5" fill="#e5e7eb" opacity="0.86"><title>sonnet, all_contexts, t5, epoch 0, sample 10, $20,000, INVALID</title></circle>
-<text x="171.4" y="462" text-anchor="middle" font-size="10" fill="#64748b">fact only / boundary probes</text>
-<text x="489.0" y="462" text-anchor="middle" font-size="10" fill="#64748b">5 gift card / boundary probes</text>
-<text x="806.6" y="462" text-anchor="middle" font-size="10" fill="#64748b">100k contract / boundary probes</text>
-<text x="489" y="484" text-anchor="middle" font-size="12" fill="#334155">Chronological scenario/epoch trace</text>
+<rect x="94.5" y="391.6" width="5.9" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 0, epoch 0, sample 1, $0, INVALID</title></rect>
+<rect x="101.4" y="391.6" width="5.9" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 0, epoch 0, sample 2, $0, INVALID</title></rect>
+<rect x="108.3" y="391.6" width="5.9" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 0, epoch 0, sample 3, $0, INVALID</title></rect>
+<rect x="115.3" y="391.6" width="5.9" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 0, epoch 0, sample 4, $0, INVALID</title></rect>
+<rect x="122.2" y="391.6" width="5.9" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 0, epoch 0, sample 5, $0, INVALID</title></rect>
+<rect x="129.1" y="391.6" width="5.9" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 0, epoch 0, sample 6, $0, INVALID</title></rect>
+<rect x="136.0" y="391.6" width="5.9" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 0, epoch 0, sample 7, $0, INVALID</title></rect>
+<rect x="142.9" y="391.6" width="5.9" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 0, epoch 0, sample 8, $0, INVALID</title></rect>
+<rect x="149.9" y="391.6" width="5.9" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 0, epoch 0, sample 9, $0, INVALID</title></rect>
+<rect x="156.8" y="391.6" width="5.9" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 0, epoch 0, sample 10, $0, INVALID</title></rect>
+<rect x="170.9" y="93.4" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 1, epoch 0, sample 1, $20,000, INVALID</title></rect>
+<rect x="185.2" y="93.4" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 1, epoch 0, sample 2, $20,000, INVALID</title></rect>
+<rect x="199.4" y="93.4" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 1, epoch 0, sample 3, $20,000, INVALID</title></rect>
+<rect x="213.6" y="93.4" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 1, epoch 0, sample 4, $20,000, INVALID</title></rect>
+<rect x="227.9" y="93.4" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 1, epoch 0, sample 5, $20,000, INVALID</title></rect>
+<rect x="242.1" y="93.4" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 1, epoch 0, sample 6, $20,000, INVALID</title></rect>
+<rect x="256.4" y="93.4" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 1, epoch 0, sample 7, $20,000, INVALID</title></rect>
+<rect x="270.6" y="93.4" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 1, epoch 0, sample 8, $20,000, INVALID</title></rect>
+<rect x="284.8" y="93.4" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 1, epoch 0, sample 9, $20,000, INVALID</title></rect>
+<rect x="299.1" y="93.4" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 1, epoch 0, sample 10, $20,000, INVALID</title></rect>
+<rect x="317.3" y="391.6" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 0, epoch 0, sample 1, $0, INVALID</title></rect>
+<rect x="331.6" y="391.6" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 0, epoch 0, sample 2, $0, INVALID</title></rect>
+<rect x="345.8" y="391.6" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 0, epoch 0, sample 3, $0, INVALID</title></rect>
+<rect x="360.0" y="391.6" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 0, epoch 0, sample 4, $0, INVALID</title></rect>
+<rect x="374.3" y="391.6" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 0, epoch 0, sample 5, $0, INVALID</title></rect>
+<rect x="388.5" y="391.6" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 0, epoch 0, sample 6, $0, INVALID</title></rect>
+<rect x="402.8" y="391.6" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 0, epoch 0, sample 7, $0, INVALID</title></rect>
+<rect x="417.0" y="391.6" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 0, epoch 0, sample 8, $0, INVALID</title></rect>
+<rect x="431.2" y="391.6" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 0, epoch 0, sample 9, $0, INVALID</title></rect>
+<rect x="445.5" y="391.6" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 0, epoch 0, sample 10, $0, INVALID</title></rect>
+<rect x="463.7" y="93.4" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 1, epoch 0, sample 1, $20,000, INVALID</title></rect>
+<rect x="478.0" y="93.4" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 1, epoch 0, sample 2, $20,000, INVALID</title></rect>
+<rect x="492.2" y="93.4" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 1, epoch 0, sample 3, $20,000, INVALID</title></rect>
+<rect x="506.4" y="93.4" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 1, epoch 0, sample 4, $20,000, INVALID</title></rect>
+<rect x="520.7" y="93.4" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 1, epoch 0, sample 5, $20,000, INVALID</title></rect>
+<rect x="534.9" y="93.4" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 1, epoch 0, sample 6, $20,000, INVALID</title></rect>
+<rect x="549.2" y="93.4" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 1, epoch 0, sample 7, $20,000, INVALID</title></rect>
+<rect x="563.4" y="93.4" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 1, epoch 0, sample 8, $20,000, INVALID</title></rect>
+<rect x="577.6" y="93.4" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 1, epoch 0, sample 9, $20,000, INVALID</title></rect>
+<rect x="591.9" y="93.4" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 1, epoch 0, sample 10, $20,000, INVALID</title></rect>
+<rect x="610.1" y="391.6" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 0, epoch 0, sample 1, $0, INVALID</title></rect>
+<rect x="624.4" y="391.6" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 0, epoch 0, sample 2, $0, INVALID</title></rect>
+<rect x="638.6" y="391.6" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 0, epoch 0, sample 3, $0, INVALID</title></rect>
+<rect x="652.8" y="391.6" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 0, epoch 0, sample 4, $0, INVALID</title></rect>
+<rect x="667.1" y="391.6" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 0, epoch 0, sample 5, $0, INVALID</title></rect>
+<rect x="681.3" y="391.6" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 0, epoch 0, sample 6, $0, INVALID</title></rect>
+<rect x="695.6" y="391.6" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 0, epoch 0, sample 7, $0, INVALID</title></rect>
+<rect x="709.8" y="391.6" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 0, epoch 0, sample 8, $0, INVALID</title></rect>
+<rect x="724.0" y="391.6" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 0, epoch 0, sample 9, $0, INVALID</title></rect>
+<rect x="738.3" y="391.6" width="6.8" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 0, epoch 0, sample 10, $0, INVALID</title></rect>
+<rect x="753.3" y="93.4" width="5.9" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 1, epoch 0, sample 1, $20,000, INVALID</title></rect>
+<rect x="760.2" y="93.4" width="5.9" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 1, epoch 0, sample 2, $20,000, INVALID</title></rect>
+<rect x="767.1" y="93.4" width="5.9" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 1, epoch 0, sample 3, $20,000, INVALID</title></rect>
+<rect x="774.1" y="93.4" width="5.9" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 1, epoch 0, sample 4, $20,000, INVALID</title></rect>
+<rect x="781.0" y="93.4" width="5.9" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 1, epoch 0, sample 5, $20,000, INVALID</title></rect>
+<rect x="787.9" y="93.4" width="5.9" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 1, epoch 0, sample 6, $20,000, INVALID</title></rect>
+<rect x="794.8" y="93.4" width="5.9" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 1, epoch 0, sample 7, $20,000, INVALID</title></rect>
+<rect x="801.7" y="93.4" width="5.9" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 1, epoch 0, sample 8, $20,000, INVALID</title></rect>
+<rect x="808.7" y="93.4" width="5.9" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 1, epoch 0, sample 9, $20,000, INVALID</title></rect>
+<rect x="815.6" y="93.4" width="5.9" height="5" rx="1" fill="#e5e7eb" opacity="0.88"><title>sonnet, all_contexts, bucket 1, epoch 0, sample 10, $20,000, INVALID</title></rect>
+
+<text x="165.2" y="462" text-anchor="middle" font-size="10" fill="#64748b">fact only / boundary probes</text>
+<text x="458.0" y="462" text-anchor="middle" font-size="10" fill="#64748b">5 gift card / boundary probes</text>
+<text x="750.8" y="462" text-anchor="middle" font-size="10" fill="#64748b">100k contract / boundary probes</text>
+<text x="458" y="484" text-anchor="middle" font-size="12" fill="#334155">Samples within each 10-run bucket, reset at each experiment segment</text>
 <text transform="translate(26 245) rotate(-90)" text-anchor="middle" font-size="12" fill="#334155">Refund amount, log scale</text>
 </svg>

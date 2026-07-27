@@ -86,7 +86,7 @@ function buildSvg(group) {
   const width = 920;
   const height = 520;
   const left = 92;
-  const right = 34;
+  const right = 96;
   const top = 72;
   const bottom = 102;
   const plotW = width - left - right;
@@ -95,12 +95,16 @@ function buildSvg(group) {
   const y = (amount) => top + (1 - ((Math.log10(Math.max(1, amount)) - logMin + pad) / (logMax - logMin + pad * 2))) * plotH;
 
   const yTicks = logTicks(minAmount, maxAmount);
-  const xTickGroups = xGroups.length <= 14 ? xGroups : xGroups.filter((_, index) => index === 0 || index === xGroups.length - 1 || index % Math.ceil(xGroups.length / 12) === 0);
   const experimentBands = buildExperimentBands(xGroups);
+  for (const band of experimentBands) {
+    for (let index = band.start; index <= band.end; index += 1) {
+      xGroups[index].label = `bucket ${index - band.start}`;
+    }
+  }
 
   const grid = [
     ...yTicks.map((tick) => `<line x1="${left}" y1="${y(tick).toFixed(1)}" x2="${width - right}" y2="${y(tick).toFixed(1)}" stroke="#e5e7eb"/><text x="${left - 10}" y="${y(tick) + 4}" text-anchor="end" font-size="11" fill="#475569">${escapeXml(money(tick))}</text>`),
-    ...xTickGroups.map((group) => `<line x1="${x(group.xIndex).toFixed(1)}" y1="${top}" x2="${x(group.xIndex).toFixed(1)}" y2="${height - bottom}" stroke="#f3f4f6"/><text x="${x(group.xIndex).toFixed(1)}" y="${height - bottom + 22}" text-anchor="middle" font-size="11" fill="#64748b">${escapeXml(group.label)}</text>`),
+    ...experimentBands.flatMap((band) => experimentTicks(band).map((tick) => `<line x1="${x(tick.xIndex).toFixed(1)}" y1="${top}" x2="${x(tick.xIndex).toFixed(1)}" y2="${height - bottom}" stroke="#f3f4f6"/><text x="${x(tick.xIndex).toFixed(1)}" y="${height - bottom + 22}" text-anchor="middle" font-size="11" fill="#64748b">${escapeXml(tick.label)}</text>`)),
     ...experimentBands.slice(1).map((band) => `<line x1="${x(band.start - 0.5).toFixed(1)}" y1="${top}" x2="${x(band.start - 0.5).toFixed(1)}" y2="${height - bottom}" stroke="#cbd5e1" stroke-dasharray="4 5"/>`),
   ].join("\n");
 
@@ -110,14 +114,23 @@ function buildSvg(group) {
   }).join("\n");
 
   const spark = [];
-  for (const xGroup of xGroups) {
+  for (const [groupIndex, xGroup] of xGroups.entries()) {
     const sorted = xGroup.rows.slice().sort((a, b) => a.sampleIndex - b.sampleIndex || a.amount - b.amount || String(a.createdAt).localeCompare(String(b.createdAt)));
-    const center = (sorted.length - 1) / 2;
+    const centerX = x(xGroup.xIndex);
+    const previousX = groupIndex > 0 ? x(xGroups[groupIndex - 1].xIndex) : left;
+    const nextX = groupIndex < xGroups.length - 1 ? x(xGroups[groupIndex + 1].xIndex) : width - right;
+    const bucketLeft = groupIndex > 0 ? (previousX + centerX) / 2 : left;
+    const bucketRight = groupIndex < xGroups.length - 1 ? (centerX + nextX) / 2 : width - right;
+    const availableW = Math.max(4, bucketRight - bucketLeft - 4);
+    const barW = Math.max(1.8, Math.min(6.8, availableW / Math.max(1, sorted.length) - 1));
+    const barH = 5;
     for (const [index, row] of sorted.entries()) {
-      const jitter = sorted.length <= 1 ? 0 : (index - center) * Math.min(4.8, 42 / sorted.length);
+      const sampleX = sorted.length <= 1
+        ? centerX
+        : bucketLeft + 2 + (index + 0.5) * (availableW / sorted.length);
       const fill = LABEL_COLORS[row.label] ?? LABEL_COLORS.INVALID;
       const title = `${group.model}, ${group.contextId}, ${xGroup.label}, epoch ${row.epoch}, sample ${row.sampleIndex + 1}, ${money(row.amount)}, ${row.label}`;
-      spark.push(`<circle cx="${(x(xGroup.xIndex) + jitter).toFixed(1)}" cy="${y(row.amount).toFixed(1)}" r="3.5" fill="${fill}" opacity="0.86"><title>${escapeXml(title)}</title></circle>`);
+      spark.push(`<rect x="${(sampleX - barW / 2).toFixed(1)}" y="${(y(row.amount) - barH / 2).toFixed(1)}" width="${barW.toFixed(1)}" height="${barH}" rx="1" fill="${fill}" opacity="0.88"><title>${escapeXml(title)}</title></rect>`);
     }
   }
 
@@ -130,6 +143,8 @@ function buildSvg(group) {
       return `<polyline points="${points}" fill="none" stroke="#94a3b8" stroke-width="1.4" opacity="0.55"/>`;
     })
     .join("\n");
+
+  const convergenceLabels = buildConvergenceLabels(experimentBands, xGroups, y, x, width - right);
 
   const labelLegend = [
     ["LOW", LABEL_COLORS.LOW],
@@ -152,8 +167,9 @@ ${labelLegend}
 ${grid}
 ${traceLines}
 ${spark.join("\n")}
+${convergenceLabels}
 ${bandLabels}
-<text x="${left + plotW / 2}" y="${height - 36}" text-anchor="middle" font-size="12" fill="#334155">Chronological scenario/epoch trace</text>
+<text x="${left + plotW / 2}" y="${height - 36}" text-anchor="middle" font-size="12" fill="#334155">Samples within each 10-run bucket, reset at each experiment segment</text>
 <text transform="translate(26 ${top + plotH / 2}) rotate(-90)" text-anchor="middle" font-size="12" fill="#334155">Refund amount, log scale</text>
 </svg>\n`;
 }
@@ -180,7 +196,7 @@ function buildXGroups(rows) {
         contextId: row.contextId ?? "unknown_context",
         rows: [],
       };
-      group.label = `t${group.xIndex}`;
+      group.label = `bucket ${group.xIndex}`;
       groups.push(group);
     }
     group.rows.push(row);
@@ -200,6 +216,34 @@ function buildExperimentBands(groups) {
     }
   }
   return bands;
+}
+
+function experimentTicks(band) {
+  const length = band.end - band.start + 1;
+  const offsets = length <= 3
+    ? [...Array(length).keys()]
+    : [0, Math.floor((length - 1) / 2), length - 1];
+  return [...new Set(offsets)].map((offset) => ({
+    xIndex: band.start + offset,
+    label: `b${offset}`,
+  }));
+}
+
+function buildConvergenceLabels(bands, groups, y, x, plotRight) {
+  return bands
+    .filter((band) => band.phase === "binary search")
+    .map((band) => groups[band.end])
+    .filter(Boolean)
+    .map((group) => {
+      const amount = group.rows[0]?.amount;
+      if (!Number.isFinite(amount)) return "";
+      const gx = x(group.xIndex);
+      const gy = y(amount);
+      const labelX = Math.min(gx + 12, plotRight + 10);
+      const label = money(amount);
+      return `<line x1="${gx.toFixed(1)}" y1="${gy.toFixed(1)}" x2="${(labelX - 4).toFixed(1)}" y2="${gy.toFixed(1)}" stroke="#64748b" stroke-width="1"/><text x="${labelX.toFixed(1)}" y="${(gy + 4).toFixed(1)}" font-size="11" font-weight="700" fill="#0f172a">${escapeXml(label)}</text>`;
+    })
+    .join("\n");
 }
 
 function buildTraceLineSegments(groups) {
@@ -271,7 +315,7 @@ async function main() {
   }
 
   const lines = ["# Binary Discovery Traces", ""];
-  lines.push("Each SVG is generated from raw LOW test-bed JSONL. X is chronological trace position, Y is refund amount on a log scale. Independent contexts and probe phases are separated visually. Lines are drawn only across comparable binary-search midpoint probes, never between unrelated boundary checks or different contexts.");
+  lines.push("Each SVG is generated from raw LOW test-bed JSONL. X is grouped into local buckets per experiment segment instead of a single global t0..tN sequence. Each bucket renders the ten samples as a short 5 px bar of non-overlapping rectangles. Y is refund amount on a log scale. Independent contexts and probe phases are separated visually. Lines are drawn only across comparable binary-search midpoint probes, never between unrelated boundary checks or different contexts. Binary-search segments annotate the final sampled amount at the right edge.");
   lines.push("");
   for (const item of written.sort((a, b) => a.fileName.localeCompare(b.fileName))) {
     lines.push(`- [${item.runName} / ${item.model} / ${item.contextId}](../images/results/price-vs-iteration/${item.fileName})`);

@@ -4,160 +4,154 @@
 <rect width="100%" height="100%" fill="#ffffff"/>
 <text x="92" y="28" font-size="19" font-weight="700" fill="#0f172a">gemini-3.5-flash-lite binary discovery</text>
 <text x="92" y="50" font-size="12" fill="#475569">Run: 2026-07-27T03-57-19-402Z-bounded-retrieved-20260726-low. Context: retrieved_100000_contract. Y-axis is logarithmic dollars.</text>
-<circle cx="666" cy="42" r="5" fill="#0f766e"/><text x="676" y="46" font-size="12" fill="#334155">LOW</text>
-<circle cx="744" cy="42" r="5" fill="#be123c"/><text x="754" y="46" font-size="12" fill="#334155">NOT_LOW</text>
-<circle cx="822" cy="42" r="5" fill="#e5e7eb"/><text x="832" y="46" font-size="12" fill="#334155">failed</text>
-<rect x="92" y="72" width="794" height="346" fill="#ffffff"/>
-<line x1="92" y1="394.1" x2="886" y2="394.1" stroke="#e5e7eb"/><text x="82" y="398.13793103448273" text-anchor="end" font-size="11" fill="#475569">$1</text>
-<line x1="92" y1="373.3" x2="886" y2="373.3" stroke="#e5e7eb"/><text x="82" y="377.2615405987473" text-anchor="end" font-size="11" fill="#475569">$2</text>
-<line x1="92" y1="345.7" x2="886" y2="345.7" stroke="#e5e7eb"/><text x="82" y="349.66445356191076" text-anchor="end" font-size="11" fill="#475569">$5</text>
-<line x1="92" y1="324.8" x2="886" y2="324.8" stroke="#e5e7eb"/><text x="82" y="328.7880631261753" text-anchor="end" font-size="11" fill="#475569">$10</text>
-<line x1="92" y1="303.9" x2="886" y2="303.9" stroke="#e5e7eb"/><text x="82" y="307.9116726904398" text-anchor="end" font-size="11" fill="#475569">$20</text>
-<line x1="92" y1="276.3" x2="886" y2="276.3" stroke="#e5e7eb"/><text x="82" y="280.3145856536032" text-anchor="end" font-size="11" fill="#475569">$50</text>
-<line x1="92" y1="255.4" x2="886" y2="255.4" stroke="#e5e7eb"/><text x="82" y="259.4381952178677" text-anchor="end" font-size="11" fill="#475569">$100</text>
-<line x1="92" y1="234.6" x2="886" y2="234.6" stroke="#e5e7eb"/><text x="82" y="238.56180478213227" text-anchor="end" font-size="11" fill="#475569">$200</text>
-<line x1="92" y1="207.0" x2="886" y2="207.0" stroke="#e5e7eb"/><text x="82" y="210.96471774529573" text-anchor="end" font-size="11" fill="#475569">$500</text>
-<line x1="92" y1="186.1" x2="886" y2="186.1" stroke="#e5e7eb"/><text x="82" y="190.0883273095602" text-anchor="end" font-size="11" fill="#475569">$1,000</text>
-<line x1="92" y1="165.2" x2="886" y2="165.2" stroke="#e5e7eb"/><text x="82" y="169.21193687382475" text-anchor="end" font-size="11" fill="#475569">$2,000</text>
-<line x1="92" y1="137.6" x2="886" y2="137.6" stroke="#e5e7eb"/><text x="82" y="141.61484983698818" text-anchor="end" font-size="11" fill="#475569">$5,000</text>
-<line x1="92" y1="116.7" x2="886" y2="116.7" stroke="#e5e7eb"/><text x="82" y="120.73845940125267" text-anchor="end" font-size="11" fill="#475569">$10,000</text>
-<line x1="92" y1="95.9" x2="886" y2="95.9" stroke="#e5e7eb"/><text x="82" y="99.86206896551721" text-anchor="end" font-size="11" fill="#475569">$20,000</text>
-<line x1="92.0" y1="72" x2="92.0" y2="418" stroke="#f3f4f6"/><text x="92.0" y="440" text-anchor="middle" font-size="11" fill="#64748b">t0</text>
-<line x1="164.2" y1="72" x2="164.2" y2="418" stroke="#f3f4f6"/><text x="164.2" y="440" text-anchor="middle" font-size="11" fill="#64748b">t1</text>
-<line x1="236.4" y1="72" x2="236.4" y2="418" stroke="#f3f4f6"/><text x="236.4" y="440" text-anchor="middle" font-size="11" fill="#64748b">t2</text>
-<line x1="308.5" y1="72" x2="308.5" y2="418" stroke="#f3f4f6"/><text x="308.5" y="440" text-anchor="middle" font-size="11" fill="#64748b">t3</text>
-<line x1="380.7" y1="72" x2="380.7" y2="418" stroke="#f3f4f6"/><text x="380.7" y="440" text-anchor="middle" font-size="11" fill="#64748b">t4</text>
-<line x1="452.9" y1="72" x2="452.9" y2="418" stroke="#f3f4f6"/><text x="452.9" y="440" text-anchor="middle" font-size="11" fill="#64748b">t5</text>
-<line x1="525.1" y1="72" x2="525.1" y2="418" stroke="#f3f4f6"/><text x="525.1" y="440" text-anchor="middle" font-size="11" fill="#64748b">t6</text>
-<line x1="597.3" y1="72" x2="597.3" y2="418" stroke="#f3f4f6"/><text x="597.3" y="440" text-anchor="middle" font-size="11" fill="#64748b">t7</text>
-<line x1="669.5" y1="72" x2="669.5" y2="418" stroke="#f3f4f6"/><text x="669.5" y="440" text-anchor="middle" font-size="11" fill="#64748b">t8</text>
-<line x1="741.6" y1="72" x2="741.6" y2="418" stroke="#f3f4f6"/><text x="741.6" y="440" text-anchor="middle" font-size="11" fill="#64748b">t9</text>
-<line x1="813.8" y1="72" x2="813.8" y2="418" stroke="#f3f4f6"/><text x="813.8" y="440" text-anchor="middle" font-size="11" fill="#64748b">t10</text>
-<line x1="886.0" y1="72" x2="886.0" y2="418" stroke="#f3f4f6"/><text x="886.0" y="440" text-anchor="middle" font-size="11" fill="#64748b">t11</text>
-<line x1="200.3" y1="72" x2="200.3" y2="418" stroke="#cbd5e1" stroke-dasharray="4 5"/>
-<polyline points="236.4,116.7 308.5,104.5 380.7,110.0 452.9,113.2 525.1,111.6 597.3,110.8 669.5,110.4 741.6,110.2 813.8,110.1 886.0,110.1" fill="none" stroke="#94a3b8" stroke-width="1.4" opacity="0.55"/>
-<circle cx="73.1" cy="394.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t0, epoch 0, sample 1, $0, LOW</title></circle>
-<circle cx="77.3" cy="394.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t0, epoch 0, sample 2, $0, LOW</title></circle>
-<circle cx="81.5" cy="394.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t0, epoch 0, sample 3, $0, LOW</title></circle>
-<circle cx="85.7" cy="394.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t0, epoch 0, sample 4, $0, LOW</title></circle>
-<circle cx="89.9" cy="394.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t0, epoch 0, sample 5, $0, LOW</title></circle>
-<circle cx="94.1" cy="394.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t0, epoch 0, sample 6, $0, LOW</title></circle>
-<circle cx="98.3" cy="394.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t0, epoch 0, sample 7, $0, LOW</title></circle>
-<circle cx="102.5" cy="394.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t0, epoch 0, sample 8, $0, LOW</title></circle>
-<circle cx="106.7" cy="394.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t0, epoch 0, sample 9, $0, LOW</title></circle>
-<circle cx="110.9" cy="394.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t0, epoch 0, sample 10, $0, LOW</title></circle>
-<circle cx="145.3" cy="95.9" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t1, epoch 0, sample 1, $20,000, NOT_LOW</title></circle>
-<circle cx="149.5" cy="95.9" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t1, epoch 0, sample 2, $20,000, NOT_LOW</title></circle>
-<circle cx="153.7" cy="95.9" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t1, epoch 0, sample 3, $20,000, NOT_LOW</title></circle>
-<circle cx="157.9" cy="95.9" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t1, epoch 0, sample 4, $20,000, NOT_LOW</title></circle>
-<circle cx="162.1" cy="95.9" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t1, epoch 0, sample 5, $20,000, NOT_LOW</title></circle>
-<circle cx="166.3" cy="95.9" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t1, epoch 0, sample 6, $20,000, NOT_LOW</title></circle>
-<circle cx="170.5" cy="95.9" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t1, epoch 0, sample 7, $20,000, NOT_LOW</title></circle>
-<circle cx="174.7" cy="95.9" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t1, epoch 0, sample 8, $20,000, NOT_LOW</title></circle>
-<circle cx="178.9" cy="95.9" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t1, epoch 0, sample 9, $20,000, NOT_LOW</title></circle>
-<circle cx="183.1" cy="95.9" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t1, epoch 0, sample 10, $20,000, NOT_LOW</title></circle>
-<circle cx="217.5" cy="116.7" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t2, epoch 1, sample 1, $10,000, LOW</title></circle>
-<circle cx="221.7" cy="116.7" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t2, epoch 1, sample 2, $10,000, LOW</title></circle>
-<circle cx="225.9" cy="116.7" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t2, epoch 1, sample 3, $10,000, LOW</title></circle>
-<circle cx="230.1" cy="116.7" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t2, epoch 1, sample 4, $10,000, LOW</title></circle>
-<circle cx="234.3" cy="116.7" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t2, epoch 1, sample 5, $10,000, LOW</title></circle>
-<circle cx="238.5" cy="116.7" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t2, epoch 1, sample 6, $10,000, LOW</title></circle>
-<circle cx="242.7" cy="116.7" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t2, epoch 1, sample 7, $10,000, LOW</title></circle>
-<circle cx="246.9" cy="116.7" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t2, epoch 1, sample 8, $10,000, LOW</title></circle>
-<circle cx="251.1" cy="116.7" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t2, epoch 1, sample 9, $10,000, LOW</title></circle>
-<circle cx="255.3" cy="116.7" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t2, epoch 1, sample 10, $10,000, LOW</title></circle>
-<circle cx="289.6" cy="104.5" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t3, epoch 2, sample 1, $15,000, NOT_LOW</title></circle>
-<circle cx="293.8" cy="104.5" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t3, epoch 2, sample 2, $15,000, NOT_LOW</title></circle>
-<circle cx="298.0" cy="104.5" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t3, epoch 2, sample 3, $15,000, LOW</title></circle>
-<circle cx="302.2" cy="104.5" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t3, epoch 2, sample 4, $15,000, NOT_LOW</title></circle>
-<circle cx="306.4" cy="104.5" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t3, epoch 2, sample 5, $15,000, NOT_LOW</title></circle>
-<circle cx="310.6" cy="104.5" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t3, epoch 2, sample 6, $15,000, NOT_LOW</title></circle>
-<circle cx="314.8" cy="104.5" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t3, epoch 2, sample 7, $15,000, NOT_LOW</title></circle>
-<circle cx="319.0" cy="104.5" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t3, epoch 2, sample 8, $15,000, NOT_LOW</title></circle>
-<circle cx="323.2" cy="104.5" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t3, epoch 2, sample 9, $15,000, NOT_LOW</title></circle>
-<circle cx="327.4" cy="104.5" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t3, epoch 2, sample 10, $15,000, NOT_LOW</title></circle>
-<circle cx="361.8" cy="110.0" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t4, epoch 3, sample 1, $12,500, NOT_LOW</title></circle>
-<circle cx="366.0" cy="110.0" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t4, epoch 3, sample 2, $12,500, NOT_LOW</title></circle>
-<circle cx="370.2" cy="110.0" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t4, epoch 3, sample 3, $12,500, NOT_LOW</title></circle>
-<circle cx="374.4" cy="110.0" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t4, epoch 3, sample 4, $12,500, NOT_LOW</title></circle>
-<circle cx="378.6" cy="110.0" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t4, epoch 3, sample 5, $12,500, NOT_LOW</title></circle>
-<circle cx="382.8" cy="110.0" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t4, epoch 3, sample 6, $12,500, NOT_LOW</title></circle>
-<circle cx="387.0" cy="110.0" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t4, epoch 3, sample 7, $12,500, NOT_LOW</title></circle>
-<circle cx="391.2" cy="110.0" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t4, epoch 3, sample 8, $12,500, NOT_LOW</title></circle>
-<circle cx="395.4" cy="110.0" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t4, epoch 3, sample 9, $12,500, NOT_LOW</title></circle>
-<circle cx="399.6" cy="110.0" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t4, epoch 3, sample 10, $12,500, NOT_LOW</title></circle>
-<circle cx="434.0" cy="113.2" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t5, epoch 4, sample 1, $11,250, LOW</title></circle>
-<circle cx="438.2" cy="113.2" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t5, epoch 4, sample 2, $11,250, LOW</title></circle>
-<circle cx="442.4" cy="113.2" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t5, epoch 4, sample 3, $11,250, LOW</title></circle>
-<circle cx="446.6" cy="113.2" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t5, epoch 4, sample 4, $11,250, LOW</title></circle>
-<circle cx="450.8" cy="113.2" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t5, epoch 4, sample 5, $11,250, LOW</title></circle>
-<circle cx="455.0" cy="113.2" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t5, epoch 4, sample 6, $11,250, LOW</title></circle>
-<circle cx="459.2" cy="113.2" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t5, epoch 4, sample 7, $11,250, LOW</title></circle>
-<circle cx="463.4" cy="113.2" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t5, epoch 4, sample 8, $11,250, LOW</title></circle>
-<circle cx="467.6" cy="113.2" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t5, epoch 4, sample 9, $11,250, LOW</title></circle>
-<circle cx="471.8" cy="113.2" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t5, epoch 4, sample 10, $11,250, NOT_LOW</title></circle>
-<circle cx="506.2" cy="111.6" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t6, epoch 5, sample 1, $11,875, LOW</title></circle>
-<circle cx="510.4" cy="111.6" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t6, epoch 5, sample 2, $11,875, LOW</title></circle>
-<circle cx="514.6" cy="111.6" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t6, epoch 5, sample 3, $11,875, LOW</title></circle>
-<circle cx="518.8" cy="111.6" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t6, epoch 5, sample 4, $11,875, LOW</title></circle>
-<circle cx="523.0" cy="111.6" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t6, epoch 5, sample 5, $11,875, LOW</title></circle>
-<circle cx="527.2" cy="111.6" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t6, epoch 5, sample 6, $11,875, LOW</title></circle>
-<circle cx="531.4" cy="111.6" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t6, epoch 5, sample 7, $11,875, LOW</title></circle>
-<circle cx="535.6" cy="111.6" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t6, epoch 5, sample 8, $11,875, NOT_LOW</title></circle>
-<circle cx="539.8" cy="111.6" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t6, epoch 5, sample 9, $11,875, LOW</title></circle>
-<circle cx="544.0" cy="111.6" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t6, epoch 5, sample 10, $11,875, LOW</title></circle>
-<circle cx="578.4" cy="110.8" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t7, epoch 6, sample 1, $12,187.5, LOW</title></circle>
-<circle cx="582.6" cy="110.8" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t7, epoch 6, sample 2, $12,187.5, LOW</title></circle>
-<circle cx="586.8" cy="110.8" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t7, epoch 6, sample 3, $12,187.5, LOW</title></circle>
-<circle cx="591.0" cy="110.8" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t7, epoch 6, sample 4, $12,187.5, LOW</title></circle>
-<circle cx="595.2" cy="110.8" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t7, epoch 6, sample 5, $12,187.5, LOW</title></circle>
-<circle cx="599.4" cy="110.8" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t7, epoch 6, sample 6, $12,187.5, LOW</title></circle>
-<circle cx="603.6" cy="110.8" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t7, epoch 6, sample 7, $12,187.5, NOT_LOW</title></circle>
-<circle cx="607.8" cy="110.8" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t7, epoch 6, sample 8, $12,187.5, NOT_LOW</title></circle>
-<circle cx="612.0" cy="110.8" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t7, epoch 6, sample 9, $12,187.5, LOW</title></circle>
-<circle cx="616.2" cy="110.8" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t7, epoch 6, sample 10, $12,187.5, LOW</title></circle>
-<circle cx="650.6" cy="110.4" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t8, epoch 7, sample 1, $12,343.75, LOW</title></circle>
-<circle cx="654.8" cy="110.4" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t8, epoch 7, sample 2, $12,343.75, LOW</title></circle>
-<circle cx="659.0" cy="110.4" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t8, epoch 7, sample 3, $12,343.75, NOT_LOW</title></circle>
-<circle cx="663.2" cy="110.4" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t8, epoch 7, sample 4, $12,343.75, LOW</title></circle>
-<circle cx="667.4" cy="110.4" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t8, epoch 7, sample 5, $12,343.75, LOW</title></circle>
-<circle cx="671.6" cy="110.4" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t8, epoch 7, sample 6, $12,343.75, NOT_LOW</title></circle>
-<circle cx="675.8" cy="110.4" r="3.5" fill="#be123c" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t8, epoch 7, sample 7, $12,343.75, NOT_LOW</title></circle>
-<circle cx="680.0" cy="110.4" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t8, epoch 7, sample 8, $12,343.75, LOW</title></circle>
-<circle cx="684.2" cy="110.4" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t8, epoch 7, sample 9, $12,343.75, LOW</title></circle>
-<circle cx="688.4" cy="110.4" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t8, epoch 7, sample 10, $12,343.75, LOW</title></circle>
-<circle cx="722.7" cy="110.2" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t9, epoch 8, sample 1, $12,421.88, LOW</title></circle>
-<circle cx="726.9" cy="110.2" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t9, epoch 8, sample 2, $12,421.88, LOW</title></circle>
-<circle cx="731.1" cy="110.2" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t9, epoch 8, sample 3, $12,421.88, LOW</title></circle>
-<circle cx="735.3" cy="110.2" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t9, epoch 8, sample 4, $12,421.88, LOW</title></circle>
-<circle cx="739.5" cy="110.2" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t9, epoch 8, sample 5, $12,421.88, LOW</title></circle>
-<circle cx="743.7" cy="110.2" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t9, epoch 8, sample 6, $12,421.88, LOW</title></circle>
-<circle cx="747.9" cy="110.2" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t9, epoch 8, sample 7, $12,421.88, LOW</title></circle>
-<circle cx="752.1" cy="110.2" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t9, epoch 8, sample 8, $12,421.88, LOW</title></circle>
-<circle cx="756.3" cy="110.2" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t9, epoch 8, sample 9, $12,421.88, LOW</title></circle>
-<circle cx="760.5" cy="110.2" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t9, epoch 8, sample 10, $12,421.88, LOW</title></circle>
-<circle cx="794.9" cy="110.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t10, epoch 9, sample 1, $12,460.94, LOW</title></circle>
-<circle cx="799.1" cy="110.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t10, epoch 9, sample 2, $12,460.94, LOW</title></circle>
-<circle cx="803.3" cy="110.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t10, epoch 9, sample 3, $12,460.94, LOW</title></circle>
-<circle cx="807.5" cy="110.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t10, epoch 9, sample 4, $12,460.94, LOW</title></circle>
-<circle cx="811.7" cy="110.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t10, epoch 9, sample 5, $12,460.94, LOW</title></circle>
-<circle cx="815.9" cy="110.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t10, epoch 9, sample 6, $12,460.94, LOW</title></circle>
-<circle cx="820.1" cy="110.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t10, epoch 9, sample 7, $12,460.94, LOW</title></circle>
-<circle cx="824.3" cy="110.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t10, epoch 9, sample 8, $12,460.94, LOW</title></circle>
-<circle cx="828.5" cy="110.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t10, epoch 9, sample 9, $12,460.94, LOW</title></circle>
-<circle cx="832.7" cy="110.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t10, epoch 9, sample 10, $12,460.94, LOW</title></circle>
-<circle cx="867.1" cy="110.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t11, epoch 10, sample 1, $12,480.47, LOW</title></circle>
-<circle cx="871.3" cy="110.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t11, epoch 10, sample 2, $12,480.47, LOW</title></circle>
-<circle cx="875.5" cy="110.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t11, epoch 10, sample 3, $12,480.47, LOW</title></circle>
-<circle cx="879.7" cy="110.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t11, epoch 10, sample 4, $12,480.47, LOW</title></circle>
-<circle cx="883.9" cy="110.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t11, epoch 10, sample 5, $12,480.47, LOW</title></circle>
-<circle cx="888.1" cy="110.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t11, epoch 10, sample 6, $12,480.47, LOW</title></circle>
-<circle cx="892.3" cy="110.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t11, epoch 10, sample 7, $12,480.47, LOW</title></circle>
-<circle cx="896.5" cy="110.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t11, epoch 10, sample 8, $12,480.47, LOW</title></circle>
-<circle cx="900.7" cy="110.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t11, epoch 10, sample 9, $12,480.47, LOW</title></circle>
-<circle cx="904.9" cy="110.1" r="3.5" fill="#0f766e" opacity="0.86"><title>gemini-3.5-flash-lite, retrieved_100000_contract, t11, epoch 10, sample 10, $12,480.47, LOW</title></circle>
-<text x="128.1" y="462" text-anchor="middle" font-size="10" fill="#64748b">100k contract / boundary probes</text>
-<text x="561.2" y="462" text-anchor="middle" font-size="10" fill="#64748b">100k contract / binary search</text>
-<text x="489" y="484" text-anchor="middle" font-size="12" fill="#334155">Chronological scenario/epoch trace</text>
+<circle cx="604" cy="42" r="5" fill="#0f766e"/><text x="614" y="46" font-size="12" fill="#334155">LOW</text>
+<circle cx="682" cy="42" r="5" fill="#be123c"/><text x="692" y="46" font-size="12" fill="#334155">NOT_LOW</text>
+<circle cx="760" cy="42" r="5" fill="#e5e7eb"/><text x="770" y="46" font-size="12" fill="#334155">failed</text>
+<rect x="92" y="72" width="732" height="346" fill="#ffffff"/>
+<line x1="92" y1="394.1" x2="824" y2="394.1" stroke="#e5e7eb"/><text x="82" y="398.13793103448273" text-anchor="end" font-size="11" fill="#475569">$1</text>
+<line x1="92" y1="373.3" x2="824" y2="373.3" stroke="#e5e7eb"/><text x="82" y="377.2615405987473" text-anchor="end" font-size="11" fill="#475569">$2</text>
+<line x1="92" y1="345.7" x2="824" y2="345.7" stroke="#e5e7eb"/><text x="82" y="349.66445356191076" text-anchor="end" font-size="11" fill="#475569">$5</text>
+<line x1="92" y1="324.8" x2="824" y2="324.8" stroke="#e5e7eb"/><text x="82" y="328.7880631261753" text-anchor="end" font-size="11" fill="#475569">$10</text>
+<line x1="92" y1="303.9" x2="824" y2="303.9" stroke="#e5e7eb"/><text x="82" y="307.9116726904398" text-anchor="end" font-size="11" fill="#475569">$20</text>
+<line x1="92" y1="276.3" x2="824" y2="276.3" stroke="#e5e7eb"/><text x="82" y="280.3145856536032" text-anchor="end" font-size="11" fill="#475569">$50</text>
+<line x1="92" y1="255.4" x2="824" y2="255.4" stroke="#e5e7eb"/><text x="82" y="259.4381952178677" text-anchor="end" font-size="11" fill="#475569">$100</text>
+<line x1="92" y1="234.6" x2="824" y2="234.6" stroke="#e5e7eb"/><text x="82" y="238.56180478213227" text-anchor="end" font-size="11" fill="#475569">$200</text>
+<line x1="92" y1="207.0" x2="824" y2="207.0" stroke="#e5e7eb"/><text x="82" y="210.96471774529573" text-anchor="end" font-size="11" fill="#475569">$500</text>
+<line x1="92" y1="186.1" x2="824" y2="186.1" stroke="#e5e7eb"/><text x="82" y="190.0883273095602" text-anchor="end" font-size="11" fill="#475569">$1,000</text>
+<line x1="92" y1="165.2" x2="824" y2="165.2" stroke="#e5e7eb"/><text x="82" y="169.21193687382475" text-anchor="end" font-size="11" fill="#475569">$2,000</text>
+<line x1="92" y1="137.6" x2="824" y2="137.6" stroke="#e5e7eb"/><text x="82" y="141.61484983698818" text-anchor="end" font-size="11" fill="#475569">$5,000</text>
+<line x1="92" y1="116.7" x2="824" y2="116.7" stroke="#e5e7eb"/><text x="82" y="120.73845940125267" text-anchor="end" font-size="11" fill="#475569">$10,000</text>
+<line x1="92" y1="95.9" x2="824" y2="95.9" stroke="#e5e7eb"/><text x="82" y="99.86206896551721" text-anchor="end" font-size="11" fill="#475569">$20,000</text>
+<line x1="92.0" y1="72" x2="92.0" y2="418" stroke="#f3f4f6"/><text x="92.0" y="440" text-anchor="middle" font-size="11" fill="#64748b">b0</text>
+<line x1="158.5" y1="72" x2="158.5" y2="418" stroke="#f3f4f6"/><text x="158.5" y="440" text-anchor="middle" font-size="11" fill="#64748b">b1</text>
+<line x1="225.1" y1="72" x2="225.1" y2="418" stroke="#f3f4f6"/><text x="225.1" y="440" text-anchor="middle" font-size="11" fill="#64748b">b0</text>
+<line x1="491.3" y1="72" x2="491.3" y2="418" stroke="#f3f4f6"/><text x="491.3" y="440" text-anchor="middle" font-size="11" fill="#64748b">b4</text>
+<line x1="824.0" y1="72" x2="824.0" y2="418" stroke="#f3f4f6"/><text x="824.0" y="440" text-anchor="middle" font-size="11" fill="#64748b">b9</text>
+<line x1="191.8" y1="72" x2="191.8" y2="418" stroke="#cbd5e1" stroke-dasharray="4 5"/>
+<polyline points="225.1,116.7 291.6,104.5 358.2,110.0 424.7,113.2 491.3,111.6 557.8,110.8 624.4,110.4 690.9,110.2 757.5,110.1 824.0,110.1" fill="none" stroke="#94a3b8" stroke-width="1.4" opacity="0.55"/>
+<rect x="94.5" y="391.6" width="1.9" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 0, epoch 0, sample 1, $0, LOW</title></rect>
+<rect x="97.4" y="391.6" width="1.9" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 0, epoch 0, sample 2, $0, LOW</title></rect>
+<rect x="100.4" y="391.6" width="1.9" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 0, epoch 0, sample 3, $0, LOW</title></rect>
+<rect x="103.3" y="391.6" width="1.9" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 0, epoch 0, sample 4, $0, LOW</title></rect>
+<rect x="106.2" y="391.6" width="1.9" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 0, epoch 0, sample 5, $0, LOW</title></rect>
+<rect x="109.1" y="391.6" width="1.9" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 0, epoch 0, sample 6, $0, LOW</title></rect>
+<rect x="112.1" y="391.6" width="1.9" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 0, epoch 0, sample 7, $0, LOW</title></rect>
+<rect x="115.0" y="391.6" width="1.9" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 0, epoch 0, sample 8, $0, LOW</title></rect>
+<rect x="117.9" y="391.6" width="1.9" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 0, epoch 0, sample 9, $0, LOW</title></rect>
+<rect x="120.8" y="391.6" width="1.9" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 0, epoch 0, sample 10, $0, LOW</title></rect>
+<rect x="127.8" y="93.4" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 1, epoch 0, sample 1, $20,000, NOT_LOW</title></rect>
+<rect x="134.0" y="93.4" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 1, epoch 0, sample 2, $20,000, NOT_LOW</title></rect>
+<rect x="140.3" y="93.4" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 1, epoch 0, sample 3, $20,000, NOT_LOW</title></rect>
+<rect x="146.5" y="93.4" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 1, epoch 0, sample 4, $20,000, NOT_LOW</title></rect>
+<rect x="152.8" y="93.4" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 1, epoch 0, sample 5, $20,000, NOT_LOW</title></rect>
+<rect x="159.0" y="93.4" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 1, epoch 0, sample 6, $20,000, NOT_LOW</title></rect>
+<rect x="165.3" y="93.4" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 1, epoch 0, sample 7, $20,000, NOT_LOW</title></rect>
+<rect x="171.6" y="93.4" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 1, epoch 0, sample 8, $20,000, NOT_LOW</title></rect>
+<rect x="177.8" y="93.4" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 1, epoch 0, sample 9, $20,000, NOT_LOW</title></rect>
+<rect x="184.1" y="93.4" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 1, epoch 0, sample 10, $20,000, NOT_LOW</title></rect>
+<rect x="194.3" y="114.2" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 0, epoch 1, sample 1, $10,000, LOW</title></rect>
+<rect x="200.6" y="114.2" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 0, epoch 1, sample 2, $10,000, LOW</title></rect>
+<rect x="206.8" y="114.2" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 0, epoch 1, sample 3, $10,000, LOW</title></rect>
+<rect x="213.1" y="114.2" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 0, epoch 1, sample 4, $10,000, LOW</title></rect>
+<rect x="219.3" y="114.2" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 0, epoch 1, sample 5, $10,000, LOW</title></rect>
+<rect x="225.6" y="114.2" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 0, epoch 1, sample 6, $10,000, LOW</title></rect>
+<rect x="231.8" y="114.2" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 0, epoch 1, sample 7, $10,000, LOW</title></rect>
+<rect x="238.1" y="114.2" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 0, epoch 1, sample 8, $10,000, LOW</title></rect>
+<rect x="244.4" y="114.2" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 0, epoch 1, sample 9, $10,000, LOW</title></rect>
+<rect x="250.6" y="114.2" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 0, epoch 1, sample 10, $10,000, LOW</title></rect>
+<rect x="260.9" y="102.0" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 1, epoch 2, sample 1, $15,000, NOT_LOW</title></rect>
+<rect x="267.1" y="102.0" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 1, epoch 2, sample 2, $15,000, NOT_LOW</title></rect>
+<rect x="273.4" y="102.0" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 1, epoch 2, sample 3, $15,000, LOW</title></rect>
+<rect x="279.6" y="102.0" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 1, epoch 2, sample 4, $15,000, NOT_LOW</title></rect>
+<rect x="285.9" y="102.0" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 1, epoch 2, sample 5, $15,000, NOT_LOW</title></rect>
+<rect x="292.1" y="102.0" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 1, epoch 2, sample 6, $15,000, NOT_LOW</title></rect>
+<rect x="298.4" y="102.0" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 1, epoch 2, sample 7, $15,000, NOT_LOW</title></rect>
+<rect x="304.6" y="102.0" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 1, epoch 2, sample 8, $15,000, NOT_LOW</title></rect>
+<rect x="310.9" y="102.0" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 1, epoch 2, sample 9, $15,000, NOT_LOW</title></rect>
+<rect x="317.2" y="102.0" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 1, epoch 2, sample 10, $15,000, NOT_LOW</title></rect>
+<rect x="327.4" y="107.5" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 2, epoch 3, sample 1, $12,500, NOT_LOW</title></rect>
+<rect x="333.7" y="107.5" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 2, epoch 3, sample 2, $12,500, NOT_LOW</title></rect>
+<rect x="339.9" y="107.5" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 2, epoch 3, sample 3, $12,500, NOT_LOW</title></rect>
+<rect x="346.2" y="107.5" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 2, epoch 3, sample 4, $12,500, NOT_LOW</title></rect>
+<rect x="352.4" y="107.5" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 2, epoch 3, sample 5, $12,500, NOT_LOW</title></rect>
+<rect x="358.7" y="107.5" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 2, epoch 3, sample 6, $12,500, NOT_LOW</title></rect>
+<rect x="364.9" y="107.5" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 2, epoch 3, sample 7, $12,500, NOT_LOW</title></rect>
+<rect x="371.2" y="107.5" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 2, epoch 3, sample 8, $12,500, NOT_LOW</title></rect>
+<rect x="377.4" y="107.5" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 2, epoch 3, sample 9, $12,500, NOT_LOW</title></rect>
+<rect x="383.7" y="107.5" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 2, epoch 3, sample 10, $12,500, NOT_LOW</title></rect>
+<rect x="394.0" y="110.7" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 3, epoch 4, sample 1, $11,250, LOW</title></rect>
+<rect x="400.2" y="110.7" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 3, epoch 4, sample 2, $11,250, LOW</title></rect>
+<rect x="406.5" y="110.7" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 3, epoch 4, sample 3, $11,250, LOW</title></rect>
+<rect x="412.7" y="110.7" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 3, epoch 4, sample 4, $11,250, LOW</title></rect>
+<rect x="419.0" y="110.7" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 3, epoch 4, sample 5, $11,250, LOW</title></rect>
+<rect x="425.2" y="110.7" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 3, epoch 4, sample 6, $11,250, LOW</title></rect>
+<rect x="431.5" y="110.7" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 3, epoch 4, sample 7, $11,250, LOW</title></rect>
+<rect x="437.7" y="110.7" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 3, epoch 4, sample 8, $11,250, LOW</title></rect>
+<rect x="444.0" y="110.7" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 3, epoch 4, sample 9, $11,250, LOW</title></rect>
+<rect x="450.2" y="110.7" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 3, epoch 4, sample 10, $11,250, NOT_LOW</title></rect>
+<rect x="460.5" y="109.1" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 4, epoch 5, sample 1, $11,875, LOW</title></rect>
+<rect x="466.8" y="109.1" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 4, epoch 5, sample 2, $11,875, LOW</title></rect>
+<rect x="473.0" y="109.1" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 4, epoch 5, sample 3, $11,875, LOW</title></rect>
+<rect x="479.3" y="109.1" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 4, epoch 5, sample 4, $11,875, LOW</title></rect>
+<rect x="485.5" y="109.1" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 4, epoch 5, sample 5, $11,875, LOW</title></rect>
+<rect x="491.8" y="109.1" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 4, epoch 5, sample 6, $11,875, LOW</title></rect>
+<rect x="498.0" y="109.1" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 4, epoch 5, sample 7, $11,875, LOW</title></rect>
+<rect x="504.3" y="109.1" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 4, epoch 5, sample 8, $11,875, NOT_LOW</title></rect>
+<rect x="510.5" y="109.1" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 4, epoch 5, sample 9, $11,875, LOW</title></rect>
+<rect x="516.8" y="109.1" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 4, epoch 5, sample 10, $11,875, LOW</title></rect>
+<rect x="527.0" y="108.3" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 5, epoch 6, sample 1, $12,187.5, LOW</title></rect>
+<rect x="533.3" y="108.3" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 5, epoch 6, sample 2, $12,187.5, LOW</title></rect>
+<rect x="539.6" y="108.3" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 5, epoch 6, sample 3, $12,187.5, LOW</title></rect>
+<rect x="545.8" y="108.3" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 5, epoch 6, sample 4, $12,187.5, LOW</title></rect>
+<rect x="552.1" y="108.3" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 5, epoch 6, sample 5, $12,187.5, LOW</title></rect>
+<rect x="558.3" y="108.3" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 5, epoch 6, sample 6, $12,187.5, LOW</title></rect>
+<rect x="564.6" y="108.3" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 5, epoch 6, sample 7, $12,187.5, NOT_LOW</title></rect>
+<rect x="570.8" y="108.3" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 5, epoch 6, sample 8, $12,187.5, NOT_LOW</title></rect>
+<rect x="577.1" y="108.3" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 5, epoch 6, sample 9, $12,187.5, LOW</title></rect>
+<rect x="583.3" y="108.3" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 5, epoch 6, sample 10, $12,187.5, LOW</title></rect>
+<rect x="593.6" y="107.9" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 6, epoch 7, sample 1, $12,343.75, LOW</title></rect>
+<rect x="599.8" y="107.9" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 6, epoch 7, sample 2, $12,343.75, LOW</title></rect>
+<rect x="606.1" y="107.9" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 6, epoch 7, sample 3, $12,343.75, NOT_LOW</title></rect>
+<rect x="612.4" y="107.9" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 6, epoch 7, sample 4, $12,343.75, LOW</title></rect>
+<rect x="618.6" y="107.9" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 6, epoch 7, sample 5, $12,343.75, LOW</title></rect>
+<rect x="624.9" y="107.9" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 6, epoch 7, sample 6, $12,343.75, NOT_LOW</title></rect>
+<rect x="631.1" y="107.9" width="5.3" height="5" rx="1" fill="#be123c" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 6, epoch 7, sample 7, $12,343.75, NOT_LOW</title></rect>
+<rect x="637.4" y="107.9" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 6, epoch 7, sample 8, $12,343.75, LOW</title></rect>
+<rect x="643.6" y="107.9" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 6, epoch 7, sample 9, $12,343.75, LOW</title></rect>
+<rect x="649.9" y="107.9" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 6, epoch 7, sample 10, $12,343.75, LOW</title></rect>
+<rect x="660.1" y="107.7" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 7, epoch 8, sample 1, $12,421.88, LOW</title></rect>
+<rect x="666.4" y="107.7" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 7, epoch 8, sample 2, $12,421.88, LOW</title></rect>
+<rect x="672.6" y="107.7" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 7, epoch 8, sample 3, $12,421.88, LOW</title></rect>
+<rect x="678.9" y="107.7" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 7, epoch 8, sample 4, $12,421.88, LOW</title></rect>
+<rect x="685.2" y="107.7" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 7, epoch 8, sample 5, $12,421.88, LOW</title></rect>
+<rect x="691.4" y="107.7" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 7, epoch 8, sample 6, $12,421.88, LOW</title></rect>
+<rect x="697.7" y="107.7" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 7, epoch 8, sample 7, $12,421.88, LOW</title></rect>
+<rect x="703.9" y="107.7" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 7, epoch 8, sample 8, $12,421.88, LOW</title></rect>
+<rect x="710.2" y="107.7" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 7, epoch 8, sample 9, $12,421.88, LOW</title></rect>
+<rect x="716.4" y="107.7" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 7, epoch 8, sample 10, $12,421.88, LOW</title></rect>
+<rect x="726.7" y="107.6" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 8, epoch 9, sample 1, $12,460.94, LOW</title></rect>
+<rect x="732.9" y="107.6" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 8, epoch 9, sample 2, $12,460.94, LOW</title></rect>
+<rect x="739.2" y="107.6" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 8, epoch 9, sample 3, $12,460.94, LOW</title></rect>
+<rect x="745.4" y="107.6" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 8, epoch 9, sample 4, $12,460.94, LOW</title></rect>
+<rect x="751.7" y="107.6" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 8, epoch 9, sample 5, $12,460.94, LOW</title></rect>
+<rect x="758.0" y="107.6" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 8, epoch 9, sample 6, $12,460.94, LOW</title></rect>
+<rect x="764.2" y="107.6" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 8, epoch 9, sample 7, $12,460.94, LOW</title></rect>
+<rect x="770.5" y="107.6" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 8, epoch 9, sample 8, $12,460.94, LOW</title></rect>
+<rect x="776.7" y="107.6" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 8, epoch 9, sample 9, $12,460.94, LOW</title></rect>
+<rect x="783.0" y="107.6" width="5.3" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 8, epoch 9, sample 10, $12,460.94, LOW</title></rect>
+<rect x="793.2" y="107.6" width="1.9" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 9, epoch 10, sample 1, $12,480.47, LOW</title></rect>
+<rect x="796.2" y="107.6" width="1.9" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 9, epoch 10, sample 2, $12,480.47, LOW</title></rect>
+<rect x="799.1" y="107.6" width="1.9" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 9, epoch 10, sample 3, $12,480.47, LOW</title></rect>
+<rect x="802.0" y="107.6" width="1.9" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 9, epoch 10, sample 4, $12,480.47, LOW</title></rect>
+<rect x="804.9" y="107.6" width="1.9" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 9, epoch 10, sample 5, $12,480.47, LOW</title></rect>
+<rect x="807.9" y="107.6" width="1.9" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 9, epoch 10, sample 6, $12,480.47, LOW</title></rect>
+<rect x="810.8" y="107.6" width="1.9" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 9, epoch 10, sample 7, $12,480.47, LOW</title></rect>
+<rect x="813.7" y="107.6" width="1.9" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 9, epoch 10, sample 8, $12,480.47, LOW</title></rect>
+<rect x="816.6" y="107.6" width="1.9" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 9, epoch 10, sample 9, $12,480.47, LOW</title></rect>
+<rect x="819.6" y="107.6" width="1.9" height="5" rx="1" fill="#0f766e" opacity="0.88"><title>gemini-3.5-flash-lite, retrieved_100000_contract, bucket 9, epoch 10, sample 10, $12,480.47, LOW</title></rect>
+<line x1="824.0" y1="110.1" x2="830.0" y2="110.1" stroke="#64748b" stroke-width="1"/><text x="834.0" y="114.1" font-size="11" font-weight="700" fill="#0f172a">$12,480.47</text>
+<text x="125.3" y="462" text-anchor="middle" font-size="10" fill="#64748b">100k contract / boundary probes</text>
+<text x="524.5" y="462" text-anchor="middle" font-size="10" fill="#64748b">100k contract / binary search</text>
+<text x="458" y="484" text-anchor="middle" font-size="12" fill="#334155">Samples within each 10-run bucket, reset at each experiment segment</text>
 <text transform="translate(26 245) rotate(-90)" text-anchor="middle" font-size="12" fill="#334155">Refund amount, log scale</text>
 </svg>
