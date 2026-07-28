@@ -122,9 +122,13 @@ The prompt asks whether 10 evidence signals, each scored 0-10, are `ENOUGH` or `
 
 Modes:
 
+- `contract`: default. First binary-search the minimum number of strong evidence rows (`10`) required while inactive rows stay at `1`; then binary-search the minimum active-row score for that count.
 - `average`: all 10 signals share the same score; the program scans average scores and then binary-searches the flip band.
 - `passing`: each vector has `N` passing signals and `10-N` failing signals; the program scans all counts from 0 to 10.
-- `both`: default.
+- `both`: legacy `average` + `passing`.
+- `all`: runs every mode.
+
+The `contract` mode assumes monotonicity to minimize model calls. For 10 rows, the count threshold takes at most two anchors plus four midpoint candidates; quality then uses the same binary-search width as `average`. Candidate row order is rotated across samples so the result is less sensitive to fixed signal positions.
 
 ## Output Per Run
 
@@ -140,6 +144,8 @@ calls.jsonl.gz       # only with --gzip-jsonl
 summary.csv
 summary.md
 analysis.md
+enough-thresholds.json
+enough-thresholds.md
 ```
 
 `metadata.json` includes the run date, commit hash, command line, requested models, provider, API parameters, binary search range, sample count, epoch count, max call guard, convergence rule, and output file names.
