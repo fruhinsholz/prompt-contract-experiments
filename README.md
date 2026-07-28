@@ -69,6 +69,16 @@ Regenerate figures after adding or changing tracked results:
 npm run results:graphs
 ```
 
+### Image Viewer
+
+Open the generated image browser locally:
+
+```bash
+npm run viewer
+```
+
+Then visit `http://127.0.0.1:4177/`. The viewer lists generated files by model, test context, and generation time. Click an item to preview it, use `Open full` for the large image, and copy either the filename or the rendered image from the open view. SVG images are copied as PNG when the browser permits clipboard image writes. Keep the browser URL on `localhost` when using copy actions; remote LAN HTTP pages may not receive clipboard permissions.
+
 New LOW runs use bounded probability band search by default, so the useful interpretation is interval contraction plus endpoint `P(LOW)` estimates, not a complete list of scanned prices or a single exact threshold.
 
 Recommended article citation: link to this repository or to [docs/price-vs-iteration.md](docs/price-vs-iteration.md). Do not duplicate the graph set in the article unless a specific figure becomes necessary for the argument.
