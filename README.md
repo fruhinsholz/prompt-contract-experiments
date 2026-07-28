@@ -2,12 +2,17 @@
 
 This repository is the source of truth for prompt-contract drift experiments, scripts, raw results, generated reports, and result images. It is intentionally separate from the blog. Blog prose should link here for experiment detail instead of carrying graphs or extended result tables.
 
+Related article: [Prompt Edits Are Architecture Changes](https://blog.meursault.ai/draft/prompt-edits-are-architecture-changes/).
+
 ## What Is Here
 
 - `experiments/prompt-drift/`: a small harness for testing whether the same user prompt changes classification when the governing contract changes.
 - `experiments/prompt-thresholds/`: threshold test beds for vague consequence-bearing labels such as `LOW` and `ENOUGH`.
+- `experiments/prompt-thresholds/low-retrieved-context/`: article-grade `LOW` experiment guide.
+- `experiments/prompt-thresholds/enough-evidence-sufficiency/`: article-grade `ENOUGH` experiment guide.
 - `experiments/**/results/`: raw JSONL calls, metadata, summaries, and analyses.
 - `images/results/price-vs-iteration/`: generated scatter plots showing sampled refund amount versus iteration, grouped by run and context.
+- `images/results/enough-thresholds/`: generated SVG summaries for the `ENOUGH` two-phase probe.
 - `docs/workflow.md`: how to run, record, and publish new experiments.
 - `docs/results.md`: compact index of the currently tracked result sets.
 
@@ -52,6 +57,7 @@ CLAUDE_MAX_BUDGET_USD=0.08 npm run thresholds:low -- --provider claude-cli --mod
 
 The repository is meant to be cited as a whole, not copied into the article. Use the README and linked docs to reconstruct what was run, how it was run, and which artifacts support the claim.
 
+- Start here for the article-grade experiments: [docs/experiments.md](docs/experiments.md).
 - Raw calls are the durable evidence: `experiments/**/results/**/calls.jsonl` and `calls.jsonl.gz`.
 - Each run keeps its local contract: `fixture.json`, `system-prompt.txt`, `user-template.txt`, and `metadata.json`.
 - Generated summaries are convenience views: `summary.csv`, `summary.md`, and `analysis.md`.

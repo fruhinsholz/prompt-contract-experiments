@@ -12,6 +12,11 @@ The harness is intentionally plain:
 - Provider response model/version fields are stored when returned by the API.
 - API keys must come from environment variables and are never written to disk by the harness.
 
+## Experiment Guides
+
+- [`low-retrieved-context/`](low-retrieved-context/): article-grade `LOW` experiment. Documents why it exists, what prompt it sends, what files it reads and writes, the clean publication result, and the generated result images.
+- [`enough-evidence-sufficiency/`](enough-evidence-sufficiency/): article-grade `ENOUGH` experiment. Documents the two-phase probe, what it does and does not prove, what files it reads and writes, the clean publication result, and the generated result images.
+
 ## Visual Readme Graphs
 
 The README keeps the visual proof lightweight: generated SVGs summarize tracked Git results without adding a dashboard to the article. Regenerate them after changing tracked run data:
