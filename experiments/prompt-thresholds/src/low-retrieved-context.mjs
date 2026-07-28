@@ -41,17 +41,21 @@ function extraOptions() {
   --max <n>                   Upper dollar bound for binary search. Defaults to 20000.
   --scan <a,b,c>              Legacy fixed scan points. If supplied, scan first, then refine.
   --converge-width <n>        Stop binary search when the band is this narrow. Defaults to 25.
+  --refine-samples <n>        Samples at final band endpoints. Defaults to 30.
+  --target-low-pct <n>        LOW probability boundary target, 0..1. Defaults to 0.5.
   --contexts <list|all>       Context variants. Defaults to all.
 `;
 }
 
 function parseArgs(argv) {
-  return parseCommonArgs(argv, { min: 0, max: 20000, scan: null, convergeWidth: 25, contexts: "all", label: "retrieved-context-low" }, (args, raw, i) => {
+  return parseCommonArgs(argv, { min: 0, max: 20000, scan: null, convergeWidth: 25, refineSamples: 30, targetLowPct: 0.5, contexts: "all", label: "retrieved-context-low" }, (args, raw, i) => {
     switch (raw[i]) {
       case "--min": args.min = Number.parseFloat(raw[i + 1]); return i + 1;
       case "--max": args.max = Number.parseFloat(raw[i + 1]); return i + 1;
       case "--scan": args.scan = raw[i + 1]; return i + 1;
       case "--converge-width": args.convergeWidth = Number.parseFloat(raw[i + 1]); return i + 1;
+      case "--refine-samples": args.refineSamples = Number.parseInt(raw[i + 1], 10); return i + 1;
+      case "--target-low-pct": args.targetLowPct = Number.parseFloat(raw[i + 1]); return i + 1;
       case "--contexts": args.contexts = raw[i + 1]; return i + 1;
       default: return false;
     }
@@ -175,11 +179,12 @@ async function runOne({ args, runDir, model, contextId, amount, epoch, candidate
   }
 }
 
-async function sampleCandidate(ctx, candidate) {
+async function sampleCandidate(ctx, candidate, sampleCount = ctx.args.samples, sampleOffset = 0) {
   const rows = [];
-  for (let sampleIndex = 0; sampleIndex < ctx.args.samples; sampleIndex += 1) {
+  for (let localIndex = 0; localIndex < sampleCount; localIndex += 1) {
     ctx.callCount += 1;
     if (ctx.callCount > ctx.args.maxCalls) throw new Error(`Refusing to exceed --max-calls ${ctx.args.maxCalls}.`);
+    const sampleIndex = sampleOffset + localIndex;
     rows.push(await runOne({ ...ctx, ...candidate, sampleIndex }));
   }
   return rows;
@@ -197,14 +202,60 @@ function majority(rows) {
   return notLow > low ? "NOT_LOW" : "LOW";
 }
 
+function labelCounts(rows) {
+  return {
+    LOW: count(rows, "LOW"),
+    NOT_LOW: count(rows, "NOT_LOW"),
+    INVALID: count(rows, "INVALID"),
+  };
+}
+
+function lowProbability(rows) {
+  return rows.length ? count(rows, "LOW") / rows.length : 0;
+}
+
+function isLowSide(rows, targetLowPct) {
+  return lowProbability(rows) >= targetLowPct;
+}
+
+function wilsonInterval(successes, total, z = 1.96) {
+  if (!total) return { low: 0, high: 1 };
+  const p = successes / total;
+  const z2 = z ** 2;
+  const denom = 1 + z2 / total;
+  const center = (p + z2 / (2 * total)) / denom;
+  const margin = z * Math.sqrt((p * (1 - p) + z2 / (4 * total)) / total) / denom;
+  return {
+    low: Number(Math.max(0, center - margin).toFixed(4)),
+    high: Number(Math.min(1, center + margin).toFixed(4)),
+  };
+}
+
+function probabilitySummary(rows) {
+  const counts = labelCounts(rows);
+  const ci = wilsonInterval(counts.LOW, rows.length);
+  return {
+    total: rows.length,
+    low: counts.LOW,
+    notLow: counts.NOT_LOW,
+    invalid: counts.INVALID,
+    lowPct: Number(lowProbability(rows).toFixed(4)),
+    lowPctWilson95: ci,
+  };
+}
+
 function summarizeBand(rows, lowAmount, highAmount) {
+  const lowRows = rows.filter((row) => row.amount === lowAmount);
+  const highRows = rows.filter((row) => row.amount === highAmount);
   return {
     low: lowAmount,
     high: highAmount,
     width: Number((highAmount - lowAmount).toFixed(2)),
     samplesPerState: rows.length ? Math.max(...rows.map((row) => row.sampleIndex + 1)) : 0,
-    lowLabel: majority(rows.filter((row) => row.amount === lowAmount)),
-    highLabel: majority(rows.filter((row) => row.amount === highAmount)),
+    lowLabel: majority(lowRows),
+    highLabel: majority(highRows),
+    lowProbability: probabilitySummary(lowRows),
+    highProbability: probabilitySummary(highRows),
   };
 }
 
@@ -234,7 +285,7 @@ async function runLegacyScanSearch(ctx) {
     const amount = Number(((band.low + band.high) / 2).toFixed(2));
     const sampled = await sampleCandidate(ctx, { amount, epoch, candidateKind: "binary_midpoint" });
     rows.push(...sampled);
-    if (majority(sampled) === "NOT_LOW") band = { ...band, high: amount };
+    if (!isLowSide(sampled, ctx.args.targetLowPct)) band = { ...band, high: amount };
     else band = { ...band, low: amount };
   }
   return { rows, band: summarizeBand(rows, band.low, band.high) };
@@ -245,33 +296,50 @@ async function runAdaptiveBandSearch(ctx) {
   const sampledByAmount = new Map();
   const sample = async (amount, epoch, candidateKind) => {
     const key = Number(amount.toFixed(2));
-    if (sampledByAmount.has(key)) return sampledByAmount.get(key);
-    const sampled = await sampleCandidate(ctx, { amount: key, epoch, candidateKind });
-    sampledByAmount.set(key, sampled);
+    if (!sampledByAmount.has(key)) sampledByAmount.set(key, []);
+    const existing = sampledByAmount.get(key);
+    if (existing.length >= ctx.args.samples) return existing;
+    const sampled = await sampleCandidate(ctx, { amount: key, epoch, candidateKind }, ctx.args.samples - existing.length, existing.length);
+    existing.push(...sampled);
     rows.push(...sampled);
-    return sampled;
+    return existing;
+  };
+  const refine = async (amount, epoch) => {
+    const key = Number(amount.toFixed(2));
+    if (!sampledByAmount.has(key)) sampledByAmount.set(key, []);
+    const existing = sampledByAmount.get(key);
+    const needed = Math.max(0, ctx.args.refineSamples - existing.length);
+    if (!needed) return existing;
+    const sampled = await sampleCandidate(ctx, { amount: key, epoch, candidateKind: "band_refine" }, needed, existing.length);
+    existing.push(...sampled);
+    rows.push(...sampled);
+    return existing;
   };
 
   const minRows = await sample(ctx.args.min, 0, "boundary_low");
   const maxRows = await sample(ctx.args.max, 0, "boundary_high");
-  const minLabel = majority(minRows);
-  const maxLabel = majority(maxRows);
-  if (minLabel === maxLabel) {
-    return { rows, band: { low: ctx.args.min, high: ctx.args.max, width: ctx.args.max - ctx.args.min, samplesPerState: ctx.args.samples, lowLabel: minLabel, highLabel: maxLabel, unbracketed: true } };
+  const minLowSide = isLowSide(minRows, ctx.args.targetLowPct);
+  const maxLowSide = isLowSide(maxRows, ctx.args.targetLowPct);
+  if (minLowSide === maxLowSide) {
+    await refine(ctx.args.min, ctx.args.epochs + 1);
+    await refine(ctx.args.max, ctx.args.epochs + 1);
+    return { rows, band: { ...summarizeBand(rows, ctx.args.min, ctx.args.max), unbracketed: true } };
   }
 
-  let band = minLabel === "LOW"
+  let band = minLowSide
     ? { low: ctx.args.min, high: ctx.args.max }
     : { low: ctx.args.max, high: ctx.args.min };
 
   for (let epoch = 1; epoch <= ctx.args.epochs && Math.abs(band.high - band.low) > ctx.args.convergeWidth; epoch += 1) {
     const amount = Number(((band.low + band.high) / 2).toFixed(2));
     const sampled = await sample(amount, epoch, "binary_midpoint");
-    if (majority(sampled) === "NOT_LOW") band = { ...band, high: amount };
+    if (!isLowSide(sampled, ctx.args.targetLowPct)) band = { ...band, high: amount };
     else band = { ...band, low: amount };
   }
   const low = Math.min(band.low, band.high);
   const high = Math.max(band.low, band.high);
+  await refine(low, ctx.args.epochs + 1);
+  await refine(high, ctx.args.epochs + 1);
   return { rows, band: summarizeBand(rows, low, high) };
 }
 
@@ -292,12 +360,12 @@ function renderMarkdown(groups, metadata) {
 }
 
 function renderBandsMarkdown(bands, metadata) {
-  const lines = ["# Low Threshold Bands", "", `Created: ${metadata.createdAt}`, `Commit: ${metadata.commitHash}`, "", "| Model | Context | Lower observed bound | Upper observed bound | Width | Lower label | Upper label | Notes |", "| --- | --- | ---: | ---: | ---: | --- | --- | --- |"];
+  const lines = ["# Low Threshold Bands", "", `Created: ${metadata.createdAt}`, `Commit: ${metadata.commitHash}`, "", "| Model | Context | Lower observed bound | Upper observed bound | Width | Lower P(LOW) | Upper P(LOW) | Notes |", "| --- | --- | ---: | ---: | ---: | ---: | ---: | --- |"];
   for (const item of bands.sort((a, b) => `${a.model}:${a.contextId}`.localeCompare(`${b.model}:${b.contextId}`, undefined, { numeric: true }))) {
     const note = item.lowLabel === "INVALID" || item.highLabel === "INVALID"
       ? "Samples failed or did not return allowed labels."
-      : item.unbracketed ? "No LOW/NOT_LOW bracket inside the tested range." : "Estimated band, not an exact threshold.";
-    lines.push(`| \`${item.model}\` | \`${item.contextId}\` | ${item.low} | ${item.high} | ${item.width} | ${item.lowLabel} | ${item.highLabel} | ${note} |`);
+      : item.unbracketed ? "No P(LOW) crossing inside the tested range." : "Estimated probability band, not an exact threshold.";
+    lines.push(`| \`${item.model}\` | \`${item.contextId}\` | ${item.low} | ${item.high} | ${item.width} | ${pct(item.lowProbability?.low ?? 0, item.lowProbability?.total ?? 0)} | ${pct(item.highProbability?.low ?? 0, item.highProbability?.total ?? 0)} | ${note} |`);
   }
   return `${lines.join("\n")}\n`;
 }
@@ -306,6 +374,8 @@ function renderAnalysis() {
   return `# Low Analysis
 
 Both labels can be defensible because the prompt asks the model to resolve \`low\` without a dollar threshold. A consumer refund amount can be small relative to enterprise spend and still large relative to a household budget. The retrieved-context variants are perturbation probes, not claimant facts and not business-policy changes. They test whether nearby accidental context from memory, RAG, prior turns, or assembled context can move the implicit dollar boundary while the refund case itself stays unchanged.
+
+The reported boundary is a probability band. The search estimates \`P(LOW | amount)\`, bisects the tested dollar range around the target probability, then adds more samples at the final band endpoints. It should be read as an empirical transition region with uncertainty, not as a true threshold learned from the model.
 
 Deterministic replacement policy: define the boundary outside the model, for example \`LOW iff amount_usd <= 100\`, version that threshold, log the version used for each decision, and let the model classify only facts that do not determine the approval boundary.
 `;
@@ -319,15 +389,17 @@ async function main() {
   }
   validateCommonArgs(args);
   if (args.max <= args.min) throw new Error("--max must be greater than --min.");
+  if (!Number.isInteger(args.refineSamples) || args.refineSamples < args.samples) throw new Error("--refine-samples must be an integer >= --samples.");
+  if (!Number.isFinite(args.targetLowPct) || args.targetLowPct <= 0 || args.targetLowPct >= 1) throw new Error("--target-low-pct must be between 0 and 1.");
 
-  const fixture = { contexts: Object.fromEntries(contextIds(args).map((id) => [id, CONTEXTS[id]])), scanPoints: args.scan ? scanPoints(args) : null, min: args.min, max: args.max, searchMethod: args.scan ? "fixed_scan_then_binary_refinement" : "bounded_binary_band_search" };
+  const fixture = { contexts: Object.fromEntries(contextIds(args).map((id) => [id, CONTEXTS[id]])), scanPoints: args.scan ? scanPoints(args) : null, min: args.min, max: args.max, refineSamples: args.refineSamples, targetLowPct: args.targetLowPct, searchMethod: args.scan ? "fixed_scan_then_binary_refinement" : "bounded_probability_band_search" };
   const { runDir, metadata } = await prepareRunDir({
     testbed: "low",
     label: args.label,
     args,
     prompts: ["system-prompt.txt", "user-template.txt"],
     fixture,
-    search: { range: { min: args.min, max: args.max, initialScan: fixture.scanPoints }, convergenceRule: `${fixture.searchMethod} stops after ${args.epochs} epochs or when high-low <= ${args.convergeWidth}` },
+    search: { range: { min: args.min, max: args.max, initialScan: fixture.scanPoints }, convergenceRule: `${fixture.searchMethod} targets P(LOW)=${args.targetLowPct}, stops after ${args.epochs} epochs or when high-low <= ${args.convergeWidth}, then refines final endpoints to ${args.refineSamples} samples` },
     extraResultFiles: { thresholdBandsJson: "threshold-bands.json", thresholdBandsMarkdown: "threshold-bands.md" },
   });
   await writePromptFiles(runDir, { "system-prompt.txt": SYSTEM_PROMPT, "user-template.txt": userPrompt("X", "fact_only") });
