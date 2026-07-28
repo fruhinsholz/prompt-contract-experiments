@@ -108,23 +108,35 @@ function renderHtml(images) {
     .list { overflow: auto; padding: 10px; display: grid; align-content: start; gap: 8px; }
     .item {
       display: grid;
-      grid-template-columns: 96px minmax(0, 1fr);
-      gap: 10px;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 8px;
       width: 100%;
       padding: 8px;
       border: 1px solid transparent;
       border-radius: 8px;
       background: transparent;
       text-align: left;
-      cursor: pointer;
     }
     .item:hover, .item.active { background: var(--hover); border-color: #cbd5e1; }
+    .itemSelect {
+      display: grid;
+      grid-template-columns: 96px minmax(0, 1fr);
+      gap: 10px;
+      width: 100%;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
     .thumb { width: 96px; height: 68px; border: 1px solid var(--line); border-radius: 6px; background: #fff; object-fit: contain; }
     .meta { min-width: 0; display: grid; gap: 2px; align-content: start; }
     .model { font-weight: 700; overflow-wrap: anywhere; }
     .test { color: #334155; font-size: 12px; overflow-wrap: anywhere; }
     .date { color: var(--muted); font-size: 12px; }
     .file { color: var(--muted); font-size: 11px; overflow-wrap: anywhere; }
+    .itemActions { display: none; }
     main { min-width: 0; display: grid; grid-template-rows: auto minmax(0, 1fr); }
     .viewerHead {
       display: grid;
@@ -139,11 +151,10 @@ function renderHtml(images) {
     .titleBlock h2 { margin: 0 0 4px; font-size: 17px; letter-spacing: 0; overflow-wrap: anywhere; }
     .titleBlock div { color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
     .actions { display: flex; gap: 8px; align-items: center; }
-    .canvas { min-width: 0; min-height: 0; padding: 24px; overflow: auto; display: grid; place-items: center; }
+    .canvas { min-width: 0; min-height: 0; padding: 10px; overflow: auto; display: grid; place-items: start center; }
     .fullImage {
-      max-width: min(100%, 1180px);
-      max-height: calc(100vh - 150px);
-      width: auto;
+      width: 100%;
+      max-width: 100%;
       height: auto;
       object-fit: contain;
       background: #fff;
@@ -174,12 +185,23 @@ function renderHtml(images) {
     }
     .toast.show { opacity: 1; }
     @media (max-width: 820px) {
-      .app { grid-template-columns: 1fr; grid-template-rows: 46vh 54vh; }
-      aside { border-right: 0; border-bottom: 1px solid var(--line); }
-      .viewerHead { padding: 12px; grid-template-columns: 1fr; }
+      body { min-height: 100svh; }
+      .app { display: block; min-height: 100svh; height: auto; overflow: visible; }
+      aside { min-height: 100svh; border-right: 0; }
+      main { display: none; }
+      .topbar { padding: 14px 14px 10px; }
+      .filters { position: sticky; top: 0; z-index: 2; background: #fff; }
+      .list { overflow: visible; padding: 10px; }
+      .item { border-color: var(--line); background: #fff; }
+      .itemSelect { grid-template-columns: 108px minmax(0, 1fr); }
+      .thumb { width: 108px; height: 78px; }
+      .itemActions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+      .itemActions .actionButton { min-width: 0; min-height: 34px; padding: 6px 7px; font-size: 12px; }
+      dialog { width: 100vw; height: 100svh; max-width: none; max-height: none; border-radius: 0; }
+      .modalHead { grid-template-columns: 1fr; }
       .actions { flex-wrap: wrap; }
-      .canvas { padding: 12px; }
-      .fullImage { max-height: calc(54vh - 118px); }
+      .modalImageWrap { padding: 8px; }
+      .modalImage { max-width: 100%; max-height: 100%; object-fit: contain; }
     }
   </style>
 </head>
@@ -300,10 +322,21 @@ function renderHtml(images) {
       const list = filteredImages();
       if (!list.includes(state.selected)) state.selected = list[0] ?? null;
       els.list.innerHTML = list.map(renderItem).join("") || '<div class="empty">No matching images.</div>';
-      els.list.querySelectorAll(".item").forEach((button) => {
+      els.list.querySelectorAll(".itemSelect").forEach((button) => {
         button.addEventListener("click", () => {
           state.selected = images.find((item) => item.fileName === button.dataset.file);
           render();
+        });
+      });
+      els.list.querySelectorAll("[data-action]").forEach((button) => {
+        button.addEventListener("click", (event) => {
+          event.stopPropagation();
+          const item = images.find((image) => image.fileName === button.dataset.file);
+          state.selected = item;
+          const action = button.dataset.action;
+          if (action === "open") openModal(item);
+          if (action === "copy-file") copyFilename(item);
+          if (action === "copy-image") copyImage(item);
         });
       });
       renderSelected();
@@ -311,14 +344,20 @@ function renderHtml(images) {
 
     function renderItem(item) {
       const active = state.selected?.fileName === item.fileName ? " active" : "";
-      return '<button class="item' + active + '" role="option" aria-selected="' + (active ? "true" : "false") + '" data-file="' + escapeHtml(item.fileName) + '">'
+      return '<div class="item' + active + '" role="option" aria-selected="' + (active ? "true" : "false") + '">'
+        + '<button class="itemSelect" data-file="' + escapeHtml(item.fileName) + '">'
         + '<img class="thumb" src="' + escapeHtml(item.path) + '" alt="">'
         + '<span class="meta">'
         + '<span class="model">' + escapeHtml(item.model) + '</span>'
         + '<span class="test">' + escapeHtml(item.test) + '</span>'
         + '<span class="date">' + escapeHtml(formatDate(item.generatedAt)) + '</span>'
         + '<span class="file">' + escapeHtml(item.fileName) + '</span>'
-        + '</span></button>';
+        + '</span></button>'
+        + '<span class="itemActions">'
+        + '<button class="actionButton" data-action="open" data-file="' + escapeHtml(item.fileName) + '">Open</button>'
+        + '<button class="actionButton" data-action="copy-file" data-file="' + escapeHtml(item.fileName) + '">Copy name</button>'
+        + '<button class="actionButton" data-action="copy-image" data-file="' + escapeHtml(item.fileName) + '">Copy image</button>'
+        + '</span></div>';
     }
 
     function renderSelected() {
@@ -335,8 +374,8 @@ function renderHtml(images) {
       els.canvas.innerHTML = '<img class="fullImage" src="' + escapeHtml(item.path) + '" alt="' + escapeHtml(item.fileName) + '">';
     }
 
-    function openModal() {
-      const item = state.selected;
+    function openModal(selectedItem) {
+      const item = selectedItem ?? state.selected;
       if (!item) return;
       els.modalTitle.textContent = item.model + " - " + item.test + " - " + item.fileName;
       els.modalImage.src = item.path;
@@ -344,14 +383,15 @@ function renderHtml(images) {
       els.dialog.showModal();
     }
 
-    async function copyFilename() {
-      if (!state.selected) return;
-      await navigator.clipboard.writeText(state.selected.fileName);
+    async function copyFilename(selectedItem) {
+      const item = selectedItem ?? state.selected;
+      if (!item) return;
+      await navigator.clipboard.writeText(item.fileName);
       showToast("Filename copied");
     }
 
-    async function copyImage() {
-      const item = state.selected;
+    async function copyImage(selectedItem) {
+      const item = selectedItem ?? state.selected;
       if (!item) return;
       try {
         const response = await fetch(item.path);
