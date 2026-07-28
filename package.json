@@ -18,6 +18,7 @@
     "results:graphs": "npm run thresholds:graphs && npm run results:price-iteration && npm run results:publication-clean && npm run viewer:build",
     "check": "node --check experiments/prompt-drift/run.mjs && node --check experiments/prompt-drift/report.mjs && node --check experiments/prompt-thresholds/src/shared/harness.mjs && node --check scripts/plot-price-vs-iteration.mjs && node --check scripts/build-image-viewer.mjs && node --check scripts/serve-image-viewer.mjs && npm run results:graphs",
     "viewer:build": "node scripts/build-image-viewer.mjs",
-    "viewer": "npm run viewer:build && node scripts/serve-image-viewer.mjs"
+    "viewer": "npm run viewer:build && node scripts/serve-image-viewer.mjs",
+    "viewer:lan": "npm run viewer:build && HOST=0.0.0.0 VIEWER_USER=viewer VIEWER_PASSWORD=${VIEWER_PASSWORD:-password} node scripts/serve-image-viewer.mjs"
   }
 }

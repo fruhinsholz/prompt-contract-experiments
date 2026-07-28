@@ -79,6 +79,14 @@ npm run viewer
 
 Then visit `http://127.0.0.1:4177/`. The viewer lists generated files by model, test context, and generation time. Click an item to preview it, use `Open full` for the large image, and copy either the filename or the rendered image from the open view. SVG images are copied as PNG when the browser permits clipboard image writes. Keep the browser URL on `localhost` when using copy actions; remote LAN HTTP pages may not receive clipboard permissions.
 
+For a LAN-visible viewer on Bee, bind the server to all interfaces and set a basic-auth password:
+
+```bash
+VIEWER_PASSWORD=password npm run viewer:lan
+```
+
+Then visit `http://10.0.0.73:4177/` from the internal network and log in with `viewer` / `password`. The password is intentionally a local runtime setting, not a repository secret.
+
 New LOW runs use bounded probability band search by default, so the useful interpretation is interval contraction plus endpoint `P(LOW)` estimates, not a complete list of scanned prices or a single exact threshold.
 
 Recommended article citation: link to this repository or to [docs/price-vs-iteration.md](docs/price-vs-iteration.md). Do not duplicate the graph set in the article unless a specific figure becomes necessary for the argument.
