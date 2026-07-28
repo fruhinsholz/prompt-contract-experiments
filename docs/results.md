@@ -7,6 +7,8 @@
 ## Prompt Thresholds
 
 - `experiments/prompt-thresholds/results/`: timestamped LOW and ENOUGH runs with raw JSONL, summaries, analysis files, and metadata.
+- `experiments/prompt-thresholds/retrieved-context-publication-clean-2026-07-28.md`: clean publication summary for the LOW retrieved-context article numbers. Use this instead of older exploratory runs when citing final article or appendix values.
+- `experiments/prompt-thresholds/retrieved-context-publication-clean-2026-07-28.csv`: machine-readable version of the same clean publication summary.
 - `experiments/prompt-thresholds/figures/`: compact SVG summaries for retrieved-context LOW threshold behavior.
 - `images/results/price-vs-iteration/`: scatter plots generated from LOW raw calls.
 

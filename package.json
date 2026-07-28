@@ -14,7 +14,8 @@
     "thresholds:low:retrieved-context": "node experiments/prompt-thresholds/src/low-retrieved-context.mjs",
     "thresholds:graphs": "node experiments/prompt-thresholds/src/visualize-readme.mjs",
     "results:price-iteration": "node scripts/plot-price-vs-iteration.mjs",
-    "results:graphs": "npm run thresholds:graphs && npm run results:price-iteration",
+    "results:publication-clean": "node scripts/summarize-publication-clean.mjs",
+    "results:graphs": "npm run thresholds:graphs && npm run results:price-iteration && npm run results:publication-clean",
     "check": "node --check experiments/prompt-drift/run.mjs && node --check experiments/prompt-drift/report.mjs && node --check experiments/prompt-thresholds/src/shared/harness.mjs && node --check scripts/plot-price-vs-iteration.mjs && npm run results:graphs"
   }
 }
