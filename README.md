@@ -63,6 +63,8 @@ The repository is meant to be cited as a whole, not copied into the article. Use
 
 These charts plot refund amount against chronological iteration. Each chart groups only runs that belong together: same run directory and same context, with models plotted together when the run compares models under the same fixture. They are useful for spotting convergence, divergence, and unstable boundary behavior without turning the article into a model benchmark.
 
+Every generated figure should include a concise visual description: what is visible, which experiment or context it belongs to, and what the reader should notice. A filename, model name, or raw chart alone is not enough context.
+
 Regenerate figures after adding or changing tracked results:
 
 ```bash
