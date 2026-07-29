@@ -47,17 +47,22 @@ More images: [price-versus-iteration index](../../../docs/price-vs-iteration.md)
 ## Clean Publication Result
 
 - OpenAI clean run: `experiments/prompt-thresholds/results/2026-07-28T00-02-02-696Z-publication-clean-openai-low/`.
+- OpenAI GPT 5.x clean run: `experiments/prompt-thresholds/results/2026-07-29T18-47-12-806Z-publication-clean-openai-gpt55-gpt56-max1024-low/`.
 - Gemini clean run: `experiments/prompt-thresholds/results/2026-07-28T00-13-22-919Z-publication-clean-gemini-low/`.
 - `gpt-4.1`: baseline `$156.25-$175.78`; `$5` context `$0-$19.53`; `$100k` context `>$20,000`.
 - `gpt-4.1-mini`: baseline `$156.25-$175.78`; `$5` context `$0-$19.53`; `$100k` context `>$20,000`.
+- `gpt-5.5`: baseline `$996.10-$1,015.63`; `$5` context `$488.28-$507.81`; `$100k` context `$19,980.47-$20,000`.
+- `gpt-5.6`: baseline `$97.66-$117.19`; `$5` context `$39.06-$58.59`; `$100k` context `>$20,000`.
 - `gemini-3.5-flash-lite`: baseline `$78.13-$97.66`; `$5` context `$39.06-$58.59`; `$100k` context `$10,585.94-$10,605.47`.
 - `gemini-3.6-flash`: baseline `$39.06-$58.59`; `$5` context `$0-$19.53`; `$100k` context `>$20,000`.
+
+The GPT 5.x run uses `--max-output-tokens 1024`. A first attempt with `256` produced a truncated `gpt-5.5` response because internal reasoning consumed the output budget before the one-token label. The published GPT 5.x run has 860 raw calls, 0 invalid labels, 0 truncations, and 0 request errors.
 
 ## Reproduce
 
 ```bash
 npm run thresholds:low:retrieved-context -- --models gpt-4.1-mini,gpt-4.1 --contexts all --samples 10 --refine-samples 30 --epochs 10 --max 20000 --max-calls 2000 --gzip-jsonl --label publication-clean-openai
+npm run thresholds:low:retrieved-context -- --models gpt-5.5,gpt-5.6 --contexts all --samples 10 --refine-samples 30 --epochs 10 --max 20000 --max-output-tokens 1024 --max-calls 2000 --gzip-jsonl --label publication-clean-openai-gpt55-gpt56-max1024
 npm run thresholds:low:retrieved-context -- --provider gemini --models gemini-3.5-flash-lite,gemini-3.6-flash --contexts all --samples 10 --refine-samples 30 --epochs 10 --max 20000 --max-output-tokens 256 --reasoning-effort none --max-calls 2500 --gzip-jsonl --label publication-clean-gemini
 npm run results:price-iteration
 ```
-

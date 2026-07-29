@@ -78,7 +78,8 @@ function scanPoints(args) {
 
 function userPrompt(amount, contextId) {
   const context = CONTEXTS[contextId];
-  return `${context ? `${context}\n\n` : ""}Case:\nA customer submitted a refund claim for $${formatMoney(amount)} for a consumer purchase.\n\nClassify the claim amount as exactly one label:\nLOW\nNOT_LOW\n\nReturn only the label.`;
+  const displayAmount = amount === "X" ? "X" : formatMoney(amount);
+  return `${context ? `${context}\n\n` : ""}Case:\nA customer submitted a refund claim for $${displayAmount} for a consumer purchase.\n\nClassify the claim amount as exactly one label:\nLOW\nNOT_LOW\n\nReturn only the label.`;
 }
 
 function dryRunLabel(amount) {
