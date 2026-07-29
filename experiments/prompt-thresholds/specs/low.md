@@ -30,6 +30,6 @@ Optional retrieved-context perturbation fixtures:
 
 These fragments are not claimant facts and not refund policy. They represent plausible assembled context from RAG, memory, prior turns, or workflow state.
 
-Default search: initial scan across `0..10000`, then binary search inside the first majority flip band.
+Default search: bounded probability band search over `0..20000`, sampling both endpoints and then bisecting toward the `P(LOW)=0.5` transition. If `--scan` is supplied, the harness uses the legacy fixed scan and then refines the first majority flip band.
 
 Default deterministic replacement policy for analysis: `LOW iff amount_usd <= 100`.

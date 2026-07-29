@@ -17,7 +17,7 @@ function parseImage(fileName, fileStat) {
     path: `../images/results/price-vs-iteration/${fileName}`,
     extension: (groups.ext ?? path.extname(fileName).slice(1)).toLowerCase(),
     generatedAt: parseStamp(groups.stamp) ?? fileStat.mtime.toISOString(),
-    modifiedAt: fileStat.mtime.toISOString(),
+    modifiedAt: parseStamp(groups.stamp) ?? fileStat.mtime.toISOString(),
     run: labelizeRun(groups.run ?? "unknown run"),
     model: groups.model ?? "unknown model",
     test: labelizeContext(context),

@@ -86,7 +86,7 @@ Primary fixture: fact-only refund amount classification. The prompt asks whether
 Default search method:
 
 ```text
-bounded binary band search over $0..$20,000
+bounded probability band search over $0..$20,000, targeting P(LOW)=0.5
 ```
 
 The program samples each tested amount 10 times by default. It samples the lower and upper bounds first, then bisects the current empirical LOW/NOT_LOW band until `--epochs` is exhausted or `--converge-width` is reached. The output is an approximate band, not an exact threshold. Each run writes `threshold-bands.json` and `threshold-bands.md` next to the raw JSONL and regular summaries.

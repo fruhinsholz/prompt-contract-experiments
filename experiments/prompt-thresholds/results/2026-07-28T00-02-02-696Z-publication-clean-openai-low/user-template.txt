@@ -1,5 +1,5 @@
 Case:
-A customer submitted a refund claim for $NaN for a consumer purchase.
+A customer submitted a refund claim for $X for a consumer purchase.
 
 Classify the claim amount as exactly one label:
 LOW
