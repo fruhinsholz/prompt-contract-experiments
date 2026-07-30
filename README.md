@@ -2,7 +2,7 @@
 
 This repository contains the reproducible evidence behind [Prompt Edits Are Architecture Changes](https://blog.fruhinsholz.com/draft/prompt-edits-are-architecture-changes/). The article argues that prompts can hide operational contracts: when model judgment controls a consequence-bearing value, the boundary should be externalized, pinned, versioned, and enforced outside the model.
 
-The repository is intentionally narrow. It is not a benchmark suite and it is not a general prompt-bias archive. It keeps only the experiments used by the article, the scripts needed to reproduce them, the latest clean result sets, generated result images, and downloadable skills for finding similar contract-shaped risks and mapping the exact labels or thresholds that carry those risks in your own codebase.
+The repository is intentionally narrow. It is not a benchmark suite and it is not a general prompt-bias archive. It keeps only the experiments used by the article, the scripts needed to reproduce them, the latest clean result sets, generated result images, and a downloadable skill for finding similar contract-shaped risks, plus an experimental protocol for context-influence benches around exact labels and thresholds.
 
 The article uses two kinds of examples. First, the `LOW` refund experiment shows that a vague label can hide a dollar threshold. The same refund case is classified under three context conditions: fact only, nearby context mentioning a `$5` gift card, and nearby context mentioning a `$100,000` contract. The tested case does not change, but the observed transition band for `LOW` moves.
 
@@ -15,7 +15,7 @@ Start with [docs/experiments.md](docs/experiments.md) for the article evidence m
 - [LOW Retrieved Context](experiments/low-retrieved-context/): refund amount classification with fact-only, `$5` gift-card, and `$100,000` contract context variants.
 - [ENOUGH Evidence Sufficiency](experiments/enough-evidence-sufficiency/): two-phase probe for minimum evidence count and minimum active-row score.
 - [Prompt Contract Audit Skill](skills/prompt-contract-audit/): a reusable skill for finding possible hidden prompt contracts in a codebase.
-- [Prompt Threshold Map Skill](skills/prompt-threshold-map/): a follow-up protocol for building a small drift bench around exact vague labels, candidate context, expected outcomes, explicit thresholds, implicit boundaries, and deterministic replacements.
+- [Experimental Prompt Threshold Map](experimental/prompt-threshold-map/): an experimental context-influence protocol for testing whether injected, irrelevant, ambiguous, or poison context moves a hidden boundary while the actual case stays fixed.
 
 ## Repository Layout
 
@@ -39,7 +39,7 @@ src/
 scripts/
 images/results/
 skills/prompt-contract-audit/
-skills/prompt-threshold-map/
+experimental/prompt-threshold-map/
 docs/
 ```
 
