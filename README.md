@@ -54,6 +54,32 @@ npm run check
 
 Live runs need `OPENAI_API_KEY` or `GEMINI_API_KEY` in the environment. Do not commit secrets.
 
+## Smoke Test
+
+Run this before the full article reproduction commands. It checks that a fresh checkout can install, build the generated views, reach a live model provider, parse allowed labels, and write usable result files without spending the calls needed for the publication runs.
+
+The commands below use Gemini because the sample is intentionally small. Use any equivalent configured provider if you are testing a different key.
+
+```bash
+npm install --package-lock=false
+npm run check
+
+export GEMINI_API_KEY="..."
+npm run thresholds:low:retrieved-context -- --provider gemini --models gemini-3.5-flash-lite --contexts fact_only --samples 1 --refine-samples 1 --epochs 1 --max-output-tokens 256 --reasoning-effort none --max-calls 20 --label smoke-gemini-low
+npm run thresholds:enough -- --provider gemini --models gemini-3.5-flash-lite --mode contract --samples 1 --epochs 1 --max-output-tokens 256 --reasoning-effort none --max-calls 20 --label smoke-gemini-enough
+npm run results:graphs
+```
+
+Expected result:
+
+- `npm run check` exits successfully.
+- The LOW smoke run writes a new directory under `experiments/low-retrieved-context/results/` and reports only `LOW`, `NOT_LOW`, or both.
+- The ENOUGH smoke run writes a new directory under `experiments/enough-evidence-sufficiency/results/` and reports only `ENOUGH`, `NOT_ENOUGH`, or both.
+- The generated summaries report `0` invalid labels, `0` truncations, and `0` request errors.
+- `npm run results:graphs` leaves the committed publication figures and summaries unchanged. `git status --short` should show only the new smoke result directories, if you keep them.
+
+This is only a health check. It does not replace the full commands below and should not be used as article evidence.
+
 ## Reproduce The Article Runs
 
 LOW retrieved context:
