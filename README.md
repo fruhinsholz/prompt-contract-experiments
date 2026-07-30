@@ -10,6 +10,8 @@ Second, the `ENOUGH` evidence experiment shows the same pattern for sufficiency 
 
 ## Experiments
 
+Start with [docs/experiments.md](docs/experiments.md) for the article evidence map: raw calls, figures, reproduction paths, and limits. Use [docs/workflow.md](docs/workflow.md) for reruns and maintenance.
+
 - [LOW Retrieved Context](experiments/low-retrieved-context/): refund amount classification with fact-only, `$5` gift-card, and `$100,000` contract context variants.
 - [ENOUGH Evidence Sufficiency](experiments/enough-evidence-sufficiency/): two-phase probe for minimum evidence count and minimum active-row score.
 - [Prompt Contract Audit Skill](skills/prompt-contract-audit/): a reusable skill for finding possible hidden prompt contracts in a codebase.
@@ -75,5 +77,7 @@ npm run results:graphs
 ```
 
 ## Evidence Rule
+
+The repository is the audit trail: exact prompts, fixtures, commands, model identifiers, raw calls, generated summaries, and figures. Start with [docs/experiments.md](docs/experiments.md).
 
 Treat these results as probes of hidden operational boundaries, not model rankings. The raw calls in each experiment's `results/` directory are the durable evidence. Generated summaries and images are convenience views over those calls.

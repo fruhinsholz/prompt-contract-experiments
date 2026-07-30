@@ -13,7 +13,7 @@ The skill looks for places where model judgment may control a consequence-bearin
 
 ## How To Run It
 
-Use the skill instructions in [SKILL.md](SKILL.md) with your agent or copy the checklist into a code-review workflow. Point it at a repository and ask for prompt-contract candidates.
+Use the skill instructions in [SKILL.md](SKILL.md) with your agent or copy the checklist into a code-review workflow. Point it at a repository and ask for prompt-contract candidates. The useful output is not a verdict; it is a short list of boundaries to externalize, pin, version, and test.
 
 Example request:
 

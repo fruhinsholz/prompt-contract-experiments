@@ -4,25 +4,24 @@ Run the retrieved-context threshold perturbation tests for the `Prompt Edits Are
 
 Goal: measure whether accidental retrieved context, not a claimant fact and not an applicable policy instruction, shifts the implicit threshold at which the model classifies a refund amount as `LOW` vs `NOT_LOW`.
 
-Use the same harness and empirical method as the previous threshold test:
+Use the current LOW retrieved-context harness and empirical method:
 
-- Same model set as the previous threshold run.
-- Same API parameters as the previous threshold run.
-- Same baseline prompt as the previous threshold run.
+- Model set chosen explicitly in the run command.
+- Provider parameters recorded in each result directory metadata.
+- Same minimal classifier prompt across all context variants.
 - Binary search / dichotomy over dollar amounts.
-- 10 runs per sampled amount.
+- 10 runs per sampled amount, plus final band refinement where configured.
 - Return only the model label in each model call.
 - Estimate the transition region for each prompt variant.
-- Compare each variant to the existing baseline/fact-only threshold results.
-- Preserve raw run outputs and summary tables in the article's canonical examples/sources structure.
+- Compare each variant to the fact-only context result from the same clean run.
+- Preserve raw run outputs and generated summaries in this repository.
 
 Important narrative constraint: this is not a bias test and not a test of a new business policy. Treat `Retrieved context:` as a plausible artifact of modern systems where memory, RAG, prior turns, or assembled workflow context can add nearby text that the application does not fully control. The extra text must be plausible and adjacent, but it must not state a rule for the refund decision and must not describe the claimant.
 
-Suggested command from the article root:
+Suggested command from the repository root:
 
 ```bash
-cd /path/to/prompt-contract-experiments
-npm run thresholds:low -- --models gpt-4.1-mini,gpt-4.1 --contexts gift_card_anchor,enterprise_contract_anchor --samples 10 --epochs 10 --max-calls 1000
+npm run thresholds:low:retrieved-context -- --models gpt-4.1-mini,gpt-4.1 --contexts all --samples 10 --refine-samples 30 --epochs 10 --max 20000 --max-calls 2000 --gzip-jsonl --label publication-clean-openai
 ```
 
 Baseline prompt:
@@ -72,7 +71,7 @@ Return only the label.
 
 Expected output:
 
-1. A concise table with baseline threshold, `$5 gift card` context threshold, `$100,000 contract` context threshold, and deltas.
+1. A concise table with fact-only threshold, `$5 gift card` context threshold, `$100,000 contract` context threshold, and deltas.
 2. Raw per-amount counts such as `LOW 7/10`, `NOT_LOW 3/10`.
 3. Notes on whether the perturbation appears stable, weak, absent, or model-dependent.
 4. A short editorial note explaining whether the result strengthens the article's claim that prompt context can hide an operational contract drift risk.

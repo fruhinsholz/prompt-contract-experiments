@@ -1,0 +1,84 @@
+# Experiments
+
+This is the audit trail for the article [Prompt Edits Are Architecture Changes](https://blog.fruhinsholz.com/draft/prompt-edits-are-architecture-changes/). Start here if you want to inspect the evidence without reading the whole repository.
+
+The repository contains two article-grade experiments. They are probes of hidden operational contracts, not benchmarks and not model rankings.
+
+## What To Inspect First
+
+1. Read the experiment READMEs:
+   - [LOW Retrieved Context](../experiments/low-retrieved-context/)
+   - [ENOUGH Evidence Sufficiency](../experiments/enough-evidence-sufficiency/)
+2. Check the generated figures:
+   - [LOW price vs iteration figures](price-vs-iteration.md)
+   - [ENOUGH threshold figures](enough-thresholds.md)
+3. Inspect raw calls and generated summaries in the result directories listed below.
+4. Use [docs/workflow.md](workflow.md) only when you want to rerun the experiments or regenerate the figures.
+
+## Experiment 1: LOW Retrieved Context
+
+Question: can the vague label `LOW` hide a dollar threshold, and can nearby retrieved context move that threshold while the actual refund case stays unchanged?
+
+Current clean result directories:
+
+- [OpenAI gpt-4.1 and gpt-4.1-mini](../experiments/low-retrieved-context/results/2026-07-28T00-02-02-696Z-publication-clean-openai-low/)
+- [OpenAI gpt-5.5 and gpt-5.6](../experiments/low-retrieved-context/results/2026-07-29T18-47-12-806Z-publication-clean-openai-gpt55-gpt56-max1024-low/)
+- [Gemini 3.5 and 3.6](../experiments/low-retrieved-context/results/2026-07-28T00-13-22-919Z-publication-clean-gemini-low/)
+
+Important files:
+
+- Script: [src/low-retrieved-context.mjs](../src/low-retrieved-context.mjs)
+- Prompt spec: [specs/low.md](../specs/low.md)
+- Retrieved-context fixture: [specs/low-retrieved-context.md](../specs/low-retrieved-context.md)
+- Shared harness: [src/shared/harness.mjs](../src/shared/harness.mjs)
+
+Each result directory contains raw `calls.jsonl`, `metadata.json`, exact prompt templates, fixture data, threshold bands, summaries, and analysis notes. The raw calls are the durable evidence. Markdown, CSV, and SVG files are generated views over those calls.
+
+Minimal reproduction path:
+
+```bash
+npm install
+npm run thresholds:low:retrieved-context -- --models gpt-4.1-mini,gpt-4.1 --contexts all --samples 10 --refine-samples 30 --epochs 10 --max 20000 --max-calls 2000 --gzip-jsonl --label publication-clean-openai
+npm run results:price-iteration
+```
+
+## Experiment 2: ENOUGH Evidence Sufficiency
+
+Question: can the vague label `ENOUGH` hide a sufficiency policy over evidence count and evidence strength?
+
+Current clean result directories:
+
+- [OpenAI gpt-4.1 and gpt-4.1-mini](../experiments/enough-evidence-sufficiency/results/2026-07-28T03-26-10-470Z-publication-clean-openai-enough-enough/)
+- [OpenAI gpt-5.5 and gpt-5.6](../experiments/enough-evidence-sufficiency/results/2026-07-29T19-37-52-355Z-publication-clean-openai-gpt55-gpt56-enough-max1024-enough/)
+- [Gemini 3.5 and 3.6](../experiments/enough-evidence-sufficiency/results/2026-07-28T03-20-39-966Z-publication-clean-gemini-enough-enough/)
+
+Important files:
+
+- Script: [src/enough.mjs](../src/enough.mjs)
+- Prompt spec: [specs/enough.md](../specs/enough.md)
+- Shared harness: [src/shared/harness.mjs](../src/shared/harness.mjs)
+
+Each result directory contains raw `calls.jsonl`, `metadata.json`, exact prompt templates, fixture data, threshold files, summaries, and analysis notes. The raw calls are the durable evidence.
+
+Minimal reproduction path:
+
+```bash
+npm install
+npm run thresholds:enough -- --models gpt-4.1-mini,gpt-4.1 --mode contract --samples 10 --epochs 7 --max-calls 400 --gzip-jsonl --label publication-clean-openai-enough
+npm run results:enough-thresholds
+```
+
+## What Not To Conclude
+
+- Do not treat these numbers as universal model thresholds.
+- Do not treat cross-model differences as a leaderboard.
+- Do not infer causality from one prompt wording beyond the tested surface.
+- Do not use the result as a business policy.
+
+The claim is narrower and more useful: if a consequence-bearing boundary can be moved by context, model version, prompt wording, or evidence layout, then the boundary is an operational contract. Own it outside the prompt.
+
+## Use This In Your Own System
+
+The reusable review artifact is [skills/prompt-contract-audit](../skills/prompt-contract-audit/). It looks for prompts or agent instructions where a model decides a threshold, sufficiency rule, safety boundary, routing rule, permission rule, publication rule, deletion rule, or spend boundary.
+
+Use it to find candidates for review. Then write the boundary as code, schema, policy, tests, or versioned configuration before it controls production consequences.
