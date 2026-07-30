@@ -23,11 +23,27 @@ Use the prompt-contract-audit skill on this repository. Find places where a prom
 
 ## What You Get
 
-The expected output is a review list. Each candidate should include:
+The expected output starts with `Detected Terms`, then continues with `Findings`.
+
+`Detected Terms` lists the exact prompt words or phrases that control behavior. It is capped at 15 entries. If the cap is reached, the output must say so explicitly and summarize what was omitted at a high level.
+
+Each detected term should include:
+
+- file and line reference
+- exact detected word or phrase
+- source sentence
+- controlled action
+- hidden value
+- hidden contract type
+- impact if interpretation drifts
+
+`Findings` is the fuller audit list. Each candidate should include:
 
 - file and line reference
 - the vague label or judgment being delegated
 - the consequence controlled by that judgment
+- the hidden contract type
+- the impact if interpretation changes
 - why it might be a hidden contract
 - a deterministic replacement shape, if one is appropriate
 - a small experiment or test that would confirm or reject the concern
