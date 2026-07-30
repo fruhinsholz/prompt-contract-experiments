@@ -54,6 +54,29 @@ Full figure index: [docs/price-vs-iteration.md](../../docs/price-vs-iteration.md
 | $100k contract context | `gpt-5.5` | `openai` | $19,980.47 to $20,000 | $19,990.24 | 100.0% | 46.7% | $19.53 | Estimated probability band. |
 | $100k contract context | `gpt-5.6` | `openai` | >$20,000 in tested range |  | 100.0% | 66.7% | $20,000 | No crossing inside tested range. |
 
+
+Binary-search example for the `gpt-5.6` `$5 gift card context` row above:
+
+`P(LOW | amount)` means the observed share of calls that returned `LOW` for that amount. For example, `$39.06` returned `LOW` in `21` of `30` calls, so `P(LOW | $39.06) = 70.0%`. The search first samples broad midpoints, then spends extra calls only at the final band edges.
+
+| Epoch | Amount | Search step | Calls | LOW | NOT_LOW | P(LOW) |
+| ---: | ---: | --- | ---: | ---: | ---: | ---: |
+| 0 | $0 | boundary low | 10 | 10 | 0 | 100.0% |
+| 0 | $20,000 | boundary high | 10 | 0 | 10 | 0.0% |
+| 1 | $10,000 | binary midpoint | 10 | 0 | 10 | 0.0% |
+| 2 | $5,000 | binary midpoint | 10 | 0 | 10 | 0.0% |
+| 3 | $2,500 | binary midpoint | 10 | 0 | 10 | 0.0% |
+| 4 | $1,250 | binary midpoint | 10 | 0 | 10 | 0.0% |
+| 5 | $625 | binary midpoint | 10 | 0 | 10 | 0.0% |
+| 6 | $312.50 | binary midpoint | 10 | 0 | 10 | 0.0% |
+| 7 | $156.25 | binary midpoint | 10 | 0 | 10 | 0.0% |
+| 8 | $78.13 | binary midpoint | 10 | 2 | 8 | 20.0% |
+| 9 | $39.06 | binary midpoint | 10 | 7 | 3 | 70.0% |
+| 10 | $58.59 | binary midpoint | 10 | 1 | 9 | 10.0% |
+| 11 | $39.06 | band refine | +20 | +14 | +6 | 70.0% cumulative |
+| 11 | $58.59 | band refine | +20 | +4 | +16 | 16.7% cumulative |
+
+That run used `160` calls for this model and context. A fixed `10`-call sample at only those same visited amounts would have used `120` calls, but it would not refine the final band edges. A fixed grid fine enough to guarantee the same `$19.53` spacing across `$0` to `$20,000` would require roughly `10,250` calls.
 Run note: the GPT 5.x run uses `--max-output-tokens 1024`; a lower `256` budget was not used for publication because it could truncate the final label after reasoning tokens.
 
 ## 4. Conclusion
