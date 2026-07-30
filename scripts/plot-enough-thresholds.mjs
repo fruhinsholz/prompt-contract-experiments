@@ -4,7 +4,7 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 
 const ROOT = path.resolve(new URL("..", import.meta.url).pathname);
-const RESULTS_ROOT = path.join(ROOT, "experiments/prompt-thresholds/results");
+const RESULTS_ROOT = path.join(ROOT, "experiments/enough-evidence-sufficiency/results");
 const OUT_DIR = path.join(ROOT, "images/results/enough-thresholds");
 const INDEX_FILE = path.join(ROOT, "docs/enough-thresholds.md");
 

@@ -1,7 +1,0 @@
-model,response_models,context_id,amount,total,low,not_low,invalid,output_truncated,low_pct,not_low_pct,errors
-sonnet,,fact_only,0,10,0,0,10,0,0.0%,0.0%,10
-sonnet,,fact_only,20000,10,0,0,10,0,0.0%,0.0%,10
-sonnet,,retrieved_5_gift_card,0,10,0,0,10,0,0.0%,0.0%,10
-sonnet,,retrieved_5_gift_card,20000,10,0,0,10,0,0.0%,0.0%,10
-sonnet,,retrieved_100000_contract,0,10,0,0,10,0,0.0%,0.0%,10
-sonnet,,retrieved_100000_contract,20000,10,0,0,10,0,0.0%,0.0%,10

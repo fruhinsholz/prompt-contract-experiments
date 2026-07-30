@@ -4,9 +4,9 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 
 const ROOT = path.resolve(new URL("..", import.meta.url).pathname);
-const RESULTS_DIR = path.join(ROOT, "experiments/prompt-thresholds/results");
-const OUT_MD = path.join(ROOT, "experiments/prompt-thresholds/retrieved-context-publication-clean-2026-07-28.md");
-const OUT_CSV = path.join(ROOT, "experiments/prompt-thresholds/retrieved-context-publication-clean-2026-07-28.csv");
+const RESULTS_DIR = path.join(ROOT, "experiments/low-retrieved-context/results");
+const OUT_MD = path.join(ROOT, "experiments/low-retrieved-context/results/publication-summary.md");
+const OUT_CSV = path.join(ROOT, "experiments/low-retrieved-context/results/publication-summary.csv");
 
 const CONTEXT_LABELS = new Map([
   ["fact_only", "Fact only"],

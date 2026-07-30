@@ -4,7 +4,7 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 
 const ROOT = path.resolve(new URL("..", import.meta.url).pathname);
-const RESULTS_ROOT = path.join(ROOT, "experiments/prompt-thresholds/results");
+const RESULTS_ROOT = path.join(ROOT, "experiments/low-retrieved-context/results");
 const OUT_DIR = path.join(ROOT, "images/results/price-vs-iteration");
 const INDEX_FILE = path.join(ROOT, "docs/price-vs-iteration.md");
 
