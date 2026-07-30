@@ -1,10 +1,10 @@
 # Prompt Threshold Map
 
-Use this skill after a prompt-contract audit, or when reviewing a codebase, prompt set, agent workflow, product policy, or retrieval stack for the exact words and numeric thresholds that define a consequence-bearing model boundary.
+Use this skill after a prompt-contract audit, or when reviewing a codebase, prompt set, agent workflow, product policy, or retrieval stack for the exact words, candidate context, and numeric thresholds that define a consequence-bearing model boundary.
 
 ## Goal
 
-Turn vague prompt labels and nearby numeric gates into a testable map: exact label, product case, controlled consequence, explicit threshold if one exists, implicit threshold if it does not, smallest drift test, and deterministic boundary candidate.
+Turn vague prompt labels and nearby numeric gates into a small drift bench: exact label, product case, controlled consequence, candidate inputs or context snippets, expected outcomes, explicit threshold if one exists, implicit threshold if it does not, smallest drift test, and deterministic boundary candidate.
 
 ## Procedure
 
@@ -12,11 +12,12 @@ Turn vague prompt labels and nearby numeric gates into a testable map: exact lab
 2. Extract exact judgment words or phrases, including labels such as `low`, `enough`, `high-confidence`, `clear`, `stable`, `private`, `ambiguous`, `explicit`, `safe`, `urgent`, `important`, `similar`, and `relevant`.
 3. Search nearby code and configuration for numeric gates, enums, score bands, similarity cutoffs, approval flags, retention horizons, deletion modes, and classifier thresholds.
 4. For each label, map the product case it controls. Prefer concrete cases such as memory write, context retrieval, deletion, publication, escalation, refusal, approval, spending, routing, or user-visible state.
-5. Distinguish explicit thresholds from implicit thresholds:
+5. Add a few representative cases before judging the boundary: one input or context item that should pass, one that should fail, and one ambiguous case when possible.
+6. Distinguish explicit thresholds from implicit thresholds:
    - Explicit threshold: a number, enum, schema field, state transition, allowlist, or rule exists outside the model.
    - Implicit threshold: the model decides the boundary from wording alone.
-6. Suggest the smallest confirmation test: hold the case constant and vary only one scalar, context note, prompt word, retrieved document, model version, evidence count, similarity score, or policy example.
-7. Suggest a deterministic boundary only when the consequence is material. Prefer code, schemas, pinned thresholds, allowlists, state machines, validators, and audit logs.
+7. Suggest the smallest confirmation test: hold the case constant and vary only one scalar, context note, prompt word, retrieved document, model version, evidence count, similarity score, or policy example.
+8. Suggest a deterministic boundary only when the consequence is material. Prefer code, schemas, pinned thresholds, allowlists, state machines, validators, and audit logs.
 
 ## Output Format
 
@@ -26,6 +27,8 @@ Return a concise table or bullet list with these fields:
 - Location
 - Product case
 - Controlled consequence
+- Candidate cases or context
+- Expected outcome
 - Explicit threshold or implicit boundary
 - Why it can drift
 - Smallest confirmation test

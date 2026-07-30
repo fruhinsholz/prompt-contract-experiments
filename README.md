@@ -15,7 +15,7 @@ Start with [docs/experiments.md](docs/experiments.md) for the article evidence m
 - [LOW Retrieved Context](experiments/low-retrieved-context/): refund amount classification with fact-only, `$5` gift-card, and `$100,000` contract context variants.
 - [ENOUGH Evidence Sufficiency](experiments/enough-evidence-sufficiency/): two-phase probe for minimum evidence count and minimum active-row score.
 - [Prompt Contract Audit Skill](skills/prompt-contract-audit/): a reusable skill for finding possible hidden prompt contracts in a codebase.
-- [Prompt Threshold Map Skill](skills/prompt-threshold-map/): a follow-up skill for mapping exact vague labels to product cases, explicit thresholds, implicit boundaries, drift tests, and deterministic replacements.
+- [Prompt Threshold Map Skill](skills/prompt-threshold-map/): a follow-up protocol for building a small drift bench around exact vague labels, candidate context, expected outcomes, explicit thresholds, implicit boundaries, and deterministic replacements.
 
 ## Repository Layout
 
