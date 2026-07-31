@@ -82,16 +82,28 @@ Private supplementary probe for Prompt Edits. This summary consolidates the Open
 
 Short version to consider for the article if we decide to use this probe:
 
-> We also tested the same case by separating the prompt and the retrieved context in untyped and typed JSON formats. The model still interpreted the fields together.
+> We also tested the same case by separating the prompt and the retrieved context in untyped and typed JSON formats. The table includes the no-retrieved-context baseline because the movement only makes sense relative to that control.
 
-| Model | Test | Prose | Raw JSON | Typed JSON | Typed JSON + enforcement |
-| --- | --- | ---: | ---: | ---: | ---: |
-| `gpt-4.1-mini` | `$100k contract` | `$20,000` | `$20,000` | `$20,000` | `$100` |
-| `gemini-3.5-flash-lite` | `$100k contract` | `$10,000` | `$20,000` | `$20,000` | `$20,000` anomaly |
-| `gpt-4.1-mini` | `$5 gift card` | `$5` | `$5` | `$50` | `$100` |
-| `gemini-3.5-flash-lite` | `$5 gift card` | `$5` | `$5` | `$5` | `$100` |
+| Model | Test | Format | No retrieved context | With retrieved context |
+| --- | --- | --- | ---: | ---: |
+| `gpt-4.1-mini` | `$100k contract` | Prose | `$100` | `$20,000` |
+| `gpt-4.1-mini` | `$100k contract` | Raw JSON | `$500` | `$20,000` |
+| `gpt-4.1-mini` | `$100k contract` | Typed JSON | `$500` | `$20,000` |
+| `gpt-4.1-mini` | `$100k contract` | Typed JSON + enforcement | `$100` | `$100` |
+| `gemini-3.5-flash-lite` | `$100k contract` | Prose | `$100` | `$10,000` |
+| `gemini-3.5-flash-lite` | `$100k contract` | Raw JSON | `$500` | `$20,000` |
+| `gemini-3.5-flash-lite` | `$100k contract` | Typed JSON | `$20,000` | `$20,000` |
+| `gemini-3.5-flash-lite` | `$100k contract` | Typed JSON + enforcement | `$100` | `$20,000` anomaly |
+| `gpt-4.1-mini` | `$5 gift card` | Prose | `$100` | `$5` |
+| `gpt-4.1-mini` | `$5 gift card` | Raw JSON | `$1,000` | `$5` |
+| `gpt-4.1-mini` | `$5 gift card` | Typed JSON | `$500` | `$50` |
+| `gpt-4.1-mini` | `$5 gift card` | Typed JSON + enforcement | `$100` | `$100` |
+| `gemini-3.5-flash-lite` | `$5 gift card` | Prose | `$150` | `$5` |
+| `gemini-3.5-flash-lite` | `$5 gift card` | Raw JSON | `$500` | `$5` |
+| `gemini-3.5-flash-lite` | `$5 gift card` | Typed JSON | `$20,000` | `$5` |
+| `gemini-3.5-flash-lite` | `$5 gift card` | Typed JSON + enforcement | `$100` | `$100` |
 
-Caption: highest tested claim amount classified as `LOW` by majority vote. Raw JSON separates fields without typed structure. Typed JSON separates the retrieved note and case data into explicit typed objects. Typed JSON + enforcement adds an explicit `$100` policy boundary to the payload. Full prompts, raw calls, and `P(LOW | amount)` tables are in this experiment directory.
+Caption: highest tested claim amount classified as `LOW` by majority vote. "No retrieved context" is the same prompt format with the retrieved note absent. Raw JSON separates fields without typed structure. Typed JSON separates the retrieved note and case data into explicit typed objects. Typed JSON + enforcement adds an explicit `$100` policy boundary to the payload. Full prompts, raw calls, and `P(LOW | amount)` tables are in this experiment directory.
 
 ## Interpretation
 
