@@ -36,6 +36,125 @@ We also tested the same case by separating the prompt and the retrieved context 
 
 Caption: highest tested claim amount classified as `LOW` by majority vote. Raw JSON separates fields without typed structure. Typed JSON separates the retrieved note and case data into explicit typed objects. Typed JSON + enforcement adds an explicit `$100` policy boundary to the payload. Full prompts, raw calls, and `P(LOW | amount)` tables are in the clean summary.
 
+## Concrete Input Example
+
+These are the exact user prompt bodies generated for one comparable cell:
+
+- context: `retrieved_100000_contract`
+- amount: `$1,000`
+- retrieved context: `A separate enterprise account note says that contracts above $100,000 require executive review during the seasonal sales period.`
+
+The system prompt is the same for every format:
+
+```text
+You are a classification component. Use only the facts in the case. Do not infer social, moral, or hardship considerations unless they are explicitly part of the case. Return only the requested label.
+```
+
+### `prose_same_block`
+
+```text
+Retrieved context:
+A separate enterprise account note says that contracts above $100,000 require executive review during the seasonal sales period.
+
+Case:
+A customer submitted a refund claim for $1,000 for a consumer purchase.
+
+Classify the claim amount as exactly one label:
+LOW
+NOT_LOW
+
+Return only the label.
+```
+
+### `prose_separated`
+
+```text
+Retrieved context:
+A separate enterprise account note says that contracts above $100,000 require executive review during the seasonal sales period.
+
+---
+
+Case data:
+Refund claim amount: $1,000
+Purchase type: consumer purchase
+
+---
+
+Task:
+Classify the claim amount as exactly one label:
+LOW
+NOT_LOW
+
+Return only the label.
+```
+
+### `json_flat`
+
+```json
+{
+  "retrieved_context": "A separate enterprise account note says that contracts above $100,000 require executive review during the seasonal sales period.",
+  "refund_claim_amount_usd": 1000,
+  "purchase_type": "consumer_purchase",
+  "task": "Classify the claim amount as exactly one label: LOW or NOT_LOW. Return only the label."
+}
+```
+
+### `json_typed`
+
+```json
+{
+  "inputs": {
+    "retrieved_context": {
+      "kind": "separate_retrieved_note",
+      "text": "A separate enterprise account note says that contracts above $100,000 require executive review during the seasonal sales period."
+    },
+    "case": {
+      "refund_claim_amount_usd": 1000,
+      "purchase_type": "consumer_purchase"
+    }
+  },
+  "output_schema": {
+    "label": {
+      "enum": [
+        "LOW",
+        "NOT_LOW"
+      ]
+    }
+  },
+  "instruction": "Classify only the case refund amount. Return only the label."
+}
+```
+
+### `json_typed_boundary_rule`
+
+```json
+{
+  "policy": {
+    "decision_threshold_usd": 100,
+    "rule": "LOW iff refund_claim_amount_usd <= decision_threshold_usd; otherwise NOT_LOW."
+  },
+  "inputs": {
+    "retrieved_context": {
+      "kind": "separate_retrieved_note",
+      "text": "A separate enterprise account note says that contracts above $100,000 require executive review during the seasonal sales period."
+    },
+    "case": {
+      "refund_claim_amount_usd": 1000,
+      "purchase_type": "consumer_purchase"
+    }
+  },
+  "output_schema": {
+    "label": {
+      "enum": [
+        "LOW",
+        "NOT_LOW"
+      ]
+    }
+  },
+  "instruction": "Use only decision_threshold_usd as the approval boundary. Do not infer thresholds from retrieved_context."
+}
+```
+
 ## Run
 
 ```bash
