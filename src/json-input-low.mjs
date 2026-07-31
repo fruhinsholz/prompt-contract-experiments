@@ -21,6 +21,7 @@ import {
   parseCommonArgs,
   pct,
   prepareRunDir,
+  requireNumber,
   summarizeRows,
   usage,
   validateCommonArgs,
@@ -81,6 +82,7 @@ function extraOptions() {
   return `  --amounts <a,b,c>            Fixed amount grid. Defaults to 25,50,75,100,150,250,500,1000,5000,10000,20000.
   --contexts <list|all>        Context variants. Defaults to all.
   --formats <list|all>         Prompt format variants. Defaults to all.
+  --concurrency <n>            Parallel live calls for fixed-grid runs. Defaults to 1.
 `;
 }
 
@@ -92,11 +94,13 @@ function parseArgs(argv) {
     label: "json-input-low",
     samples: 3,
     maxOutputTokens: 128,
+    concurrency: 1,
   }, (args, raw, i) => {
     switch (raw[i]) {
       case "--amounts": args.amounts = raw[i + 1]; return i + 1;
       case "--contexts": args.contexts = raw[i + 1]; return i + 1;
       case "--formats": args.formats = raw[i + 1]; return i + 1;
+      case "--concurrency": args.concurrency = Number.parseInt(raw[i + 1], 10); return i + 1;
       default: return false;
     }
   });
@@ -111,6 +115,20 @@ function selectedIds(value, choices, label) {
 
 function amountGrid(args) {
   return [...new Set(args.amounts.split(",").map((value) => Number.parseFloat(value.trim())).filter(Number.isFinite))].sort((a, b) => a - b);
+}
+
+async function runWithConcurrency(tasks, concurrency, worker) {
+  const results = new Array(tasks.length);
+  let nextIndex = 0;
+  const workerCount = Math.max(1, Math.min(concurrency, tasks.length));
+  await Promise.all(Array.from({ length: workerCount }, async () => {
+    while (nextIndex < tasks.length) {
+      const index = nextIndex;
+      nextIndex += 1;
+      results[index] = await worker(tasks[index], index);
+    }
+  }));
+  return results;
 }
 
 async function runOne({ args, runDir, model, contextId, formatId, amount, sampleIndex }) {
@@ -215,17 +233,20 @@ function renderMarkdown(groups, metadata) {
 }
 
 function renderAnalysis(groups, args) {
-  const lines = ["# JSON Input LOW Analysis", "", "This is a private exploratory run. It is not publication evidence by itself.", ""];
-  const byKey = new Map(groups.map((g) => [`${g.formatId}:${g.contextId}:${g.amount}`, g]));
-  for (const formatId of selectedIds(args.formats, FORMATTERS, "format")) {
-    lines.push(`## ${formatId}`, "");
-    for (const contextId of selectedIds(args.contexts, CONTEXTS, "context")) {
-      const rows = amountGrid(args).map((amount) => byKey.get(`${formatId}:${contextId}:${amount}`)).filter(Boolean);
-      const lowAmounts = rows.filter((g) => g.counts.LOW > g.counts.NOT_LOW).map((g) => Number(g.amount));
-      const maxMajorityLow = lowAmounts.length ? Math.max(...lowAmounts) : null;
-      lines.push(`- \`${contextId}\`: highest tested amount with majority LOW = ${maxMajorityLow === null ? "none" : `$${formatMoney(maxMajorityLow)}`}.`);
+  const lines = ["# JSON Input LOW Analysis", "", "Fixed amount grid summary. This run compares prompt formats at identical amounts; it is not an adaptive binary search.", ""];
+  const byKey = new Map(groups.map((g) => [`${g.model}:${g.formatId}:${g.contextId}:${g.amount}`, g]));
+  for (const model of modelsFromArgs(args)) {
+    lines.push(`## ${model}`, "");
+    for (const formatId of selectedIds(args.formats, FORMATTERS, "format")) {
+      lines.push(`### ${formatId}`, "");
+      for (const contextId of selectedIds(args.contexts, CONTEXTS, "context")) {
+        const rows = amountGrid(args).map((amount) => byKey.get(`${model}:${formatId}:${contextId}:${amount}`)).filter(Boolean);
+        const lowAmounts = rows.filter((g) => g.counts.LOW > g.counts.NOT_LOW).map((g) => Number(g.amount));
+        const maxMajorityLow = lowAmounts.length ? Math.max(...lowAmounts) : null;
+        lines.push(`- \`${contextId}\`: highest tested amount with majority LOW = ${maxMajorityLow === null ? "none" : `$${formatMoney(maxMajorityLow)}`}.`);
+      }
+      lines.push("");
     }
-    lines.push("");
   }
   lines.push("Read this as a coarse probe. Increase samples and use adaptive bands before making article claims.");
   return `${lines.join("\n")}\n`;
@@ -239,10 +260,13 @@ async function main() {
   }
   validateCommonArgs(args);
   if (!["openai", "gemini", "claude-cli"].includes(args.provider)) throw new Error("json-input-low supports --provider openai, gemini, or claude-cli.");
+  requireNumber("--concurrency", args.concurrency, 1);
 
   const contexts = selectedIds(args.contexts, CONTEXTS, "context");
   const formats = selectedIds(args.formats, FORMATTERS, "format");
   const amounts = amountGrid(args);
+  const totalCalls = modelsFromArgs(args).length * contexts.length * formats.length * amounts.length * args.samples;
+  if (totalCalls > args.maxCalls) throw new Error(`Refusing to exceed --max-calls ${args.maxCalls}; planned calls: ${totalCalls}.`);
   const fixture = { contexts: Object.fromEntries(contexts.map((id) => [id, CONTEXTS[id]])), formats, amounts, samples: args.samples };
   const { runDir, metadata } = await prepareRunDir({
     testbed: "json-input-low",
@@ -258,18 +282,19 @@ async function main() {
     "user-template-json.txt": FORMATTERS.json_typed({ amount: "X", context: CONTEXTS.retrieved_100000_contract }),
   });
 
-  const rows = [];
+  const tasks = [];
   for (const model of modelsFromArgs(args)) {
     for (const formatId of formats) {
       for (const contextId of contexts) {
         for (const amount of amounts) {
           for (let sampleIndex = 0; sampleIndex < args.samples; sampleIndex += 1) {
-            rows.push(await runOne({ args, runDir, model, contextId, formatId, amount, sampleIndex }));
+            tasks.push({ model, contextId, formatId, amount, sampleIndex });
           }
         }
       }
     }
   }
+  const rows = await runWithConcurrency(tasks, args.concurrency, (task) => runOne({ args, runDir, ...task }));
 
   const groups = summarizeRows(rows, ALLOWED, ["model", "formatId", "contextId", "amount"]);
   await writeFile(path.join(runDir, "summary.csv"), renderCsv(groups), "utf8");
