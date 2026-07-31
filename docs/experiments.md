@@ -79,6 +79,6 @@ The claim is narrower and more useful: if a consequence-bearing boundary can be 
 
 ## Use This In Your Own System
 
-The reusable review artifacts are [skills/prompt-contract-audit](../skills/prompt-contract-audit/) and [skills/prompt-threshold-map](../skills/prompt-threshold-map/). The audit skill finds prompts or agent instructions where a model decides a threshold, sufficiency rule, safety boundary, routing rule, permission rule, publication rule, deletion rule, or spend boundary. The threshold-map skill then turns exact labels and nearby numeric gates into a testable map.
+The reusable review artifacts are [skills/prompt-contract-audit](../skills/prompt-contract-audit/) and [experimental/prompt-threshold-map](../experimental/prompt-threshold-map/). The audit skill finds prompts or agent instructions where a model decides a threshold, sufficiency rule, safety boundary, routing rule, permission rule, publication rule, deletion rule, or spend boundary. The threshold-map skill then turns exact labels and nearby numeric gates into a testable map.
 
 Use them to find candidates for review and map the labels or thresholds that carry them. Then write the boundary as code, schema, policy, tests, or versioned configuration before it controls production consequences.

@@ -10,7 +10,9 @@ Second, the `ENOUGH` evidence experiment shows the same pattern for sufficiency 
 
 ## Experiments
 
-Start with [docs/experiments.md](docs/experiments.md) for the article evidence map: raw calls, figures, reproduction paths, and limits. Use [docs/workflow.md](docs/workflow.md) for reruns and maintenance.
+If you came from the article and only want to check the evidence, start with [docs/experiments.md](docs/experiments.md). It is the guided map: what to look at first, where the figures come from, where the raw calls live, and what the experiments do and do not prove. You can inspect the evidence without installing anything or rerunning the scripts.
+
+Use [docs/workflow.md](docs/workflow.md) only when you want to rerun the experiments or maintain the generated outputs.
 
 - [LOW Retrieved Context](experiments/low-retrieved-context/): refund amount classification with fact-only, `$5` gift-card, and `$100,000` contract context variants.
 - [ENOUGH Evidence Sufficiency](experiments/enough-evidence-sufficiency/): two-phase probe for minimum evidence count and minimum active-row score.
