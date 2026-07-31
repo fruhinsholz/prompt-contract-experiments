@@ -82,32 +82,26 @@ Private supplementary probe for Prompt Edits. This summary consolidates the Open
 
 Short version to consider for the article if we decide to use this probe:
 
-> We also tested the same case by separating the prompt and the retrieved context in untyped and typed JSON formats. The table includes the no-retrieved-context baseline because the movement only makes sense relative to that control.
+> We also tested the same case by separating the prompt and the retrieved context in untyped and typed JSON formats. The model still interpreted the fields together.
 
-| Model | Test | Format | No retrieved context | With retrieved context |
-| --- | --- | --- | ---: | ---: |
-| `gpt-4.1-mini` | `$100k contract` | Prose | `$100` | `$20,000` |
-| `gpt-4.1-mini` | `$100k contract` | Raw JSON | `$500` | `$20,000` |
-| `gpt-4.1-mini` | `$100k contract` | Typed JSON | `$500` | `$20,000` |
-| `gpt-4.1-mini` | `$100k contract` | Typed JSON + enforcement | `$100` | `$100` |
-| `gemini-3.5-flash-lite` | `$100k contract` | Prose | `$100` | `$10,000` |
-| `gemini-3.5-flash-lite` | `$100k contract` | Raw JSON | `$500` | `$20,000` |
-| `gemini-3.5-flash-lite` | `$100k contract` | Typed JSON | `$20,000` | `$20,000` |
-| `gemini-3.5-flash-lite` | `$100k contract` | Typed JSON + enforcement | `$100` | `$20,000` anomaly |
-| `gpt-4.1-mini` | `$5 gift card` | Prose | `$100` | `$5` |
-| `gpt-4.1-mini` | `$5 gift card` | Raw JSON | `$1,000` | `$5` |
-| `gpt-4.1-mini` | `$5 gift card` | Typed JSON | `$500` | `$50` |
-| `gpt-4.1-mini` | `$5 gift card` | Typed JSON + enforcement | `$100` | `$100` |
-| `gemini-3.5-flash-lite` | `$5 gift card` | Prose | `$150` | `$5` |
-| `gemini-3.5-flash-lite` | `$5 gift card` | Raw JSON | `$500` | `$5` |
-| `gemini-3.5-flash-lite` | `$5 gift card` | Typed JSON | `$20,000` | `$5` |
-| `gemini-3.5-flash-lite` | `$5 gift card` | Typed JSON + enforcement | `$100` | `$100` |
+| Model | Test | Prose | Raw JSON | Typed JSON | Typed JSON + enforcement |
+| --- | --- | ---: | ---: | ---: | ---: |
+| `gpt-5.5` | `$100k contract` | `$20,000` | `$5,000` | `$20,000` | `$100` |
+| `gpt-5.6` | `$100k contract` | `$20,000` | `$20,000` | `$20,000` | `$100` |
+| `gemini-3.5-flash-lite` | `$100k contract` | `$10,000` | `$20,000` | `$20,000` | `$20,000` anomaly |
+| `gpt-5.5` | `$5 gift card` | `$100` | `$100` | `$100` | `$100` |
+| `gpt-5.6` | `$5 gift card` | none | `$50` | `$25` | `$100` |
+| `gemini-3.5-flash-lite` | `$5 gift card` | `$5` | `$5` | `$5` | `$100` |
 
-Caption: highest tested claim amount classified as `LOW` by majority vote. "No retrieved context" is the same prompt format with the retrieved note absent. Raw JSON separates fields without typed structure. Typed JSON separates the retrieved note and case data into explicit typed objects. Typed JSON + enforcement adds an explicit `$100` policy boundary to the payload. Full prompts, raw calls, and `P(LOW | amount)` tables are in this experiment directory.
+Caption: highest tested claim amount classified as `LOW` by majority vote on a fixed amount grid, with retrieved context present. Prose is the ordinary prose prompt. Raw JSON separates fields without typed structure. Typed JSON separates the retrieved note and case data into explicit typed objects. Typed JSON + enforcement adds an explicit `$100` policy boundary to the payload. `none` means no tested amount was classified as `LOW` by majority vote.
+
+The important result is not that JSON confused the model. The retrieved context continued to move the decision boundary whether the instruction was written as prose, raw JSON, or typed JSON. JSON made the input more structured and legible, but it did not isolate the policy value before inference. The boundary returned to `$100` only when the policy value itself was explicitly pinned as an enforceable field.
+
+Note: the Gemini `$20,000` enforcement result is marked as an anomaly because the explicit boundary failed in that run rather than restoring the intended `$100` rule.
 
 ## Interpretation
 
 - The $100k context is the article-relevant test: prose, flat JSON, and typed JSON still classify high claim amounts as LOW.
 - The $5 context is a smaller check in the opposite direction: the implicit boundary can move down as well as up.
-- Structured input changes presentation and sometimes the shape of the failure, but it does not enforce the boundary.
+- Structured input changes presentation and sometimes the shape of the failure, but it does not isolate or enforce the boundary before inference.
 - The strongest article claim remains: externalize, version, and enforce consequence-bearing boundaries outside model judgment.

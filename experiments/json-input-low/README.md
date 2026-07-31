@@ -50,13 +50,15 @@ We also tested the same case by separating the prompt and the retrieved context 
 | `gpt-5.6` | `$5 gift card` | Typed JSON | `$500` | `$25` |
 | `gpt-5.6` | `$5 gift card` | Typed JSON + pinned rule | `$100` | `$100` |
 
-Caption: highest tested claim amount classified as `LOW` by majority vote. "No retrieved context" is the same prompt format with the retrieved note absent. `none` means no tested amount had majority `LOW`, including `$25`. Raw JSON separates fields without typed structure. Typed JSON separates the retrieved note and case data into explicit typed objects. Typed JSON + pinned rule adds an explicit `$100` policy boundary to the payload. Full prompts, raw calls, and `P(LOW | amount)` tables are in the run directory.
+Caption: highest tested claim amount classified as `LOW` by majority vote on a fixed amount grid. "No retrieved context" is the same prompt format with the retrieved note absent. `none` means no tested amount had majority `LOW`, including `$25`. Raw JSON separates fields without typed structure. Typed JSON separates the retrieved note and case data into explicit typed objects. Typed JSON + pinned rule adds an explicit `$100` policy boundary to the payload. Full prompts, raw calls, and `P(LOW | amount)` tables are in the run directory.
 
 The exact method name for this experiment is `fixed amount grid`. It is not an adaptive binary search. The clean run used `25,50,75,100,150,250,500,1000,5000,10000,20000`. These amounts came from the earlier threshold-search work as a practical probe grid around the expected `$100` boundary and the observed drift range, but this script itself does not do binary search.
 
 ## Conclusion
 
 JSON changed the surface form of the prompt, but it did not remove the hidden-boundary problem. In the `$100k contract` case, raw JSON and typed JSON still let retrieved context move the implicit `LOW` boundary upward, often to the highest tested amount. In the `$5 gift card` case, the same mechanism can also move the boundary downward.
+
+The important result is not that JSON confused the model. The retrieved context continued to influence the decision boundary whether the instruction was written as prose, raw JSON, or typed JSON. JSON made the input more structured and legible, but it did not isolate the policy value before inference.
 
 The only OpenAI format that consistently restored the intended `$100` boundary was `json_typed_boundary_rule`, which explicitly pinned the policy value inside the payload. That is not evidence that JSON itself enforces control. It is evidence for the article recommendation: consequence-bearing thresholds should be explicit, versioned, and enforced outside ordinary model interpretation.
 
