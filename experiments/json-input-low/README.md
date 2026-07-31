@@ -36,6 +36,14 @@ We also tested the same case by separating the prompt and the retrieved context 
 
 Caption: highest tested claim amount classified as `LOW` by majority vote. Raw JSON separates fields without typed structure. Typed JSON separates the retrieved note and case data into explicit typed objects. Typed JSON + enforcement adds an explicit `$100` policy boundary to the payload. Full prompts, raw calls, and `P(LOW | amount)` tables are in the clean summary.
 
+## Conclusion
+
+JSON changed the surface form of the prompt, but it did not remove the hidden-boundary problem. In the `$100k contract` case, both raw JSON and typed JSON still let retrieved context move the implicit `LOW` boundary up to the highest tested amount for the OpenAI and Gemini runs. In the `$5 gift card` case, the same mechanism can also move the boundary down.
+
+The only clean OpenAI result that restored the intended `$100` boundary was `json_typed_boundary_rule`, which explicitly pinned the policy value inside the payload. That is not evidence that JSON itself enforces control. It is evidence for the article recommendation: consequence-bearing thresholds should be explicit, versioned, and enforced outside ordinary model interpretation.
+
+Do not read this probe as a model ranking. The tested OpenAI model was `gpt-4.1-mini` because this was a focused, cheaper format probe after the main publication runs had already covered `gpt-5.5` and `gpt-5.6`. If this JSON appendix becomes article-critical evidence rather than a supplementary sanity check, rerun the same matrix on `gpt-5.5` and `gpt-5.6` before relying on it publicly.
+
 ## Concrete Input Example
 
 These are the exact user prompt bodies generated for one comparable cell:
