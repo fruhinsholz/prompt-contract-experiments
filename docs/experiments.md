@@ -2,13 +2,14 @@
 
 This is the audit trail for the article [Prompt Edits Are Architecture Changes](https://blog.fruhinsholz.com/draft/prompt-edits-are-architecture-changes/). Start here if you want to inspect the evidence without reading the whole repository.
 
-The repository contains two article-grade experiments. They are probes of hidden operational contracts, not benchmarks and not model rankings.
+The repository contains two article-grade experiments and one supplementary JSON-format probe. They are probes of hidden operational contracts, not benchmarks and not model rankings.
 
 ## What To Inspect First
 
 1. Read the experiment READMEs:
    - [LOW Retrieved Context](../experiments/low-retrieved-context/)
    - [ENOUGH Evidence Sufficiency](../experiments/enough-evidence-sufficiency/)
+   - [JSON Input LOW](../experiments/json-input-low/)
 2. Check the generated figures:
    - [LOW price vs iteration figures](price-vs-iteration.md)
    - [ENOUGH threshold figures](enough-thresholds.md)
@@ -41,6 +42,22 @@ npm install
 npm run thresholds:low:retrieved-context -- --models gpt-4.1-mini,gpt-4.1 --contexts all --samples 10 --refine-samples 30 --epochs 10 --max 20000 --max-calls 2000 --gzip-jsonl --label publication-clean-openai
 npm run results:price-iteration
 ```
+
+## Supplementary Probe: JSON Input LOW
+
+Question: if the same `LOW` refund classifier receives retrieved context and case data in flat or typed JSON, does that structure remove the movement of the implicit dollar boundary?
+
+Current clean summary:
+
+- [OpenAI and Gemini JSON-format probe summary](../experiments/json-input-low/results/2026-07-31-clean-openai-gemini-json-probe-summary/summary.md)
+
+Important files:
+
+- Script: [src/json-input-low.mjs](../src/json-input-low.mjs)
+- README: [experiments/json-input-low/README.md](../experiments/json-input-low/README.md)
+- Shared harness: [src/shared/harness.mjs](../src/shared/harness.mjs)
+
+This probe is not a replacement for the main LOW experiment. It checks a practical formatting question: separating fields in JSON can make a prompt cleaner, but the tested models still interpreted those fields together.
 
 ## Experiment 2: ENOUGH Evidence Sufficiency
 

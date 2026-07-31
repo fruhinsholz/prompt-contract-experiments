@@ -21,6 +21,21 @@ The current script is intentionally small:
 
 The last variant is a control. If it still drifts, something is badly wrong. If it does not drift, that does not weaken the article thesis: an explicit external rule is the recommended boundary.
 
+## Current Clean Readout
+
+Clean OpenAI and Gemini runs are consolidated in [results/2026-07-31-clean-openai-gemini-json-probe-summary/summary.md](results/2026-07-31-clean-openai-gemini-json-probe-summary/summary.md).
+
+We also tested the same case by separating the prompt and the retrieved context in untyped and typed JSON formats. The model still interpreted the fields together.
+
+| Model | Test | Prose | Raw JSON | Typed JSON | Typed JSON + enforcement |
+| --- | --- | ---: | ---: | ---: | ---: |
+| `gpt-4.1-mini` | `$100k contract` | `$20,000` | `$20,000` | `$20,000` | `$100` |
+| `gemini-3.5-flash-lite` | `$100k contract` | `$10,000` | `$20,000` | `$20,000` | `$20,000` anomaly |
+| `gpt-4.1-mini` | `$5 gift card` | `$5` | `$5` | `$50` | `$100` |
+| `gemini-3.5-flash-lite` | `$5 gift card` | `$5` | `$5` | `$5` | `$100` |
+
+Caption: highest tested claim amount classified as `LOW` by majority vote. Raw JSON separates fields without typed structure. Typed JSON separates the retrieved note and case data into explicit typed objects. Typed JSON + enforcement adds an explicit `$100` policy boundary to the payload. Full prompts, raw calls, and `P(LOW | amount)` tables are in the clean summary.
+
 ## Run
 
 ```bash

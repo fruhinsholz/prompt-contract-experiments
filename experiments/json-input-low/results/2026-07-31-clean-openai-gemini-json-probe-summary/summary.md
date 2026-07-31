@@ -82,14 +82,16 @@ Private supplementary probe for Prompt Edits. This summary consolidates the Open
 
 Short version to consider for the article if we decide to use this probe:
 
-> We also tested the same cases as flat JSON and typed JSON. The result was not that JSON was useless. It was that JSON was not an enforcement boundary. The model still interpreted the fields together.
+> We also tested the same case by separating the prompt and the retrieved context in untyped and typed JSON formats. The model still interpreted the fields together.
 
-| Input shape | OpenAI $100k result | Gemini $100k result | Readout |
-| --- | ---: | ---: | --- |
-| Prose | $20,000 | $10,000 | The implicit boundary still moves under retrieved context. |
-| JSON flat | $20,000 | $20,000 | The implicit boundary still moves under retrieved context. |
-| JSON typed | $20,000 | $20,000 | The implicit boundary still moves under retrieved context. |
-| JSON typed + boundary rule | $100 | $20,000 | Explicit rule stabilizes OpenAI; Gemini shows a non-monotone anomaly at $20k. |
+| Model | Test | Prose | Raw JSON | Typed JSON | Typed JSON + enforcement |
+| --- | --- | ---: | ---: | ---: | ---: |
+| `gpt-4.1-mini` | `$100k contract` | `$20,000` | `$20,000` | `$20,000` | `$100` |
+| `gemini-3.5-flash-lite` | `$100k contract` | `$10,000` | `$20,000` | `$20,000` | `$20,000` anomaly |
+| `gpt-4.1-mini` | `$5 gift card` | `$5` | `$5` | `$50` | `$100` |
+| `gemini-3.5-flash-lite` | `$5 gift card` | `$5` | `$5` | `$5` | `$100` |
+
+Caption: highest tested claim amount classified as `LOW` by majority vote. Raw JSON separates fields without typed structure. Typed JSON separates the retrieved note and case data into explicit typed objects. Typed JSON + enforcement adds an explicit `$100` policy boundary to the payload. Full prompts, raw calls, and `P(LOW | amount)` tables are in this experiment directory.
 
 ## Interpretation
 
