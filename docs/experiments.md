@@ -47,9 +47,9 @@ npm run results:price-iteration
 
 Question: if the same `LOW` refund classifier receives retrieved context and case data in flat or typed JSON, does that structure remove the movement of the implicit dollar boundary?
 
-Current clean summary:
+Current consolidated summary:
 
-- [OpenAI and Gemini JSON-format probe summary](../experiments/json-input-low/results/2026-07-31-clean-openai-gemini-json-probe-summary/summary.md)
+- [OpenAI and Gemini JSON-format result summary](../experiments/json-input-low/results/2026-08-01-json-format-results-summary/summary.md)
 
 Important files:
 

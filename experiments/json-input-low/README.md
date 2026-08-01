@@ -9,7 +9,7 @@ The current script is intentionally narrow:
 - one fixed amount grid,
 - prose and JSON variants side by side,
 - no adaptive binary search in this experiment,
-- enough samples in the clean run to compare format behavior at identical amounts.
+- enough samples in the main result set to compare format behavior at identical amounts.
 
 ## Formats
 
@@ -19,40 +19,26 @@ The current script is intentionally narrow:
 - `json_typed`: nested JSON with explicit input roles and an output schema.
 - `json_typed_boundary_rule`: JSON plus an explicit deterministic threshold policy.
 
-The last variant is a control. If it still drifts, something is badly wrong. If it does not drift, that does not weaken the article thesis: an explicit external rule is the recommended boundary.
+The last variant is a diagnostic control. If it restores the `$100` result, it shows that an explicit policy value can improve the prompt. If it does not restore the boundary, that is still part of the result: model-side policy text is not the same thing as deterministic enforcement outside the model.
 
-## Current Clean Readout
+## Current Readout
 
-The current clean OpenAI run is [results/2026-07-31T15-06-21-856Z-clean-openai-gpt55-gpt56-fixed-grid-json-s30-json-input-low/](results/2026-07-31T15-06-21-856Z-clean-openai-gpt55-gpt56-fixed-grid-json-s30-json-input-low/).
+The article-facing result set is consolidated in [results/2026-08-01-json-format-results-summary/summary.md](results/2026-08-01-json-format-results-summary/summary.md). The underlying calls were generated at different times, but the table treats them as one experimental result set rather than splitting the article into run history.
 
-We also tested the same case by separating the prompt and the retrieved context in untyped and typed JSON formats. The table includes the no-retrieved-context baseline because the movement only makes sense relative to that control.
+We also tested the same case by separating the prompt and the retrieved context in untyped and typed JSON formats. The model still interpreted the fields together.
 
-| Model | Test | Format | No retrieved context | With retrieved context |
-| --- | --- | --- | ---: | ---: |
-| `gpt-5.5` | `$100k contract` | Prose same block | `$500` | `$20,000` |
-| `gpt-5.5` | `$100k contract` | Prose separated | `$5,000` | `$20,000` |
-| `gpt-5.5` | `$100k contract` | Raw JSON | `$1,000` | `$5,000` |
-| `gpt-5.5` | `$100k contract` | Typed JSON | `$1,000` | `$20,000` |
-| `gpt-5.5` | `$100k contract` | Typed JSON + pinned rule | `$100` | `$100` |
-| `gpt-5.5` | `$5 gift card` | Prose same block | `$500` | `$100` |
-| `gpt-5.5` | `$5 gift card` | Prose separated | `$5,000` | `$250` |
-| `gpt-5.5` | `$5 gift card` | Raw JSON | `$1,000` | `$100` |
-| `gpt-5.5` | `$5 gift card` | Typed JSON | `$1,000` | `$100` |
-| `gpt-5.5` | `$5 gift card` | Typed JSON + pinned rule | `$100` | `$100` |
-| `gpt-5.6` | `$100k contract` | Prose same block | `$500` | `$20,000` |
-| `gpt-5.6` | `$100k contract` | Prose separated | `$500` | `$20,000` |
-| `gpt-5.6` | `$100k contract` | Raw JSON | `$150` | `$20,000` |
-| `gpt-5.6` | `$100k contract` | Typed JSON | `$500` | `$20,000` |
-| `gpt-5.6` | `$100k contract` | Typed JSON + pinned rule | `$100` | `$100` |
-| `gpt-5.6` | `$5 gift card` | Prose same block | `$500` | none |
-| `gpt-5.6` | `$5 gift card` | Prose separated | `$500` | `$50` |
-| `gpt-5.6` | `$5 gift card` | Raw JSON | `$150` | `$50` |
-| `gpt-5.6` | `$5 gift card` | Typed JSON | `$500` | `$25` |
-| `gpt-5.6` | `$5 gift card` | Typed JSON + pinned rule | `$100` | `$100` |
+| Model | Test | Prose | Raw JSON | Typed JSON | Typed JSON + enforcement |
+| --- | --- | ---: | ---: | ---: | ---: |
+| `gpt-5.5` | `$100k contract` | `$20,000` | `$5,000` | `$20,000` | `$100` |
+| `gpt-5.6` | `$100k contract` | `$20,000` | `$20,000` | `$20,000` | `$100` |
+| `gemini-3.5-flash-lite` | `$100k contract` | `$18,000` | `$50,000` | `$50,000` | `$20,000` |
+| `gpt-5.5` | `$5 gift card` | `$100` | `$100` | `$100` | `$100` |
+| `gpt-5.6` | `$5 gift card` | none | `$50` | `$25` | `$100` |
+| `gemini-3.5-flash-lite` | `$5 gift card` | `$5` | `$5` | `$5` | `$100` |
 
-Caption: highest tested claim amount classified as `LOW` by majority vote on a fixed amount grid. "No retrieved context" is the same prompt format with the retrieved note absent. `none` means no tested amount had majority `LOW`, including `$25`. Raw JSON separates fields without typed structure. Typed JSON separates the retrieved note and case data into explicit typed objects. Typed JSON + pinned rule adds an explicit `$100` policy boundary to the payload. Full prompts, raw calls, and `P(LOW | amount)` tables are in the run directory.
+Caption: highest tested claim amount classified as `LOW` by majority vote with retrieved context present. Prose is the ordinary prose prompt. Raw JSON separates fields without typed structure. Typed JSON separates the retrieved note and case data into explicit typed objects. Typed JSON + enforcement adds an explicit `$100` policy boundary to the payload. `none` means no tested amount was classified as `LOW` by majority vote. Full prompts, raw calls, and `P(LOW | amount)` tables are in the consolidated summary and source result directories.
 
-The exact method name for this experiment is `fixed amount grid`. It is not an adaptive binary search. The clean run used `25,50,75,100,150,250,500,1000,5000,10000,20000`. These amounts came from the earlier threshold-search work as a practical probe grid around the expected `$100` boundary and the observed drift range, but this script itself does not do binary search.
+The exact method name for this experiment is `fixed amount grid`. It is not an adaptive binary search. The result set uses practical grids around the expected `$100` boundary and the observed drift range; the exact crossing point is not the claim.
 
 ## Conclusion
 
@@ -60,7 +46,7 @@ JSON changed the surface form of the prompt, but it did not remove the hidden-bo
 
 The important result is not that JSON confused the model. The retrieved context continued to influence the decision boundary whether the instruction was written as prose, raw JSON, or typed JSON. JSON made the input more structured and legible, but it did not isolate the policy value before inference.
 
-The only OpenAI format that consistently restored the intended `$100` boundary was `json_typed_boundary_rule`, which explicitly pinned the policy value inside the payload. That is not evidence that JSON itself enforces control. It is evidence for the article recommendation: consequence-bearing thresholds should be explicit, versioned, and enforced outside ordinary model interpretation.
+For OpenAI, `json_typed_boundary_rule` restored the intended `$100` boundary. The Gemini `$100k` result did not behave as a smooth enforced boundary: most amounts above `$100` were `NOT_LOW`, but `$15,000` and `$20,000` still received majority `LOW` votes. That is part of the result, and it points to the same recommendation: consequence-bearing thresholds should be explicit, versioned, and enforced outside ordinary model interpretation.
 
 Do not read this probe as a model ranking. The useful claim is narrower: structured JSON input can make the prompt more legible, but legibility did not become control before the first inference.
 
