@@ -2,7 +2,7 @@
 
 This repository contains the reproducible evidence behind [Prompt Edits Are Architecture Changes](https://blog.fruhinsholz.com/draft/prompt-edits-are-architecture-changes/). The article argues that prompts can hide operational contracts: when model judgment controls a consequence-bearing value, the boundary should be externalized, pinned, versioned, and enforced outside the model.
 
-The repository is intentionally narrow. It is not a benchmark suite and it is not a general prompt-bias archive. It keeps only the experiments used by the article, the scripts needed to reproduce them, the latest clean result sets, generated result images, and a downloadable skill for finding similar contract-shaped risks, plus an experimental protocol for context-influence benches around exact labels and thresholds.
+The repository is intentionally narrow. It is not a benchmark suite and it is not a general prompt-bias archive. It keeps only the experiments used by the article, the scripts needed to reproduce them, the latest clean result sets, generated result images, generated article tables, and a downloadable skill for finding similar contract-shaped risks, plus an experimental protocol for context-influence benches around exact labels and thresholds.
 
 The article uses two kinds of examples. First, the `LOW` refund experiment shows that a vague label can hide a dollar threshold. The same refund case is classified under three context conditions: fact only, nearby context mentioning a `$5` gift card, and nearby context mentioning a `$100,000` contract. The tested case does not change, but the observed transition band for `LOW` moves.
 
@@ -16,6 +16,7 @@ Use [docs/workflow.md](docs/workflow.md) only when you want to rerun the experim
 
 - [LOW Retrieved Context](experiments/low-retrieved-context/): refund amount classification with fact-only, `$5` gift-card, and `$100,000` contract context variants.
 - [ENOUGH Evidence Sufficiency](experiments/enough-evidence-sufficiency/): two-phase probe for minimum evidence count and minimum active-row score.
+- [JSON Input LOW](experiments/json-input-low/): supplementary probe for whether prose, raw JSON, or typed JSON formatting isolates the hidden `LOW` boundary before inference. Its article table is generated from a manifest.
 - [Prompt Contract Audit Skill](skills/prompt-contract-audit/): a reusable skill for finding possible hidden prompt contracts in a codebase.
 - [Experimental Prompt Threshold Map](experimental/prompt-threshold-map/): an experimental context-influence protocol for testing whether injected, irrelevant, ambiguous, or poison context moves a hidden boundary while the actual case stays fixed.
 
@@ -29,6 +30,11 @@ experiments/
     results/
   enough-evidence-sufficiency/
     README.md
+    results/
+  json-input-low/
+    README.md
+    manifest.json
+    generated/
     results/
 specs/
   low.md
@@ -106,8 +112,14 @@ Regenerate figures and publication summaries:
 npm run results:graphs
 ```
 
+Regenerate only the JSON input article table:
+
+```bash
+npm run results:json-input-low:table
+```
+
 ## Evidence Rule
 
 The repository is the audit trail: exact prompts, fixtures, commands, model identifiers, raw calls, generated summaries, and figures. Start with [docs/experiments.md](docs/experiments.md).
 
-Treat these results as probes of hidden operational boundaries, not model rankings. The raw calls in each experiment's `results/` directory are the durable evidence. Generated summaries and images are convenience views over those calls.
+Treat these results as probes of hidden operational boundaries, not model rankings. The raw calls in each experiment's `results/` directory are the durable evidence. Generated summaries, images, and article tables are convenience views over those calls. For JSON input tables, the manifest explains which batch is article-facing and which batches are retained as historical or supporting evidence.

@@ -49,15 +49,32 @@ Question: if the same `LOW` refund classifier receives retrieved context and cas
 
 Current consolidated summary:
 
+Current article-facing provenance:
+
+- Manifest: [experiments/json-input-low/manifest.json](../experiments/json-input-low/manifest.json)
+- Generated article table: [experiments/json-input-low/generated/article-table.md](../experiments/json-input-low/generated/article-table.md)
+- Generated table data and hashes: [experiments/json-input-low/generated/article-table.json](../experiments/json-input-low/generated/article-table.json)
+- Source runs: the manifest-declared OpenAI gpt-5.5/gpt-5.6 fixed-grid run plus Gemini `$100k` dense and `$5` check runs.
+
+Historical and supporting summary:
+
 - [OpenAI and Gemini JSON-format result summary](../experiments/json-input-low/results/2026-08-01-json-format-results-summary/summary.md)
 
 Important files:
 
 - Script: [src/json-input-low.mjs](../src/json-input-low.mjs)
+- Table generator: [scripts/generate-json-input-low-table.mjs](../scripts/generate-json-input-low-table.mjs)
 - README: [experiments/json-input-low/README.md](../experiments/json-input-low/README.md)
 - Shared harness: [src/shared/harness.mjs](../src/shared/harness.mjs)
 
 This probe is not a replacement for the main LOW experiment. It checks a practical formatting question: separating fields in JSON can make a prompt cleaner, but the tested models still interpreted those fields together.
+
+Raw JSON probe runs are retained in place. Article-facing values come from the manifest-declared source run and are regenerated with:
+
+```bash
+npm run results:json-input-low:table
+npm run results:json-input-low:table:check
+```
 
 ## Experiment 2: ENOUGH Evidence Sufficiency
 

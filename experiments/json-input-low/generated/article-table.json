@@ -1,0 +1,188 @@
+{
+  "schema_version": "json-input-low.article-table.v1",
+  "manifest_path": "experiments/json-input-low/manifest.json",
+  "manifest_sha256": "4c93fabf1538c4cdc95a9c15a315436e0927f07793a827e64c72f4da6d91b078",
+  "source_run_ids": [
+    "openai_gpt55_gpt56_fixed_grid_s30",
+    "gemini_100k_dense_s30",
+    "gemini_5_s10"
+  ],
+  "source_run_dirs": [
+    "experiments/json-input-low/results/2026-07-31T15-06-21-856Z-clean-openai-gpt55-gpt56-fixed-grid-json-s30-json-input-low",
+    "experiments/json-input-low/results/2026-08-01T01-06-10-144Z-supplemental-gemini-100k-dense-json-input-low",
+    "experiments/json-input-low/results/2026-07-31T03-34-51-862Z-check-gemini-json-5-s10-json-input-low"
+  ],
+  "source_files": [
+    {
+      "run_id": "openai_gpt55_gpt56_fixed_grid_s30",
+      "path": "experiments/json-input-low/results/2026-07-31T15-06-21-856Z-clean-openai-gpt55-gpt56-fixed-grid-json-s30-json-input-low/summary.csv",
+      "bytes": 28779,
+      "sha256": "aa18fe37a422c51f7af1a23a610fdd4006cb2affbf6d5b753f29a4476370052d"
+    },
+    {
+      "run_id": "openai_gpt55_gpt56_fixed_grid_s30",
+      "path": "experiments/json-input-low/results/2026-07-31T15-06-21-856Z-clean-openai-gpt55-gpt56-fixed-grid-json-s30-json-input-low/metadata.json",
+      "bytes": 1109,
+      "sha256": "606e1a4e55ee70d2e90947a2377e3dc6072e3498e0453d1780876f1e3e6e7553"
+    },
+    {
+      "run_id": "openai_gpt55_gpt56_fixed_grid_s30",
+      "path": "experiments/json-input-low/results/2026-07-31T15-06-21-856Z-clean-openai-gpt55-gpt56-fixed-grid-json-s30-json-input-low/calls.jsonl",
+      "bytes": 16191578,
+      "sha256": "eef0dad02ccb1a6fb24f11fd0379d738f4325b26269ec445b2cdb58f907ef1d3"
+    },
+    {
+      "run_id": "gemini_100k_dense_s30",
+      "path": "experiments/json-input-low/results/2026-08-01T01-06-10-144Z-supplemental-gemini-100k-dense-json-input-low/summary.csv",
+      "bytes": 6096,
+      "sha256": "5cfc30de7e92768abe26513cde187af582d0573fa81d40245047be9def3b7ab8"
+    },
+    {
+      "run_id": "gemini_100k_dense_s30",
+      "path": "experiments/json-input-low/results/2026-08-01T01-06-10-144Z-supplemental-gemini-100k-dense-json-input-low/metadata.json",
+      "bytes": 1194,
+      "sha256": "3f3c64c1388007f036733c4466e7a83a1b33e854fc35640f3167a40178646726"
+    },
+    {
+      "run_id": "gemini_100k_dense_s30",
+      "path": "experiments/json-input-low/results/2026-08-01T01-06-10-144Z-supplemental-gemini-100k-dense-json-input-low/calls.jsonl",
+      "bytes": 2789924,
+      "sha256": "eaa9c0e6bcd8f24b554f449761ed789660f2c1cd4bc286c8491ac9e5b572f5fb"
+    },
+    {
+      "run_id": "gemini_5_s10",
+      "path": "experiments/json-input-low/results/2026-07-31T03-34-51-862Z-check-gemini-json-5-s10-json-input-low/summary.csv",
+      "bytes": 7586,
+      "sha256": "20e48d1ec294b139bccbac86c2847e089bd84e7dcaf5ea96e52c57d6d9e4daf3"
+    },
+    {
+      "run_id": "gemini_5_s10",
+      "path": "experiments/json-input-low/results/2026-07-31T03-34-51-862Z-check-gemini-json-5-s10-json-input-low/metadata.json",
+      "bytes": 1161,
+      "sha256": "b67567f3f3b43f34f8930d2ee64c0e9dd5532d267805092fe10a5c0c2e0aae62"
+    },
+    {
+      "run_id": "gemini_5_s10",
+      "path": "experiments/json-input-low/results/2026-07-31T03-34-51-862Z-check-gemini-json-5-s10-json-input-low/calls.jsonl",
+      "bytes": 1208330,
+      "sha256": "65ebaf4de44ed6d49b3d588edcddc5fc8c8a59f6998feec3110f92e52fec1255"
+    }
+  ],
+  "provenance_hash": "15e8f209dd226cf04903ea94faa219ef4bcfcc996ad19d0c3765572ef628ee6c",
+  "table_rows": [
+    {
+      "provider": "OpenAI",
+      "model": "gpt-5.5",
+      "test_label": "$100k contract",
+      "context_id": "retrieved_100000_contract",
+      "run_id": "openai_gpt55_gpt56_fixed_grid_s30",
+      "values": {
+        "prose_same_block": 20000,
+        "json_flat": 5000,
+        "json_typed": 20000,
+        "json_typed_boundary_rule": 100
+      },
+      "format_labels": {
+        "prose_same_block": "Prose",
+        "json_flat": "Raw JSON",
+        "json_typed": "Typed JSON",
+        "json_typed_boundary_rule": "Typed JSON + enforcement"
+      }
+    },
+    {
+      "provider": "OpenAI",
+      "model": "gpt-5.6",
+      "test_label": "$100k contract",
+      "context_id": "retrieved_100000_contract",
+      "run_id": "openai_gpt55_gpt56_fixed_grid_s30",
+      "values": {
+        "prose_same_block": 20000,
+        "json_flat": 20000,
+        "json_typed": 20000,
+        "json_typed_boundary_rule": 100
+      },
+      "format_labels": {
+        "prose_same_block": "Prose",
+        "json_flat": "Raw JSON",
+        "json_typed": "Typed JSON",
+        "json_typed_boundary_rule": "Typed JSON + enforcement"
+      }
+    },
+    {
+      "provider": "Gemini",
+      "model": "gemini-3.5-flash-lite",
+      "test_label": "$100k contract",
+      "context_id": "retrieved_100000_contract",
+      "run_id": "gemini_100k_dense_s30",
+      "values": {
+        "prose_same_block": 18000,
+        "json_flat": 50000,
+        "json_typed": 50000,
+        "json_typed_boundary_rule": 20000
+      },
+      "format_labels": {
+        "prose_same_block": "Prose",
+        "json_flat": "Raw JSON",
+        "json_typed": "Typed JSON",
+        "json_typed_boundary_rule": "Typed JSON + enforcement"
+      }
+    },
+    {
+      "provider": "OpenAI",
+      "model": "gpt-5.5",
+      "test_label": "$5 gift card",
+      "context_id": "retrieved_5_gift_card",
+      "run_id": "openai_gpt55_gpt56_fixed_grid_s30",
+      "values": {
+        "prose_same_block": 100,
+        "json_flat": 100,
+        "json_typed": 100,
+        "json_typed_boundary_rule": 100
+      },
+      "format_labels": {
+        "prose_same_block": "Prose",
+        "json_flat": "Raw JSON",
+        "json_typed": "Typed JSON",
+        "json_typed_boundary_rule": "Typed JSON + enforcement"
+      }
+    },
+    {
+      "provider": "OpenAI",
+      "model": "gpt-5.6",
+      "test_label": "$5 gift card",
+      "context_id": "retrieved_5_gift_card",
+      "run_id": "openai_gpt55_gpt56_fixed_grid_s30",
+      "values": {
+        "prose_same_block": null,
+        "json_flat": 50,
+        "json_typed": 25,
+        "json_typed_boundary_rule": 100
+      },
+      "format_labels": {
+        "prose_same_block": "Prose",
+        "json_flat": "Raw JSON",
+        "json_typed": "Typed JSON",
+        "json_typed_boundary_rule": "Typed JSON + enforcement"
+      }
+    },
+    {
+      "provider": "Gemini",
+      "model": "gemini-3.5-flash-lite",
+      "test_label": "$5 gift card",
+      "context_id": "retrieved_5_gift_card",
+      "run_id": "gemini_5_s10",
+      "values": {
+        "prose_same_block": 5,
+        "json_flat": 5,
+        "json_typed": 5,
+        "json_typed_boundary_rule": 100
+      },
+      "format_labels": {
+        "prose_same_block": "Prose",
+        "json_flat": "Raw JSON",
+        "json_typed": "Typed JSON",
+        "json_typed_boundary_rule": "Typed JSON + enforcement"
+      }
+    }
+  ]
+}

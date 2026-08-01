@@ -25,6 +25,12 @@ The last variant is a diagnostic control. If it restores the `$100` result, it s
 
 The article-facing result set is consolidated in [results/2026-08-01-json-format-results-summary/summary.md](results/2026-08-01-json-format-results-summary/summary.md). The underlying calls were generated at different times, but the table treats them as one experimental result set rather than splitting the article into run history.
 
+The generated article table is produced from [manifest.json](manifest.json), not edited by hand. The manifest declares which raw runs feed the article table and which older or supporting batches are retained for audit context. Regenerate the table with:
+
+```bash
+npm run results:json-input-low:table
+```
+
 We also tested the same case by separating the prompt and the retrieved context in untyped and typed JSON formats. The model still interpreted the fields together.
 
 | Model | Test | Prose | Raw JSON | Typed JSON | Typed JSON + enforcement |
@@ -39,6 +45,17 @@ We also tested the same case by separating the prompt and the retrieved context 
 Caption: highest tested claim amount classified as `LOW` by majority vote with retrieved context present. Prose is the ordinary prose prompt. Raw JSON separates fields without typed structure. Typed JSON separates the retrieved note and case data into explicit typed objects. Typed JSON + enforcement adds an explicit `$100` policy boundary to the payload. `none` means no tested amount was classified as `LOW` by majority vote. Full prompts, raw calls, and `P(LOW | amount)` tables are in the consolidated summary and source result directories.
 
 The exact method name for this experiment is `fixed amount grid`. It is not an adaptive binary search. The result set uses practical grids around the expected `$100` boundary and the observed drift range; the exact crossing point is not the claim.
+
+## Provenance and Generated Outputs
+
+Raw run directories are immutable evidence. The article table is a generated view over the run declared in [manifest.json](manifest.json). If a later run replaces the article numbers, update the manifest first, then regenerate the generated files:
+
+- [generated/article-table.md](generated/article-table.md)
+- [generated/article-table.json](generated/article-table.json)
+
+The generated Markdown includes a provenance marker with the manifest path, source run, and hash. The JSON output records hashes for the manifest, `summary.csv`, `metadata.json`, and `calls.jsonl`.
+
+Older clean and check batches remain in `results/` so readers can see how the experiment evolved, but they are not mixed into the article table unless promoted in the manifest.
 
 ## Conclusion
 
