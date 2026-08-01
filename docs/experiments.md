@@ -1,6 +1,6 @@
 # Experiments
 
-This is the audit trail for the article [Prompt Edits Are Architecture Changes](https://blog.fruhinsholz.com/draft/prompt-edits-are-architecture-changes/). Start here if you want to inspect the evidence without reading the whole repository.
+This is the audit trail for the article [When Model Judgment Becomes an Operational Contract](https://blog.fruhinsholz.com/articles/when-model-judgment-becomes-an-operational-contract/). Start here if you want to inspect the evidence without reading the whole repository.
 
 The repository contains two article-grade experiments and one supplementary JSON-format probe. They are probes of hidden operational contracts, not benchmarks and not model rankings.
 

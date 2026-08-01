@@ -1,6 +1,6 @@
 # Retrieved Context Threshold Test Prompt
 
-Run the retrieved-context threshold perturbation tests for the `Prompt Edits Are Architecture Changes` article.
+Run the retrieved-context threshold perturbation tests for the `When Model Judgment Becomes an Operational Contract` article.
 
 Goal: measure whether accidental retrieved context, not a claimant fact and not an applicable policy instruction, shifts the implicit threshold at which the model classifies a refund amount as `LOW` vs `NOT_LOW`.
 

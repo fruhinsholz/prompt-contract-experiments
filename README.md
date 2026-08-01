@@ -1,6 +1,6 @@
 # Prompt Contract Experiments
 
-This repository contains the reproducible evidence behind [Prompt Edits Are Architecture Changes](https://blog.fruhinsholz.com/draft/prompt-edits-are-architecture-changes/). The article argues that prompts can hide operational contracts: when model judgment controls a consequence-bearing value, the boundary should be externalized, pinned, versioned, and enforced outside the model.
+This repository contains the reproducible evidence behind [When Model Judgment Becomes an Operational Contract](https://blog.fruhinsholz.com/articles/when-model-judgment-becomes-an-operational-contract/). The article argues that prompts can hide operational contracts: when model judgment controls a consequence-bearing value, the boundary should be externalized, pinned, versioned, and enforced outside the model.
 
 The repository is intentionally narrow. It is not a benchmark suite and it is not a general prompt-bias archive. It keeps only the experiments used by the article, the scripts needed to reproduce them, the latest clean result sets, generated result images, generated article tables, and a downloadable skill for finding similar contract-shaped risks, plus an experimental protocol for context-influence benches around exact labels and thresholds.
 
