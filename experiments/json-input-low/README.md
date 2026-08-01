@@ -33,16 +33,18 @@ npm run results:json-input-low:table
 
 We also tested the same case by separating the prompt and the retrieved context in untyped and typed JSON formats. The model still interpreted the fields together.
 
-| Model | Test | Prose | Raw JSON | Typed JSON | Typed JSON + enforcement |
-| --- | --- | ---: | ---: | ---: | ---: |
-| `gpt-5.5` | `$100k contract` | `$20,000` | `$5,000` | `$20,000` | `$100` |
-| `gpt-5.6` | `$100k contract` | `$20,000` | `$20,000` | `$20,000` | `$100` |
-| `gemini-3.5-flash-lite` | `$100k contract` | `$18,000` | `$50,000` | `$50,000` | `$20,000` |
-| `gpt-5.5` | `$5 gift card` | `$100` | `$100` | `$100` | `$100` |
-| `gpt-5.6` | `$5 gift card` | none | `$50` | `$25` | `$100` |
-| `gemini-3.5-flash-lite` | `$5 gift card` | `$5` | `$5` | `$5` | `$100` |
+Highest tested claim amount classified as `LOW` by majority vote, compared with the no-context LOW boundary.
 
-Caption: highest tested claim amount classified as `LOW` by majority vote with retrieved context present. Prose is the ordinary prose prompt. Raw JSON separates fields without typed structure. Typed JSON separates the retrieved note and case data into explicit typed objects. Typed JSON + enforcement adds an explicit `$100` policy boundary to the payload. `none` means no tested amount was classified as `LOW` by majority vote. Full prompts, raw calls, and `P(LOW | amount)` tables are in the consolidated summary and source result directories.
+| Model | Test | No added context | Prose context | Raw JSON context | Typed JSON context | Typed JSON + enforcement |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| `gpt-5.5` | $100k contract | ~$1,000 | $20,000 ↑ 20x | $5,000 ↑ 5x | $20,000 ↑ 20x | $100 ↓ 0.1x |
+| `gpt-5.6` | $100k contract | ~$100 | $20,000 ↑ 200x | $20,000 ↑ 200x | $20,000 ↑ 200x | $100 → 1x |
+| `gemini-3.5-flash-lite` | $100k contract | ~$90 | $18,000 ↑ 200x | $50,000 ↑ 560x | $50,000 ↑ 560x | $20,000 ↑ 220x |
+| `gpt-5.5` | $5 gift card | ~$1,000 | $100 ↓ 0.1x | $100 ↓ 0.1x | $100 ↓ 0.1x | $100 ↓ 0.1x |
+| `gpt-5.6` | $5 gift card | ~$100 | none ↓ below grid | $50 ↓ 0.5x | $25 ↓ 0.25x | $100 → 1x |
+| `gemini-3.5-flash-lite` | $5 gift card | ~$90 | $5 ↓ 0.06x | $5 ↓ 0.06x | $5 ↓ 0.06x | $100 ↑ 1.1x |
+
+Caption: highest tested claim amount classified as `LOW` by majority vote. The `No added context` column comes from the LOW retrieved-context threshold runs; the other columns come from the manifest-declared JSON input runs. Prose is the ordinary prose prompt. Raw JSON separates fields without typed structure. Typed JSON separates the retrieved note and case data into explicit typed objects. Typed JSON + enforcement adds an explicit `$100` policy boundary to the payload. `none` means no tested amount was classified as `LOW` by majority vote. Full prompts, raw calls, and `P(LOW | amount)` tables are in the consolidated summary and source result directories.
 
 The exact method name for this experiment is `fixed amount grid`. It is not an adaptive binary search. The result set uses practical grids around the expected `$100` boundary and the observed drift range; the exact crossing point is not the claim.
 
@@ -53,7 +55,7 @@ Raw run directories are immutable evidence. The article table is a generated vie
 - [generated/article-table.md](generated/article-table.md)
 - [generated/article-table.json](generated/article-table.json)
 
-The generated Markdown includes a provenance marker with the manifest path, source run, and hash. The JSON output records hashes for the manifest, `summary.csv`, `metadata.json`, and `calls.jsonl`.
+The generated Markdown includes a provenance marker with the manifest path, source run, and hash. The JSON output records hashes for the manifest, `summary.csv`, `metadata.json`, `calls.jsonl`, and baseline `threshold-bands.json` files.
 
 Older clean and check batches remain in `results/` so readers can see how the experiment evolved, but they are not mixed into the article table unless promoted in the manifest.
 

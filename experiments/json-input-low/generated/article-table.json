@@ -1,11 +1,15 @@
 {
   "schema_version": "json-input-low.article-table.v1",
   "manifest_path": "experiments/json-input-low/manifest.json",
-  "manifest_sha256": "4c93fabf1538c4cdc95a9c15a315436e0927f07793a827e64c72f4da6d91b078",
+  "manifest_sha256": "888b3023e7d7f3352524bc0dcdd246eca46b79c4b6687ed3fabea7b5aa2837d0",
   "source_run_ids": [
     "openai_gpt55_gpt56_fixed_grid_s30",
     "gemini_100k_dense_s30",
     "gemini_5_s10"
+  ],
+  "baseline_source_ids": [
+    "low_context_openai_gpt55_gpt56",
+    "low_context_gemini_publication_clean"
   ],
   "source_run_dirs": [
     "experiments/json-input-low/results/2026-07-31T15-06-21-856Z-clean-openai-gpt55-gpt56-fixed-grid-json-s30-json-input-low",
@@ -66,9 +70,21 @@
       "path": "experiments/json-input-low/results/2026-07-31T03-34-51-862Z-check-gemini-json-5-s10-json-input-low/calls.jsonl",
       "bytes": 1208330,
       "sha256": "65ebaf4de44ed6d49b3d588edcddc5fc8c8a59f6998feec3110f92e52fec1255"
+    },
+    {
+      "baseline_source_id": "low_context_openai_gpt55_gpt56",
+      "path": "experiments/low-retrieved-context/results/2026-07-29T18-47-12-806Z-publication-clean-openai-gpt55-gpt56-max1024-low/threshold-bands.json",
+      "bytes": 4061,
+      "sha256": "22cf277291eec9bbc8bfb28257d65054d5a0cb626e86c39d1b26c014bd069eee"
+    },
+    {
+      "baseline_source_id": "low_context_gemini_publication_clean",
+      "path": "experiments/low-retrieved-context/results/2026-07-28T00-13-22-919Z-publication-clean-gemini-low/threshold-bands.json",
+      "bytes": 4137,
+      "sha256": "208754e2d4a95dc67d9e6c710622e41c76d6ed9cd75cbd0a8ff8bda1402ee3c1"
     }
   ],
-  "provenance_hash": "15e8f209dd226cf04903ea94faa219ef4bcfcc996ad19d0c3765572ef628ee6c",
+  "provenance_hash": "ca86b856f8e020512938413ca1d8dc01c165a879d14172c46787f3c357cd3f00",
   "table_rows": [
     {
       "provider": "OpenAI",
@@ -76,11 +92,53 @@
       "test_label": "$100k contract",
       "context_id": "retrieved_100000_contract",
       "run_id": "openai_gpt55_gpt56_fixed_grid_s30",
+      "baseline_source_id": "low_context_openai_gpt55_gpt56",
+      "baseline": 1005.865,
+      "baseline_band": {
+        "model": "gpt-5.5",
+        "contextId": "fact_only",
+        "searchMethod": "bounded_probability_band_search",
+        "low": 996.1,
+        "high": 1015.63,
+        "width": 19.53,
+        "samplesPerState": 30,
+        "lowLabel": "LOW",
+        "highLabel": "NOT_LOW",
+        "lowProbability": {
+          "total": 30,
+          "low": 28,
+          "notLow": 2,
+          "invalid": 0,
+          "lowPct": 0.9333,
+          "lowPctWilson95": {
+            "low": 0.7868,
+            "high": 0.9815
+          }
+        },
+        "highProbability": {
+          "total": 30,
+          "low": 0,
+          "notLow": 30,
+          "invalid": 0,
+          "lowPct": 0,
+          "lowPctWilson95": {
+            "low": 0,
+            "high": 0.1135
+          }
+        }
+      },
+      "display_baseline": "~$1,000",
       "values": {
         "prose_same_block": 20000,
         "json_flat": 5000,
         "json_typed": 20000,
         "json_typed_boundary_rule": 100
+      },
+      "display_values": {
+        "prose_same_block": "$20,000 ↑ 20x",
+        "json_flat": "$5,000 ↑ 5x",
+        "json_typed": "$20,000 ↑ 20x",
+        "json_typed_boundary_rule": "$100 ↓ 0.1x"
       },
       "format_labels": {
         "prose_same_block": "Prose",
@@ -95,11 +153,53 @@
       "test_label": "$100k contract",
       "context_id": "retrieved_100000_contract",
       "run_id": "openai_gpt55_gpt56_fixed_grid_s30",
+      "baseline_source_id": "low_context_openai_gpt55_gpt56",
+      "baseline": 107.425,
+      "baseline_band": {
+        "model": "gpt-5.6",
+        "contextId": "fact_only",
+        "searchMethod": "bounded_probability_band_search",
+        "low": 97.66,
+        "high": 117.19,
+        "width": 19.53,
+        "samplesPerState": 30,
+        "lowLabel": "LOW",
+        "highLabel": "NOT_LOW",
+        "lowProbability": {
+          "total": 30,
+          "low": 30,
+          "notLow": 0,
+          "invalid": 0,
+          "lowPct": 1,
+          "lowPctWilson95": {
+            "low": 0.8865,
+            "high": 1
+          }
+        },
+        "highProbability": {
+          "total": 30,
+          "low": 4,
+          "notLow": 26,
+          "invalid": 0,
+          "lowPct": 0.1333,
+          "lowPctWilson95": {
+            "low": 0.0531,
+            "high": 0.2968
+          }
+        }
+      },
+      "display_baseline": "~$100",
       "values": {
         "prose_same_block": 20000,
         "json_flat": 20000,
         "json_typed": 20000,
         "json_typed_boundary_rule": 100
+      },
+      "display_values": {
+        "prose_same_block": "$20,000 ↑ 200x",
+        "json_flat": "$20,000 ↑ 200x",
+        "json_typed": "$20,000 ↑ 200x",
+        "json_typed_boundary_rule": "$100 → 1x"
       },
       "format_labels": {
         "prose_same_block": "Prose",
@@ -114,11 +214,53 @@
       "test_label": "$100k contract",
       "context_id": "retrieved_100000_contract",
       "run_id": "gemini_100k_dense_s30",
+      "baseline_source_id": "low_context_gemini_publication_clean",
+      "baseline": 87.895,
+      "baseline_band": {
+        "model": "gemini-3.5-flash-lite",
+        "contextId": "fact_only",
+        "searchMethod": "bounded_probability_band_search",
+        "low": 78.13,
+        "high": 97.66,
+        "width": 19.53,
+        "samplesPerState": 30,
+        "lowLabel": "LOW",
+        "highLabel": "NOT_LOW",
+        "lowProbability": {
+          "total": 30,
+          "low": 24,
+          "notLow": 6,
+          "invalid": 0,
+          "lowPct": 0.8,
+          "lowPctWilson95": {
+            "low": 0.6269,
+            "high": 0.905
+          }
+        },
+        "highProbability": {
+          "total": 30,
+          "low": 7,
+          "notLow": 23,
+          "invalid": 0,
+          "lowPct": 0.2333,
+          "lowPctWilson95": {
+            "low": 0.1179,
+            "high": 0.4093
+          }
+        }
+      },
+      "display_baseline": "~$90",
       "values": {
         "prose_same_block": 18000,
         "json_flat": 50000,
         "json_typed": 50000,
         "json_typed_boundary_rule": 20000
+      },
+      "display_values": {
+        "prose_same_block": "$18,000 ↑ 200x",
+        "json_flat": "$50,000 ↑ 560x",
+        "json_typed": "$50,000 ↑ 560x",
+        "json_typed_boundary_rule": "$20,000 ↑ 220x"
       },
       "format_labels": {
         "prose_same_block": "Prose",
@@ -133,11 +275,53 @@
       "test_label": "$5 gift card",
       "context_id": "retrieved_5_gift_card",
       "run_id": "openai_gpt55_gpt56_fixed_grid_s30",
+      "baseline_source_id": "low_context_openai_gpt55_gpt56",
+      "baseline": 1005.865,
+      "baseline_band": {
+        "model": "gpt-5.5",
+        "contextId": "fact_only",
+        "searchMethod": "bounded_probability_band_search",
+        "low": 996.1,
+        "high": 1015.63,
+        "width": 19.53,
+        "samplesPerState": 30,
+        "lowLabel": "LOW",
+        "highLabel": "NOT_LOW",
+        "lowProbability": {
+          "total": 30,
+          "low": 28,
+          "notLow": 2,
+          "invalid": 0,
+          "lowPct": 0.9333,
+          "lowPctWilson95": {
+            "low": 0.7868,
+            "high": 0.9815
+          }
+        },
+        "highProbability": {
+          "total": 30,
+          "low": 0,
+          "notLow": 30,
+          "invalid": 0,
+          "lowPct": 0,
+          "lowPctWilson95": {
+            "low": 0,
+            "high": 0.1135
+          }
+        }
+      },
+      "display_baseline": "~$1,000",
       "values": {
         "prose_same_block": 100,
         "json_flat": 100,
         "json_typed": 100,
         "json_typed_boundary_rule": 100
+      },
+      "display_values": {
+        "prose_same_block": "$100 ↓ 0.1x",
+        "json_flat": "$100 ↓ 0.1x",
+        "json_typed": "$100 ↓ 0.1x",
+        "json_typed_boundary_rule": "$100 ↓ 0.1x"
       },
       "format_labels": {
         "prose_same_block": "Prose",
@@ -152,11 +336,53 @@
       "test_label": "$5 gift card",
       "context_id": "retrieved_5_gift_card",
       "run_id": "openai_gpt55_gpt56_fixed_grid_s30",
+      "baseline_source_id": "low_context_openai_gpt55_gpt56",
+      "baseline": 107.425,
+      "baseline_band": {
+        "model": "gpt-5.6",
+        "contextId": "fact_only",
+        "searchMethod": "bounded_probability_band_search",
+        "low": 97.66,
+        "high": 117.19,
+        "width": 19.53,
+        "samplesPerState": 30,
+        "lowLabel": "LOW",
+        "highLabel": "NOT_LOW",
+        "lowProbability": {
+          "total": 30,
+          "low": 30,
+          "notLow": 0,
+          "invalid": 0,
+          "lowPct": 1,
+          "lowPctWilson95": {
+            "low": 0.8865,
+            "high": 1
+          }
+        },
+        "highProbability": {
+          "total": 30,
+          "low": 4,
+          "notLow": 26,
+          "invalid": 0,
+          "lowPct": 0.1333,
+          "lowPctWilson95": {
+            "low": 0.0531,
+            "high": 0.2968
+          }
+        }
+      },
+      "display_baseline": "~$100",
       "values": {
         "prose_same_block": null,
         "json_flat": 50,
         "json_typed": 25,
         "json_typed_boundary_rule": 100
+      },
+      "display_values": {
+        "prose_same_block": "none ↓ below grid",
+        "json_flat": "$50 ↓ 0.5x",
+        "json_typed": "$25 ↓ 0.25x",
+        "json_typed_boundary_rule": "$100 → 1x"
       },
       "format_labels": {
         "prose_same_block": "Prose",
@@ -171,11 +397,53 @@
       "test_label": "$5 gift card",
       "context_id": "retrieved_5_gift_card",
       "run_id": "gemini_5_s10",
+      "baseline_source_id": "low_context_gemini_publication_clean",
+      "baseline": 87.895,
+      "baseline_band": {
+        "model": "gemini-3.5-flash-lite",
+        "contextId": "fact_only",
+        "searchMethod": "bounded_probability_band_search",
+        "low": 78.13,
+        "high": 97.66,
+        "width": 19.53,
+        "samplesPerState": 30,
+        "lowLabel": "LOW",
+        "highLabel": "NOT_LOW",
+        "lowProbability": {
+          "total": 30,
+          "low": 24,
+          "notLow": 6,
+          "invalid": 0,
+          "lowPct": 0.8,
+          "lowPctWilson95": {
+            "low": 0.6269,
+            "high": 0.905
+          }
+        },
+        "highProbability": {
+          "total": 30,
+          "low": 7,
+          "notLow": 23,
+          "invalid": 0,
+          "lowPct": 0.2333,
+          "lowPctWilson95": {
+            "low": 0.1179,
+            "high": 0.4093
+          }
+        }
+      },
+      "display_baseline": "~$90",
       "values": {
         "prose_same_block": 5,
         "json_flat": 5,
         "json_typed": 5,
         "json_typed_boundary_rule": 100
+      },
+      "display_values": {
+        "prose_same_block": "$5 ↓ 0.06x",
+        "json_flat": "$5 ↓ 0.06x",
+        "json_typed": "$5 ↓ 0.06x",
+        "json_typed_boundary_rule": "$100 ↑ 1.1x"
       },
       "format_labels": {
         "prose_same_block": "Prose",
