@@ -84,7 +84,7 @@ Short version to consider for the article if we decide to use this probe:
 
 > We also tested the same case by separating the prompt and the retrieved context in untyped and typed JSON formats. The model still interpreted the fields together.
 
-| Model | Test | Prose | Raw JSON | Typed JSON | Typed JSON + enforcement |
+| Model | Test | Prose | Raw JSON | Typed JSON | $100 LOW rule |
 | --- | --- | ---: | ---: | ---: | ---: |
 | `gpt-5.5` | `$100k contract` | `$20,000` | `$5,000` | `$20,000` | `$100` |
 | `gpt-5.6` | `$100k contract` | `$20,000` | `$20,000` | `$20,000` | `$100` |
@@ -93,11 +93,11 @@ Short version to consider for the article if we decide to use this probe:
 | `gpt-5.6` | `$5 gift card` | none | `$50` | `$25` | `$100` |
 | `gemini-3.5-flash-lite` | `$5 gift card` | `$5` | `$5` | `$5` | `$100` |
 
-Caption: highest tested claim amount classified as `LOW` by majority vote on a fixed amount grid, with retrieved context present. Prose is the ordinary prose prompt. Raw JSON separates fields without typed structure. Typed JSON separates the retrieved note and case data into explicit typed objects. Typed JSON + enforcement adds an explicit `$100` policy boundary to the payload. `none` means no tested amount was classified as `LOW` by majority vote.
+Caption: highest tested claim amount classified as `LOW` by majority vote on a fixed amount grid, with retrieved context present. Prose is the ordinary prose prompt. Raw JSON separates fields without typed structure. Typed JSON separates the retrieved note and case data into explicit typed objects. $100 LOW rule adds an explicit `$100` policy boundary to the payload. `none` means no tested amount was classified as `LOW` by majority vote.
 
 The important result is not that JSON confused the model. The retrieved context continued to move the decision boundary whether the instruction was written as prose, raw JSON, or typed JSON. JSON made the input more structured and legible, but it did not isolate the policy value before inference. The boundary returned to `$100` only when the policy value itself was explicitly pinned as an enforceable field.
 
-Note: the Gemini `$20,000` enforcement result is part of the observed result set. The current consolidated article-facing summary is in `../2026-08-01-json-format-results-summary/summary.md`.
+Note: the Gemini `$20,000` `$100 LOW rule` result is part of the observed result set. The current consolidated article-facing summary is in `../2026-08-01-json-format-results-summary/summary.md`.
 
 ## Interpretation
 

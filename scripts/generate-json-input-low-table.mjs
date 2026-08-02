@@ -12,7 +12,7 @@ const FORMAT_LABELS = new Map([
   ["prose_separated", "Prose separated"],
   ["json_flat", "Raw JSON"],
   ["json_typed", "Typed JSON"],
-  ["json_typed_boundary_rule", "Typed JSON + enforcement"],
+  ["json_typed_boundary_rule", "$100 LOW rule"],
 ]);
 
 function rel(...parts) {
@@ -133,7 +133,7 @@ function renderMarkdown({ manifest, tableRows, provenanceHash }) {
     "",
     "Highest tested claim amount classified as `LOW` by majority vote, compared with the no-context LOW boundary.",
     "",
-    "| Model | Test | No added context | Prose context | Raw JSON context | Typed JSON context | Typed JSON + enforcement |",
+    "| Model | Test | No added context | Prose context | Raw JSON context | Typed JSON context | $100 LOW rule |",
     "| --- | --- | ---: | ---: | ---: | ---: | ---: |",
   ];
   for (const row of tableRows) {

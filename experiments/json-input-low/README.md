@@ -17,9 +17,9 @@ The current script is intentionally narrow:
 - `prose_separated`: retrieved context, case data, and task separated by delimiters.
 - `json_flat`: a simple JSON object with retrieved context and refund amount in separate fields.
 - `json_typed`: nested JSON with explicit input roles and an output schema.
-- `json_typed_boundary_rule`: JSON plus an explicit deterministic threshold policy.
+- `json_typed_boundary_rule`: typed JSON plus an explicit `$100 LOW` rule in the prompt.
 
-The last variant is a diagnostic control. If it restores the `$100` result, it shows that an explicit policy value can improve the prompt. If it does not restore the boundary, that is still part of the result: model-side policy text is not the same thing as deterministic enforcement outside the model.
+The last variant is a diagnostic control. If it produces the specified `$100` result, it shows that an explicit policy value can improve the prompt. If it does not produce a stable boundary, that is still part of the result: prompt-side policy text is not the same thing as deterministic enforcement outside the model.
 
 ## Current Readout
 
@@ -35,7 +35,7 @@ We also tested the same case by separating the prompt and the retrieved context 
 
 Highest tested claim amount classified as `LOW` by majority vote, compared with the no-context LOW boundary.
 
-| Model | Test | No added context | Prose context | Raw JSON context | Typed JSON context | Typed JSON + enforcement |
+| Model | Test | No added context | Prose context | Raw JSON context | Typed JSON context | $100 LOW rule |
 | --- | --- | ---: | ---: | ---: | ---: | ---: |
 | `gpt-5.5` | $100k contract | ~$1,000 | $20,000 ↑ 20x | $5,000 ↑ 5x | $20,000 ↑ 20x | $100 ↓ 0.1x |
 | `gpt-5.6` | $100k contract | ~$100 | $20,000 ↑ 200x | $20,000 ↑ 200x | $20,000 ↑ 200x | $100 → 1x |
@@ -44,7 +44,7 @@ Highest tested claim amount classified as `LOW` by majority vote, compared with 
 | `gpt-5.6` | $5 gift card | ~$100 | none ↓ below grid | $50 ↓ 0.5x | $25 ↓ 0.25x | $100 → 1x |
 | `gemini-3.5-flash-lite` | $5 gift card | ~$90 | $5 ↓ 0.06x | $5 ↓ 0.06x | $5 ↓ 0.06x | $100 ↑ 1.1x |
 
-Caption: highest tested claim amount classified as `LOW` by majority vote. The `No added context` column comes from the LOW retrieved-context threshold runs; the other columns come from the manifest-declared JSON input runs. Prose is the ordinary prose prompt. Raw JSON separates fields without typed structure. Typed JSON separates the retrieved note and case data into explicit typed objects. Typed JSON + enforcement adds an explicit `$100` policy boundary to the payload. `none` means no tested amount was classified as `LOW` by majority vote. Full prompts, raw calls, and `P(LOW | amount)` tables are in the consolidated summary and source result directories.
+Caption: highest tested claim amount classified as `LOW` by majority vote. The `No added context` column comes from the LOW retrieved-context threshold runs; the other columns come from the manifest-declared JSON input runs. Prose is the ordinary prose prompt. Raw JSON separates fields without typed structure. Typed JSON separates the retrieved note and case data into explicit typed objects. `$100 LOW rule` adds an explicit prompt-side rule that values at or below `$100` should be classified as `LOW`. `none` means no tested amount was classified as `LOW` by majority vote. Full prompts, raw calls, and `P(LOW | amount)` tables are in the consolidated summary and source result directories.
 
 The exact method name for this experiment is `fixed amount grid`. It is not an adaptive binary search. The result set uses practical grids around the expected `$100` boundary and the observed drift range; the exact crossing point is not the claim.
 
@@ -65,7 +65,7 @@ JSON changed the surface form of the prompt, but it did not remove the hidden-bo
 
 The important result is not that JSON confused the model. The retrieved context continued to influence the decision boundary whether the instruction was written as prose, raw JSON, or typed JSON. JSON made the input more structured and legible, but it did not isolate the policy value before inference.
 
-For OpenAI, `json_typed_boundary_rule` restored the intended `$100` boundary. The Gemini `$100k` result did not behave as a smooth enforced boundary: most amounts above `$100` were `NOT_LOW`, but `$15,000` and `$20,000` still received majority `LOW` votes. That is part of the result, and it points to the same recommendation: consequence-bearing thresholds should be explicit, versioned, and enforced outside ordinary model interpretation.
+For OpenAI, `json_typed_boundary_rule` produced the specified `$100` LOW outcome. The Gemini `$100k` result did not behave as a smooth prompt-side boundary: most amounts above `$100` were `NOT_LOW`, but `$15,000` and `$20,000` still received majority `LOW` votes. That is part of the result, and it points to the same recommendation: consequence-bearing thresholds should be explicit, versioned, and enforced outside ordinary model interpretation.
 
 Do not read this probe as a model ranking. The useful claim is narrower: structured JSON input can make the prompt more legible, but legibility did not become control before the first inference.
 

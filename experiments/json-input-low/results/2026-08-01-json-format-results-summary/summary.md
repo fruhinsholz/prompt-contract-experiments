@@ -6,7 +6,7 @@ Supplementary probe for the Prompt Edits article. This file consolidates the JSO
 
 Highest tested claim amount classified as `LOW` by majority vote.
 
-| Provider | Model | Test | Prose | Raw JSON | Typed JSON | Typed JSON + enforcement |
+| Provider | Model | Test | Prose | Raw JSON | Typed JSON | $100 LOW rule |
 | --- | --- | --- | ---: | ---: | ---: | ---: |
 | OpenAI | `gpt-5.5` | $100k contract | $20,000 | $5,000 | $20,000 | $100 |
 | OpenAI | `gpt-5.6` | $100k contract | $20,000 | $20,000 | $20,000 | $100 |
@@ -73,7 +73,7 @@ The Gemini `$100k` result is not a smooth threshold. Several cells are non-monot
 | $50,000 | 30/30 | 0/30 | 0/30 |
 | $100,000 | 4/30 | 26/30 | 0/30 |
 
-### Typed JSON + enforcement
+### $100 LOW rule
 
 | Amount | LOW | NOT_LOW | Invalid |
 | ---: | ---: | ---: | ---: |
@@ -94,6 +94,6 @@ The Gemini `$100k` result is not a smooth threshold. Several cells are non-monot
 ## Data Notes
 
 - The table is a compact article view, not a benchmark ranking.
-- The Gemini `$100k` enforcement cell remains `$20,000` because `$20,000` is the highest tested amount with majority `LOW` in the consolidated result set.
-- The detailed rows show why this should not be interpreted as a reliable model-side enforcement boundary: the same explicit `$100` policy field produced `NOT_LOW` at many amounts above `$100`, but majority `LOW` at `$15,000` and `$20,000`.
+- The Gemini `$100k` `$100 LOW rule` cell remains `$20,000` because `$20,000` is the highest tested amount with majority `LOW` in the consolidated result set.
+- The detailed rows show why this should not be interpreted as a reliable prompt-side boundary: the same explicit `$100` policy field produced `NOT_LOW` at many amounts above `$100`, but majority `LOW` at `$15,000` and `$20,000`.
 - This strengthens the practical conclusion: pinning a threshold in model input is better evidence of intent, but consequence-bearing enforcement still belongs outside the model.

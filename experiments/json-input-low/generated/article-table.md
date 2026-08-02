@@ -1,8 +1,8 @@
-<!-- generated:json-input-low-table manifest:experiments/json-input-low/manifest.json source_runs:openai_gpt55_gpt56_fixed_grid_s30,gemini_100k_dense_s30,gemini_5_s10 hash:ca86b856f8e020512938413ca1d8dc01c165a879d14172c46787f3c357cd3f00 -->
+<!-- generated:json-input-low-table manifest:experiments/json-input-low/manifest.json source_runs:openai_gpt55_gpt56_fixed_grid_s30,gemini_100k_dense_s30,gemini_5_s10 hash:0ccec39623a1f82c4a44cf6442e2e18e3e3f49f4266bc1f030cab0a5ef6d74be -->
 
 Highest tested claim amount classified as `LOW` by majority vote, compared with the no-context LOW boundary.
 
-| Model | Test | No added context | Prose context | Raw JSON context | Typed JSON context | Typed JSON + enforcement |
+| Model | Test | No added context | Prose context | Raw JSON context | Typed JSON context | $100 LOW rule |
 | --- | --- | ---: | ---: | ---: | ---: | ---: |
 | `gpt-5.5` | $100k contract | ~$1,000 | $20,000 ↑ 20x | $5,000 ↑ 5x | $20,000 ↑ 20x | $100 ↓ 0.1x |
 | `gpt-5.6` | $100k contract | ~$100 | $20,000 ↑ 200x | $20,000 ↑ 200x | $20,000 ↑ 200x | $100 → 1x |
