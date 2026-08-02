@@ -205,3 +205,27 @@ If API keys are not loaded but the local Claude CLI is authenticated:
 ```bash
 npm run thresholds:low:json-input -- --provider claude-cli --models sonnet --contexts fact_only,retrieved_100000_contract --formats all --samples 2 --amounts 50,100,150,500,1000,5000,10000,20000 --max-output-tokens 128 --max-calls 250 --label exploratory-claude-json-vs-prose
 ```
+
+## Publication-Clean Boundary Probe
+
+The publication-clean probe is the article-facing replacement for ratio-heavy mixed-run evidence. It uses one fixed grid, one prompt format, one retrieved-context case, and `n=100` per amount per model. The runtime-enforced condition is derived deterministically from the same cases and does not spend extra model calls.
+
+Publication runs:
+
+- OpenAI: `experiments/json-input-low/results/2026-08-02T17-21-15-563Z-publication-clean-openai-gpt56-s100-json-input-low`
+- Gemini: `experiments/json-input-low/results/2026-08-02T17-24-22-436Z-publication-clean-gemini-36-flash-s100-json-input-low`
+
+Regenerate the consolidated publication artifacts with:
+
+```bash
+npm run results:json-input-low:publication -- --runs experiments/json-input-low/results/2026-08-02T17-21-15-563Z-publication-clean-openai-gpt56-s100-json-input-low,experiments/json-input-low/results/2026-08-02T17-24-22-436Z-publication-clean-gemini-36-flash-s100-json-input-low --out experiments/json-input-low/generated/publication-clean
+```
+
+Generated artifacts:
+
+- `experiments/json-input-low/generated/publication-clean/publication-clean-summary.md`
+- `experiments/json-input-low/generated/publication-clean/publication-clean-summary.csv`
+- `experiments/json-input-low/generated/publication-clean/publication-clean-chart.svg`
+- `experiments/json-input-low/generated/publication-clean/publication-clean-provenance.json`
+
+Article-facing interpretation: do not use fold multipliers such as `560x` for this result. Report raw counts, error rates, `n`, exact models, exact amounts, and provenance. The narrow claim is that a prompt-owned consequence boundary drifted under retrieved context in this probe, while code-owned runtime enforcement stayed deterministic.

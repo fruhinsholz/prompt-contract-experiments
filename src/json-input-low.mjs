@@ -190,7 +190,7 @@ async function runOne({ args, runDir, model, contextId, formatId, amount, sample
     const { json, latencyMs } = args.provider === "claude-cli"
       ? await callClaudeCli({ payload })
       : args.provider === "gemini"
-        ? await callGemini({ apiKey: process.env.GEMINI_API_KEY, payload })
+        ? await callGemini({ apiKey: process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY, payload })
         : await callOpenAI({ apiKey: process.env.OPENAI_API_KEY, payload });
     const outputText = args.provider === "claude-cli"
       ? extractClaudeCliOutputText(json)

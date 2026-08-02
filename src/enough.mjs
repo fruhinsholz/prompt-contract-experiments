@@ -162,7 +162,7 @@ async function runOne({ args, runDir, model, mode, candidateValue, vector, epoch
 
   try {
     const { json, latencyMs } = args.provider === "gemini"
-      ? await callGemini({ apiKey: process.env.GEMINI_API_KEY, payload })
+      ? await callGemini({ apiKey: process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY, payload })
       : await callOpenAI({ apiKey: process.env.OPENAI_API_KEY, payload });
     const outputText = args.provider === "gemini" ? extractGeminiOutputText(json) : extractOutputText(json);
     const outputTokens = json.usage?.output_tokens ?? json.usageMetadata?.candidatesTokenCount ?? 0;

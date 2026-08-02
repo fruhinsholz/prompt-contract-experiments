@@ -140,7 +140,7 @@ export function validateCommonArgs(args) {
   }
   if (modelsFromArgs(args).length === 0) throw new Error("Pass --models or set THRESHOLD_MODELS.");
   if (!args.dryRun && args.provider === "openai" && !process.env.OPENAI_API_KEY) throw new Error("OPENAI_API_KEY is required for live OpenAI runs.");
-  if (!args.dryRun && args.provider === "gemini" && !process.env.GEMINI_API_KEY) throw new Error("GEMINI_API_KEY is required for live Gemini runs.");
+  if (!args.dryRun && args.provider === "gemini" && !(process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY)) throw new Error("GEMINI_API_KEY or GOOGLE_API_KEY is required for live Gemini runs.");
 }
 
 export function sanitizeLabel(value) {
