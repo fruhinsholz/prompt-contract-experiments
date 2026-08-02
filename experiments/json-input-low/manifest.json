@@ -3,7 +3,7 @@
   "experiment_id": "json-input-low",
   "updated_at": "2026-08-02",
   "purpose": "Track the raw runs and derived article-facing table for the JSON input LOW probe.",
-  "reader_summary": "Raw runs are immutable. The article table is generated from the publication-clean control and retrieved-context runs, with older format-comparison batches retained for audit context rather than mixed into article numbers.",
+  "reader_summary": "Raw runs are immutable. The article table is generated from publication-clean n=100 runs: no-context controls, $100k retrieved-context prose, $5 gift-card prose, and $5 gift-card explicit-boundary JSON checks. Older format-comparison batches remain audit context rather than mixed into article numbers.",
   "raw_data_policy": {
     "raw_runs_are_immutable": true,
     "derived_outputs_must_be_generated": true,
@@ -230,6 +230,74 @@
       "notes": "Publication-clean $100k retrieved-context source for the article-facing boundary table."
     },
     {
+      "id": "publication_clean_gift_card_openai_gpt56_s100",
+      "role": "publication_clean_context_source",
+      "status": "current",
+      "run_dir": "experiments/json-input-low/results/2026-08-02T19-25-24-689Z-publication-clean-gift-card-openai-gpt56-s100-json-input-low",
+      "provider": "openai",
+      "models": [
+        "gpt-5.6"
+      ],
+      "contexts": [
+        "retrieved_5_gift_card"
+      ],
+      "formats": [
+        "prose_same_block",
+        "json_typed_boundary_rule"
+      ],
+      "amounts": [
+        0,
+        5,
+        25,
+        49,
+        50,
+        51,
+        75,
+        100,
+        101,
+        150,
+        250,
+        500,
+        1000
+      ],
+      "samples_per_cell": 100,
+      "notes": "Publication-clean $5 gift-card retrieved-context run. Includes the ordinary prose prompt used for the narrative hook and the typed JSON prompt with an explicit $100 boundary rule."
+    },
+    {
+      "id": "publication_clean_gift_card_gemini_36_flash_s100",
+      "role": "publication_clean_context_source",
+      "status": "current",
+      "run_dir": "experiments/json-input-low/results/2026-08-02T19-32-20-026Z-publication-clean-gift-card-gemini-36-flash-s100-json-input-low",
+      "provider": "gemini",
+      "models": [
+        "gemini-3.6-flash"
+      ],
+      "contexts": [
+        "retrieved_5_gift_card"
+      ],
+      "formats": [
+        "prose_same_block",
+        "json_typed_boundary_rule"
+      ],
+      "amounts": [
+        0,
+        5,
+        25,
+        49,
+        50,
+        51,
+        75,
+        100,
+        101,
+        150,
+        250,
+        500,
+        1000
+      ],
+      "samples_per_cell": 100,
+      "notes": "Publication-clean $5 gift-card retrieved-context run. Includes the ordinary prose prompt used for the narrative hook and the typed JSON prompt with an explicit $100 boundary rule."
+    },
+    {
       "id": "openai_gpt55_gpt56_fixed_grid_s30",
       "role": "article_table_source",
       "status": "current",
@@ -372,7 +440,7 @@
     {
       "id": "gemini_5_s10",
       "role": "article_table_source",
-      "status": "current",
+      "status": "superseded",
       "run_dir": "experiments/json-input-low/results/2026-07-31T03-34-51-862Z-check-gemini-json-5-s10-json-input-low",
       "provider": "gemini",
       "models": [
@@ -400,7 +468,7 @@
         20000
       ],
       "samples_per_cell": 10,
-      "notes": "Current Gemini source for the $5 gift-card article row. This smaller opposite-direction check is part of the consolidated article-facing table."
+      "notes": "Earlier smaller $5 gift-card check. Superseded for article-facing values by the publication-clean gpt-5.6 and gemini-3.6-flash s100 gift-card runs."
     },
     {
       "id": "openai_5_s10",
@@ -440,12 +508,13 @@
   "publication_clean_table": {
     "id": "json-input-low-publication-clean-boundary-table",
     "title": "JSON Input LOW Publication-Clean Boundary Table",
-    "description": "Raw count comparison of no-added-context control, $100k retrieved context, and deterministic runtime enforcement on an matched fixed grid.",
+    "description": "Raw count comparison of no-added-context controls, $100k retrieved context, $5 gift-card retrieved context, explicit-rule JSON checks, and deterministic runtime enforcement on a matched fixed grid.",
     "threshold_usd": 100,
     "format_id": "prose_same_block",
     "contexts": [
       "fact_only",
-      "retrieved_100000_contract"
+      "retrieved_100000_contract",
+      "retrieved_5_gift_card"
     ],
     "amounts": [
       0,
@@ -476,16 +545,62 @@
       {
         "provider": "OpenAI",
         "model": "gpt-5.6",
+        "section_id": "retrieved_100000_contract_prose",
+        "section_label": "$100k retrieved context - prose classifier",
         "control_run_id": "publication_clean_control_openai_gpt56_s100",
-        "context_run_id": "publication_clean_openai_gpt56_s100"
+        "context_run_id": "publication_clean_openai_gpt56_s100",
+        "context_id": "retrieved_100000_contract",
+        "format_id": "prose_same_block"
       },
       {
         "provider": "Gemini",
         "model": "gemini-3.6-flash",
+        "section_id": "retrieved_100000_contract_prose",
+        "section_label": "$100k retrieved context - prose classifier",
         "control_run_id": "publication_clean_control_gemini_36_flash_s100",
-        "context_run_id": "publication_clean_gemini_36_flash_s100"
+        "context_run_id": "publication_clean_gemini_36_flash_s100",
+        "context_id": "retrieved_100000_contract",
+        "format_id": "prose_same_block"
+      },
+      {
+        "provider": "OpenAI",
+        "model": "gpt-5.6",
+        "section_id": "retrieved_5_gift_card_prose",
+        "section_label": "$5 gift-card context - prose classifier",
+        "control_run_id": "publication_clean_control_openai_gpt56_s100",
+        "context_run_id": "publication_clean_gift_card_openai_gpt56_s100",
+        "context_id": "retrieved_5_gift_card",
+        "format_id": "prose_same_block"
+      },
+      {
+        "provider": "Gemini",
+        "model": "gemini-3.6-flash",
+        "section_id": "retrieved_5_gift_card_prose",
+        "section_label": "$5 gift-card context - prose classifier",
+        "control_run_id": "publication_clean_control_gemini_36_flash_s100",
+        "context_run_id": "publication_clean_gift_card_gemini_36_flash_s100",
+        "context_id": "retrieved_5_gift_card",
+        "format_id": "prose_same_block"
+      },
+      {
+        "provider": "OpenAI",
+        "model": "gpt-5.6",
+        "section_id": "retrieved_5_gift_card_explicit_rule",
+        "section_label": "$5 gift-card context - explicit $100 JSON rule",
+        "context_run_id": "publication_clean_gift_card_openai_gpt56_s100",
+        "context_id": "retrieved_5_gift_card",
+        "format_id": "json_typed_boundary_rule"
+      },
+      {
+        "provider": "Gemini",
+        "model": "gemini-3.6-flash",
+        "section_id": "retrieved_5_gift_card_explicit_rule",
+        "section_label": "$5 gift-card context - explicit $100 JSON rule",
+        "context_run_id": "publication_clean_gift_card_gemini_36_flash_s100",
+        "context_id": "retrieved_5_gift_card",
+        "format_id": "json_typed_boundary_rule"
       }
     ],
-    "notes": "This table supersedes the ratio-heavy mixed-run article_table for publication prose. The older article_table object is retained below as historical format-comparison metadata only."
+    "notes": "This table supersedes the ratio-heavy mixed-run article_table for publication prose. It intentionally separates the ordinary prose classifier from the explicit $100 JSON boundary-rule check. The older article_table object remains historical format-comparison metadata only."
   }
 }

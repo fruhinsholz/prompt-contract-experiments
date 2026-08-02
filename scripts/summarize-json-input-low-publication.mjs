@@ -254,7 +254,10 @@ async function main() {
     const config = manifest.publication_clean_table;
     if (!config) throw new Error("Pass --runs <runDir,runDir> or define manifest.publication_clean_table.");
     const runsById = new Map(manifest.runs.map((run) => [run.id, run]));
-    args.runs = [...new Set(config.rows.flatMap((row) => [row.control_run_id, row.context_run_id]))]
+    args.runs = [...new Set(config.rows
+      .filter((row) => TARGET_CONTEXTS.includes(row.context_id ?? "retrieved_100000_contract") && (row.format_id ?? config.format_id) === TARGET_FORMAT)
+      .flatMap((row) => [row.control_run_id, row.context_run_id])
+      .filter(Boolean))]
       .map((runId) => {
         const run = runsById.get(runId);
         if (!run) throw new Error(`Missing run in manifest: ${runId}`);

@@ -26,9 +26,13 @@ The last variant is a diagnostic control. If it produces the specified `$100` re
 The publication-clean article table is generated from [manifest.json](manifest.json), not edited by hand. It now uses a matched fixed grid:
 
 - OpenAI `gpt-5.6`, `n=100` per amount, no-added-context control.
-- OpenAI `gpt-5.6`, `n=100` per amount, `$100k` retrieved-context condition.
+- OpenAI `gpt-5.6`, `n=100` per amount, `$100k` retrieved-context prose condition.
+- OpenAI `gpt-5.6`, `n=100` per amount, `$5 gift-card` retrieved-context prose condition.
+- OpenAI `gpt-5.6`, `n=100` per amount, `$5 gift-card` retrieved-context explicit `$100` JSON boundary-rule condition.
 - Gemini `gemini-3.6-flash`, `n=100` per amount, no-added-context control.
-- Gemini `gemini-3.6-flash`, `n=100` per amount, `$100k` retrieved-context condition.
+- Gemini `gemini-3.6-flash`, `n=100` per amount, `$100k` retrieved-context prose condition.
+- Gemini `gemini-3.6-flash`, `n=100` per amount, `$5 gift-card` retrieved-context prose condition.
+- Gemini `gemini-3.6-flash`, `n=100` per amount, `$5 gift-card` retrieved-context explicit `$100` JSON boundary-rule condition.
 
 The table reports raw counts and error rates against the operational rule `LOW iff refund_claim_amount_usd <= 100`. It deliberately avoids fold multipliers. Regenerate the canonical article table with:
 
@@ -46,24 +50,24 @@ Raw run directories are immutable evidence. The article table is a generated vie
 
 - [generated/article-table.md](generated/article-table.md)
 - [generated/article-table.json](generated/article-table.json)
-- [generated/publication-clean/publication-clean-summary.md](generated/publication-clean/publication-clean-summary.md)
-- [generated/publication-clean/publication-clean-summary.csv](generated/publication-clean/publication-clean-summary.csv)
-- [generated/publication-clean/publication-clean-chart.svg](generated/publication-clean/publication-clean-chart.svg)
-- [generated/publication-clean/publication-clean-provenance.json](generated/publication-clean/publication-clean-provenance.json)
+- [generated/publication-clean/publication-clean-summary.md](generated/publication-clean/publication-clean-summary.md), the earlier `$100k` prose-focused view.
+- [generated/publication-clean/publication-clean-summary.csv](generated/publication-clean/publication-clean-summary.csv), the earlier `$100k` prose-focused CSV.
+- [generated/publication-clean/publication-clean-chart.svg](generated/publication-clean/publication-clean-chart.svg), the earlier `$100k` prose-focused chart.
+- [generated/publication-clean/publication-clean-provenance.json](generated/publication-clean/publication-clean-provenance.json), the earlier `$100k` prose-focused provenance file.
 
-The generated Markdown includes a provenance marker with the manifest path, source run, and hash. The JSON output records hashes for the manifest, `summary.csv`, `metadata.json`, `calls.jsonl`, and baseline `threshold-bands.json` files.
+The generated Markdown includes a provenance marker with the manifest path, source runs, and hash. The JSON output records hashes for the manifest, `summary.csv`, `metadata.json`, and `calls.jsonl` files.
 
 Older clean and check batches remain in `results/` so readers can see how the experiment evolved, but they are not mixed into the article table unless promoted in the manifest.
 
 ## Conclusion
 
-JSON changed the surface form of the prompt, but it did not remove the hidden-boundary problem in the exploratory format runs. The publication-clean result narrows the article-facing claim: with the ordinary prose prompt, the `$100k` retrieved context moves both OpenAI and Gemini strongly toward `LOW` above the code-owned `$100` boundary.
+JSON changed the surface form of the prompt, but it did not remove the hidden-boundary problem in the exploratory format runs. The publication-clean result narrows the article-facing claim: with the ordinary prose prompt, retrieved context moves both OpenAI and Gemini strongly. A `$100k` enterprise note moves classifications above the code-owned `$100` boundary toward `LOW`; a `$5 gift-card` note moves classifications above `$5` toward `NOT_LOW`.
 
-The important result is not that JSON confused the model. The retrieved context continued to influence the decision boundary whether the instruction was written as prose, raw JSON, or typed JSON. JSON made the input more structured and legible, but it did not isolate the policy value before inference.
+The important result is not that JSON confused the model. The retrieved context continued to influence the model-resolved boundary in ordinary prose. In the publication-clean gift-card run, the `json_typed_boundary_rule` condition applies the explicit `$100` rule perfectly for both models at `n=100`. That is useful but should not be overstated: it shows that explicit prompt-side policy can help in this probe, not that prompt text is equivalent to runtime enforcement.
 
-The no-context controls are not perfectly smooth either, which is part of the honest readout. They show that a prompt-only classifier is not the same thing as deterministic enforcement even without retrieved context. The `$100k` condition makes the drift much stronger: the models mostly treat `LOW` as relative to the retrieved contract scale rather than as a consequence-bearing `$100` boundary. That points to the same recommendation: consequence-bearing thresholds should be explicit, versioned, and enforced outside ordinary model interpretation.
+The no-context controls are not perfectly smooth either, which is part of the honest readout. They show that a prompt-only classifier is not the same thing as deterministic enforcement even without retrieved context. The retrieved-context prose conditions make the movement much stronger and directionally interpretable: the models treat `LOW` relative to nearby contextual scale, not as a consequence-bearing `$100` boundary. That points to the same recommendation: consequence-bearing thresholds should be explicit, versioned, and enforced outside ordinary model interpretation.
 
-Do not read this probe as a model ranking. The useful claim is narrower: structured JSON input can make the prompt more legible, but legibility did not become control before the first inference.
+Do not read this probe as a model ranking. The useful claim is narrower: structured input and explicit policy text can improve legibility and behavior, but legibility is not the same thing as owning the operational boundary.
 
 ## Concrete Input Example
 
@@ -204,17 +208,27 @@ npm run thresholds:low:json-input -- --provider claude-cli --models sonnet --con
 
 ## Publication-Clean Boundary Probe
 
-The publication-clean probe is the article-facing replacement for ratio-heavy mixed-run evidence. It uses one fixed grid, one prompt format, one retrieved-context case, and `n=100` per amount per model. The runtime-enforced condition is derived deterministically from the same cases and does not spend extra model calls.
+The publication-clean probe is the article-facing replacement for ratio-heavy mixed-run evidence. It uses one fixed grid and `n=100` per amount per model. The runtime-enforced condition is derived deterministically from the same amount values and does not spend extra model calls.
 
 Publication runs:
 
-- OpenAI: `experiments/json-input-low/results/2026-08-02T17-21-15-563Z-publication-clean-openai-gpt56-s100-json-input-low`
-- Gemini: `experiments/json-input-low/results/2026-08-02T17-24-22-436Z-publication-clean-gemini-36-flash-s100-json-input-low`
+- OpenAI no-context control: `experiments/json-input-low/results/2026-08-02T18-27-05-695Z-publication-clean-control-openai-gpt56-s100-json-input-low`
+- OpenAI `$100k` prose: `experiments/json-input-low/results/2026-08-02T17-21-15-563Z-publication-clean-openai-gpt56-s100-json-input-low`
+- OpenAI `$5 gift-card` prose plus explicit-rule JSON: `experiments/json-input-low/results/2026-08-02T19-25-24-689Z-publication-clean-gift-card-openai-gpt56-s100-json-input-low`
+- Gemini no-context control: `experiments/json-input-low/results/2026-08-02T18-32-02-384Z-publication-clean-control-gemini-36-flash-s100-json-input-low`
+- Gemini `$100k` prose: `experiments/json-input-low/results/2026-08-02T17-24-22-436Z-publication-clean-gemini-36-flash-s100-json-input-low`
+- Gemini `$5 gift-card` prose plus explicit-rule JSON: `experiments/json-input-low/results/2026-08-02T19-32-20-026Z-publication-clean-gift-card-gemini-36-flash-s100-json-input-low`
+
+The canonical article table is manifest-driven:
+
+```bash
+npm run results:json-input-low:table
+```
 
 Regenerate the consolidated publication artifacts with:
 
 ```bash
-npm run results:json-input-low:publication -- --runs experiments/json-input-low/results/2026-08-02T17-21-15-563Z-publication-clean-openai-gpt56-s100-json-input-low,experiments/json-input-low/results/2026-08-02T17-24-22-436Z-publication-clean-gemini-36-flash-s100-json-input-low --out experiments/json-input-low/generated/publication-clean
+npm run results:json-input-low:publication -- --runs experiments/json-input-low/results/2026-08-02T18-27-05-695Z-publication-clean-control-openai-gpt56-s100-json-input-low,experiments/json-input-low/results/2026-08-02T17-21-15-563Z-publication-clean-openai-gpt56-s100-json-input-low,experiments/json-input-low/results/2026-08-02T19-25-24-689Z-publication-clean-gift-card-openai-gpt56-s100-json-input-low,experiments/json-input-low/results/2026-08-02T18-32-02-384Z-publication-clean-control-gemini-36-flash-s100-json-input-low,experiments/json-input-low/results/2026-08-02T17-24-22-436Z-publication-clean-gemini-36-flash-s100-json-input-low,experiments/json-input-low/results/2026-08-02T19-32-20-026Z-publication-clean-gift-card-gemini-36-flash-s100-json-input-low --out experiments/json-input-low/generated/publication-clean
 ```
 
 Generated artifacts:
@@ -224,4 +238,6 @@ Generated artifacts:
 - `experiments/json-input-low/generated/publication-clean/publication-clean-chart.svg`
 - `experiments/json-input-low/generated/publication-clean/publication-clean-provenance.json`
 
-Article-facing interpretation: do not use fold multipliers such as `560x` for this result. Report raw counts, error rates, `n`, exact models, exact amounts, and provenance. The narrow claim is that a prompt-owned consequence boundary drifted under retrieved context in this probe, while code-owned runtime enforcement stayed deterministic.
+Those `publication-clean` files are retained as the `$100k` prose-focused chart and summary. For the article-facing source of truth after the `$5 gift-card` clean run, use `generated/article-table.md` and `generated/article-table.json`.
+
+Article-facing interpretation: do not use fold multipliers such as `560x` for this result. Report raw counts, error rates, `n`, exact models, exact amounts, and provenance. The narrow claim is that a model-resolved consequence boundary moved under retrieved context in this probe, while code-owned runtime enforcement stayed deterministic. The explicit-rule JSON result should be presented as a useful prompt-side improvement and a diagnostic control, not as a replacement for runtime ownership.
