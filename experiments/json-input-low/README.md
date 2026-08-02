@@ -41,10 +41,10 @@ Highest tested claim amount classified as `LOW` by majority vote, compared with 
 | `gpt-5.6` | $100k contract | ~$100 | $20,000 ↑ 200x | $20,000 ↑ 200x | $20,000 ↑ 200x | $100 → 1x |
 | `gemini-3.5-flash-lite` | $100k contract | ~$90 | $18,000 ↑ 200x | $50,000 ↑ 560x | $50,000 ↑ 560x | $20,000 ↑ 220x |
 | `gpt-5.5` | $5 gift card | ~$1,000 | $100 ↓ 0.1x | $100 ↓ 0.1x | $100 ↓ 0.1x | $100 ↓ 0.1x |
-| `gpt-5.6` | $5 gift card | ~$100 | none ↓ below grid | $50 ↓ 0.5x | $25 ↓ 0.25x | $100 → 1x |
+| `gpt-5.6` | $5 gift card | ~$100 | < $100 | $50 ↓ 0.5x | $25 ↓ 0.25x | $100 → 1x |
 | `gemini-3.5-flash-lite` | $5 gift card | ~$90 | $5 ↓ 0.06x | $5 ↓ 0.06x | $5 ↓ 0.06x | $100 ↑ 1.1x |
 
-Caption: highest tested claim amount classified as `LOW` by majority vote. The `No added context` column comes from the LOW retrieved-context threshold runs; the other columns come from the manifest-declared JSON input runs. Prose is the ordinary prose prompt. Raw JSON separates fields without typed structure. Typed JSON separates the retrieved note and case data into explicit typed objects. `$100 LOW rule` adds an explicit prompt-side rule that values at or below `$100` should be classified as `LOW`. `none` means no tested amount was classified as `LOW` by majority vote. Full prompts, raw calls, and `P(LOW | amount)` tables are in the consolidated summary and source result directories.
+Caption: highest tested claim amount classified as `LOW` by majority vote. The `No added context` column comes from the LOW retrieved-context threshold runs; the other columns come from the manifest-declared JSON input runs. Prose is the ordinary prose prompt. Raw JSON separates fields without typed structure. Typed JSON separates the retrieved note and case data into explicit typed objects. `$100 LOW rule` adds an explicit prompt-side rule that values at or below `$100` should be classified as `LOW`. `< $100` means no tested amount, including `$100`, received a majority `LOW` classification. Full prompts, raw calls, and `P(LOW | amount)` tables are in the consolidated summary and source result directories.
 
 The exact method name for this experiment is `fixed amount grid`. It is not an adaptive binary search. The result set uses practical grids around the expected `$100` boundary and the observed drift range; the exact crossing point is not the claim.
 

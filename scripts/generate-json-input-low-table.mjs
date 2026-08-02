@@ -42,7 +42,7 @@ function parseCsv(text) {
 }
 
 function money(value) {
-  if (value === null) return "none";
+  if (value === null || value === undefined) return "< $100";
   return "$" + Number(value).toLocaleString("en-US");
 }
 
@@ -70,7 +70,7 @@ function formatMultiplier(ratio) {
 }
 
 function ratioText(value, baseline) {
-  if (value === null || value === undefined) return "↓ below grid";
+  if (value === null || value === undefined) return "";
   if (!baseline) return "";
   const ratio = Number(value) / Number(baseline);
   if (!Number.isFinite(ratio)) return "";
@@ -141,7 +141,7 @@ function renderMarkdown({ manifest, tableRows, provenanceHash }) {
     lines.push(`| \`${row.model}\` | ${row.test_label} | ${row.display_baseline} | ${values.join(" | ")} |`);
   }
   lines.push("");
-  lines.push(`Caption: highest tested claim amount classified as \`LOW\` by majority vote with retrieved context present. The \`No added context\` column comes from the LOW retrieved-context threshold runs; the other columns come from the manifest-declared JSON input runs. Generated from \`${MANIFEST_PATH}\`. \`none\` means no tested amount had majority \`LOW\`.`);
+  lines.push(`Caption: highest tested claim amount classified as \`LOW\` by majority vote with retrieved context present. The \`No added context\` column comes from the LOW retrieved-context threshold runs; the other columns come from the manifest-declared JSON input runs. Generated from \`${MANIFEST_PATH}\`. \`< $100\` means no tested amount, including \`$100\`, received a majority \`LOW\` classification.`);
   lines.push("");
   lines.push(`<!-- /generated:json-input-low-table -->`);
   return `${lines.join("\n")}\n`;

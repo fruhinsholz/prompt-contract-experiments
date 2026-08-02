@@ -84,7 +84,7 @@
       "sha256": "208754e2d4a95dc67d9e6c710622e41c76d6ed9cd75cbd0a8ff8bda1402ee3c1"
     }
   ],
-  "provenance_hash": "0ccec39623a1f82c4a44cf6442e2e18e3e3f49f4266bc1f030cab0a5ef6d74be",
+  "provenance_hash": "89f6ca5b8c3819cc135d953f3dfa131583480ecbeaef37882c40f521c88b4e3d",
   "table_rows": [
     {
       "provider": "OpenAI",
@@ -379,7 +379,7 @@
         "json_typed_boundary_rule": 100
       },
       "display_values": {
-        "prose_same_block": "none ↓ below grid",
+        "prose_same_block": "< $100",
         "json_flat": "$50 ↓ 0.5x",
         "json_typed": "$25 ↓ 0.25x",
         "json_typed_boundary_rule": "$100 → 1x"
