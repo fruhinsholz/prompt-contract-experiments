@@ -1,9 +1,9 @@
 {
   "schema_version": "json-input-low.manifest.v1",
   "experiment_id": "json-input-low",
-  "updated_at": "2026-08-01",
+  "updated_at": "2026-08-02",
   "purpose": "Track the raw runs and derived article-facing table for the JSON input LOW probe.",
-  "reader_summary": "Raw runs are immutable. The article table is generated from the declared article run, with older and supporting batches retained for audit context rather than mixed into the article numbers.",
+  "reader_summary": "Raw runs are immutable. The article table is generated from the publication-clean control and retrieved-context runs, with older format-comparison batches retained for audit context rather than mixed into article numbers.",
   "raw_data_policy": {
     "raw_runs_are_immutable": true,
     "derived_outputs_must_be_generated": true,
@@ -97,6 +97,138 @@
     ]
   },
   "runs": [
+    {
+      "id": "publication_clean_control_gemini_36_flash_s100",
+      "role": "publication_clean_control_source",
+      "status": "current",
+      "run_dir": "experiments/json-input-low/results/2026-08-02T18-32-02-384Z-publication-clean-control-gemini-36-flash-s100-json-input-low",
+      "provider": "gemini",
+      "models": [
+        "gemini-3.6-flash"
+      ],
+      "contexts": [
+        "fact_only"
+      ],
+      "formats": [
+        "prose_same_block"
+      ],
+      "amounts": [
+        0,
+        5,
+        25,
+        49,
+        50,
+        51,
+        75,
+        100,
+        101,
+        150,
+        250,
+        500,
+        1000
+      ],
+      "samples_per_cell": 100,
+      "notes": "Publication-clean no-added-context control matched to the Gemini $100k retrieved-context run."
+    },
+    {
+      "id": "publication_clean_control_openai_gpt56_s100",
+      "role": "publication_clean_control_source",
+      "status": "current",
+      "run_dir": "experiments/json-input-low/results/2026-08-02T18-27-05-695Z-publication-clean-control-openai-gpt56-s100-json-input-low",
+      "provider": "openai",
+      "models": [
+        "gpt-5.6"
+      ],
+      "contexts": [
+        "fact_only"
+      ],
+      "formats": [
+        "prose_same_block"
+      ],
+      "amounts": [
+        0,
+        5,
+        25,
+        49,
+        50,
+        51,
+        75,
+        100,
+        101,
+        150,
+        250,
+        500,
+        1000
+      ],
+      "samples_per_cell": 100,
+      "notes": "Publication-clean no-added-context control matched to the OpenAI $100k retrieved-context run."
+    },
+    {
+      "id": "publication_clean_gemini_36_flash_s100",
+      "role": "publication_clean_context_source",
+      "status": "current",
+      "run_dir": "experiments/json-input-low/results/2026-08-02T17-24-22-436Z-publication-clean-gemini-36-flash-s100-json-input-low",
+      "provider": "gemini",
+      "models": [
+        "gemini-3.6-flash"
+      ],
+      "contexts": [
+        "retrieved_100000_contract"
+      ],
+      "formats": [
+        "prose_same_block"
+      ],
+      "amounts": [
+        0,
+        5,
+        25,
+        49,
+        50,
+        51,
+        75,
+        100,
+        101,
+        150,
+        250,
+        500,
+        1000
+      ],
+      "samples_per_cell": 100,
+      "notes": "Publication-clean $100k retrieved-context source for the article-facing boundary table."
+    },
+    {
+      "id": "publication_clean_openai_gpt56_s100",
+      "role": "publication_clean_context_source",
+      "status": "current",
+      "run_dir": "experiments/json-input-low/results/2026-08-02T17-21-15-563Z-publication-clean-openai-gpt56-s100-json-input-low",
+      "provider": "openai",
+      "models": [
+        "gpt-5.6"
+      ],
+      "contexts": [
+        "retrieved_100000_contract"
+      ],
+      "formats": [
+        "prose_same_block"
+      ],
+      "amounts": [
+        0,
+        5,
+        25,
+        49,
+        50,
+        51,
+        75,
+        100,
+        101,
+        150,
+        250,
+        500,
+        1000
+      ],
+      "samples_per_cell": 100,
+      "notes": "Publication-clean $100k retrieved-context source for the article-facing boundary table."
+    },
     {
       "id": "openai_gpt55_gpt56_fixed_grid_s30",
       "role": "article_table_source",
@@ -304,5 +436,56 @@
       "notes": "Earlier opposite-direction OpenAI check. Superseded for article values by the gpt-5.5/gpt-5.6 fixed-grid run."
     }
   ],
-  "excluded_runs_policy": "Exploratory and private-labeled runs remain in results for audit history, but are excluded from article-facing generated tables unless promoted into this manifest with role article_table_source."
+  "excluded_runs_policy": "Exploratory and private-labeled runs remain in results for audit history, but are excluded from article-facing generated tables unless promoted into this manifest with role article_table_source.",
+  "publication_clean_table": {
+    "id": "json-input-low-publication-clean-boundary-table",
+    "title": "JSON Input LOW Publication-Clean Boundary Table",
+    "description": "Raw count comparison of no-added-context control, $100k retrieved context, and deterministic runtime enforcement on an matched fixed grid.",
+    "threshold_usd": 100,
+    "format_id": "prose_same_block",
+    "contexts": [
+      "fact_only",
+      "retrieved_100000_contract"
+    ],
+    "amounts": [
+      0,
+      5,
+      25,
+      49,
+      50,
+      51,
+      75,
+      100,
+      101,
+      150,
+      250,
+      500,
+      1000
+    ],
+    "outputs": {
+      "markdown": "experiments/json-input-low/generated/article-table.md",
+      "json": "experiments/json-input-low/generated/article-table.json"
+    },
+    "generated_publication_outputs": {
+      "markdown": "experiments/json-input-low/generated/publication-clean/publication-clean-summary.md",
+      "csv": "experiments/json-input-low/generated/publication-clean/publication-clean-summary.csv",
+      "svg": "experiments/json-input-low/generated/publication-clean/publication-clean-chart.svg",
+      "provenance": "experiments/json-input-low/generated/publication-clean/publication-clean-provenance.json"
+    },
+    "rows": [
+      {
+        "provider": "OpenAI",
+        "model": "gpt-5.6",
+        "control_run_id": "publication_clean_control_openai_gpt56_s100",
+        "context_run_id": "publication_clean_openai_gpt56_s100"
+      },
+      {
+        "provider": "Gemini",
+        "model": "gemini-3.6-flash",
+        "control_run_id": "publication_clean_control_gemini_36_flash_s100",
+        "context_run_id": "publication_clean_gemini_36_flash_s100"
+      }
+    ],
+    "notes": "This table supersedes the ratio-heavy mixed-run article_table for publication prose. The older article_table object is retained below as historical format-comparison metadata only."
+  }
 }

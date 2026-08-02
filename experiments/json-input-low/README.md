@@ -23,37 +23,33 @@ The last variant is a diagnostic control. If it produces the specified `$100` re
 
 ## Current Readout
 
-The article-facing result set is consolidated in [results/2026-08-01-json-format-results-summary/summary.md](results/2026-08-01-json-format-results-summary/summary.md). The underlying calls were generated at different times, but the table treats them as one experimental result set rather than splitting the article into run history.
+The publication-clean article table is generated from [manifest.json](manifest.json), not edited by hand. It now uses a matched fixed grid:
 
-The generated article table is produced from [manifest.json](manifest.json), not edited by hand. The manifest declares which raw runs feed the article table and which older or supporting batches are retained for audit context. Regenerate the table with:
+- OpenAI `gpt-5.6`, `n=100` per amount, no-added-context control.
+- OpenAI `gpt-5.6`, `n=100` per amount, `$100k` retrieved-context condition.
+- Gemini `gemini-3.6-flash`, `n=100` per amount, no-added-context control.
+- Gemini `gemini-3.6-flash`, `n=100` per amount, `$100k` retrieved-context condition.
+
+The table reports raw counts and error rates against the operational rule `LOW iff refund_claim_amount_usd <= 100`. It deliberately avoids fold multipliers. Regenerate the canonical article table with:
 
 ```bash
 npm run results:json-input-low:table
 ```
 
-We also tested the same case by separating the prompt and the retrieved context in untyped and typed JSON formats. The model still interpreted the fields together.
-
-Highest tested claim amount classified as `LOW` by majority vote, compared with the no-context LOW boundary.
-
-| Model | Test | No added context | Prose context | Raw JSON context | Typed JSON context | $100 LOW rule |
-| --- | --- | ---: | ---: | ---: | ---: | ---: |
-| `gpt-5.5` | $100k contract | ~$1,000 | $20,000 ↑ 20x | $5,000 ↑ 5x | $20,000 ↑ 20x | $100 ↓ 0.1x |
-| `gpt-5.6` | $100k contract | ~$100 | $20,000 ↑ 200x | $20,000 ↑ 200x | $20,000 ↑ 200x | $100 → 1x |
-| `gemini-3.5-flash-lite` | $100k contract | ~$90 | $18,000 ↑ 200x | $50,000 ↑ 560x | $50,000 ↑ 560x | $20,000 ↑ 220x |
-| `gpt-5.5` | $5 gift card | ~$1,000 | $100 ↓ 0.1x | $100 ↓ 0.1x | $100 ↓ 0.1x | $100 ↓ 0.1x |
-| `gpt-5.6` | $5 gift card | ~$100 | < $100 | $50 ↓ 0.5x | $25 ↓ 0.25x | $100 → 1x |
-| `gemini-3.5-flash-lite` | $5 gift card | ~$90 | $5 ↓ 0.06x | $5 ↓ 0.06x | $5 ↓ 0.06x | $100 ↑ 1.1x |
-
-Caption: highest tested claim amount classified as `LOW` by majority vote. The `No added context` column comes from the LOW retrieved-context threshold runs; the other columns come from the manifest-declared JSON input runs. Prose is the ordinary prose prompt. Raw JSON separates fields without typed structure. Typed JSON separates the retrieved note and case data into explicit typed objects. `$100 LOW rule` adds an explicit prompt-side rule that values at or below `$100` should be classified as `LOW`. `< $100` means no tested amount, including `$100`, received a majority `LOW` classification. Full prompts, raw calls, and `P(LOW | amount)` tables are in the consolidated summary and source result directories.
+The older format-comparison result set remains in [results/2026-08-01-json-format-results-summary/summary.md](results/2026-08-01-json-format-results-summary/summary.md). It is retained as exploratory evidence that JSON legibility did not isolate the boundary before inference. Do not use its fold multipliers or mixed-run table as the main article exhibit.
 
 The exact method name for this experiment is `fixed amount grid`. It is not an adaptive binary search. The result set uses practical grids around the expected `$100` boundary and the observed drift range; the exact crossing point is not the claim.
 
 ## Provenance and Generated Outputs
 
-Raw run directories are immutable evidence. The article table is a generated view over the run declared in [manifest.json](manifest.json). If a later run replaces the article numbers, update the manifest first, then regenerate the generated files:
+Raw run directories are immutable evidence. The article table is a generated view over the publication-clean runs declared in [manifest.json](manifest.json). If a later run replaces the article numbers, update the manifest first, then regenerate the generated files:
 
 - [generated/article-table.md](generated/article-table.md)
 - [generated/article-table.json](generated/article-table.json)
+- [generated/publication-clean/publication-clean-summary.md](generated/publication-clean/publication-clean-summary.md)
+- [generated/publication-clean/publication-clean-summary.csv](generated/publication-clean/publication-clean-summary.csv)
+- [generated/publication-clean/publication-clean-chart.svg](generated/publication-clean/publication-clean-chart.svg)
+- [generated/publication-clean/publication-clean-provenance.json](generated/publication-clean/publication-clean-provenance.json)
 
 The generated Markdown includes a provenance marker with the manifest path, source run, and hash. The JSON output records hashes for the manifest, `summary.csv`, `metadata.json`, `calls.jsonl`, and baseline `threshold-bands.json` files.
 
@@ -61,11 +57,11 @@ Older clean and check batches remain in `results/` so readers can see how the ex
 
 ## Conclusion
 
-JSON changed the surface form of the prompt, but it did not remove the hidden-boundary problem. In the `$100k contract` case, raw JSON and typed JSON still let retrieved context move the implicit `LOW` boundary upward, often to the highest tested amount. In the `$5 gift card` case, the same mechanism can also move the boundary downward.
+JSON changed the surface form of the prompt, but it did not remove the hidden-boundary problem in the exploratory format runs. The publication-clean result narrows the article-facing claim: with the ordinary prose prompt, the `$100k` retrieved context moves both OpenAI and Gemini strongly toward `LOW` above the code-owned `$100` boundary.
 
 The important result is not that JSON confused the model. The retrieved context continued to influence the decision boundary whether the instruction was written as prose, raw JSON, or typed JSON. JSON made the input more structured and legible, but it did not isolate the policy value before inference.
 
-For OpenAI, `json_typed_boundary_rule` produced the specified `$100` LOW outcome. The Gemini `$100k` result did not behave as a smooth prompt-side boundary: most amounts above `$100` were `NOT_LOW`, but `$15,000` and `$20,000` still received majority `LOW` votes. That is part of the result, and it points to the same recommendation: consequence-bearing thresholds should be explicit, versioned, and enforced outside ordinary model interpretation.
+The no-context controls are not perfectly smooth either, which is part of the honest readout. They show that a prompt-only classifier is not the same thing as deterministic enforcement even without retrieved context. The `$100k` condition makes the drift much stronger: the models mostly treat `LOW` as relative to the retrieved contract scale rather than as a consequence-bearing `$100` boundary. That points to the same recommendation: consequence-bearing thresholds should be explicit, versioned, and enforced outside ordinary model interpretation.
 
 Do not read this probe as a model ranking. The useful claim is narrower: structured JSON input can make the prompt more legible, but legibility did not become control before the first inference.
 

@@ -1,455 +1,879 @@
 {
-  "schema_version": "json-input-low.article-table.v1",
+  "schema_version": "json-input-low.article-table.v2",
   "manifest_path": "experiments/json-input-low/manifest.json",
-  "manifest_sha256": "888b3023e7d7f3352524bc0dcdd246eca46b79c4b6687ed3fabea7b5aa2837d0",
+  "manifest_sha256": "8f8d52f3c24844b57f9916c06b34f86be55952c8871ff5998f8153b9a1327753",
   "source_run_ids": [
-    "openai_gpt55_gpt56_fixed_grid_s30",
-    "gemini_100k_dense_s30",
-    "gemini_5_s10"
-  ],
-  "baseline_source_ids": [
-    "low_context_openai_gpt55_gpt56",
-    "low_context_gemini_publication_clean"
+    "publication_clean_control_openai_gpt56_s100",
+    "publication_clean_openai_gpt56_s100",
+    "publication_clean_control_gemini_36_flash_s100",
+    "publication_clean_gemini_36_flash_s100"
   ],
   "source_run_dirs": [
-    "experiments/json-input-low/results/2026-07-31T15-06-21-856Z-clean-openai-gpt55-gpt56-fixed-grid-json-s30-json-input-low",
-    "experiments/json-input-low/results/2026-08-01T01-06-10-144Z-supplemental-gemini-100k-dense-json-input-low",
-    "experiments/json-input-low/results/2026-07-31T03-34-51-862Z-check-gemini-json-5-s10-json-input-low"
+    "experiments/json-input-low/results/2026-08-02T18-27-05-695Z-publication-clean-control-openai-gpt56-s100-json-input-low",
+    "experiments/json-input-low/results/2026-08-02T17-21-15-563Z-publication-clean-openai-gpt56-s100-json-input-low",
+    "experiments/json-input-low/results/2026-08-02T18-32-02-384Z-publication-clean-control-gemini-36-flash-s100-json-input-low",
+    "experiments/json-input-low/results/2026-08-02T17-24-22-436Z-publication-clean-gemini-36-flash-s100-json-input-low"
   ],
   "source_files": [
     {
-      "run_id": "openai_gpt55_gpt56_fixed_grid_s30",
-      "path": "experiments/json-input-low/results/2026-07-31T15-06-21-856Z-clean-openai-gpt55-gpt56-fixed-grid-json-s30-json-input-low/summary.csv",
-      "bytes": 28779,
-      "sha256": "aa18fe37a422c51f7af1a23a610fdd4006cb2affbf6d5b753f29a4476370052d"
+      "run_id": "publication_clean_control_openai_gpt56_s100",
+      "path": "experiments/json-input-low/results/2026-08-02T18-27-05-695Z-publication-clean-control-openai-gpt56-s100-json-input-low/summary.csv",
+      "bytes": 1090,
+      "sha256": "5c2ca626b633a655361e0c1f66bdbb634213fa20d0d6876b9652dcd33ee3875d"
     },
     {
-      "run_id": "openai_gpt55_gpt56_fixed_grid_s30",
-      "path": "experiments/json-input-low/results/2026-07-31T15-06-21-856Z-clean-openai-gpt55-gpt56-fixed-grid-json-s30-json-input-low/metadata.json",
+      "run_id": "publication_clean_control_openai_gpt56_s100",
+      "path": "experiments/json-input-low/results/2026-08-02T18-27-05-695Z-publication-clean-control-openai-gpt56-s100-json-input-low/metadata.json",
+      "bytes": 1100,
+      "sha256": "1d1f91a63b271939be3f6c05e3ffa0630d999dc7c198d648a4c2c0c2482a5180"
+    },
+    {
+      "run_id": "publication_clean_control_openai_gpt56_s100",
+      "path": "experiments/json-input-low/results/2026-08-02T18-27-05-695Z-publication-clean-control-openai-gpt56-s100-json-input-low/calls.jsonl",
+      "bytes": 1772131,
+      "sha256": "8470aa59d3cb4d96b572fcdec7349e5e9a35d1e847fe97a6b5ca3828bd5b5dee"
+    },
+    {
+      "run_id": "publication_clean_openai_gpt56_s100",
+      "path": "experiments/json-input-low/results/2026-08-02T17-21-15-563Z-publication-clean-openai-gpt56-s100-json-input-low/summary.csv",
+      "bytes": 1300,
+      "sha256": "d047bb3b230c3bdf8d4c74f08ca6f48393d1a13fe36bf47e656bb9628e1bf63a"
+    },
+    {
+      "run_id": "publication_clean_openai_gpt56_s100",
+      "path": "experiments/json-input-low/results/2026-08-02T17-21-15-563Z-publication-clean-openai-gpt56-s100-json-input-low/metadata.json",
       "bytes": 1109,
-      "sha256": "606e1a4e55ee70d2e90947a2377e3dc6072e3498e0453d1780876f1e3e6e7553"
+      "sha256": "bee93bd39e39d232c56c871c6af542a01daefb5ef59922aff0770e5ba5794fda"
     },
     {
-      "run_id": "openai_gpt55_gpt56_fixed_grid_s30",
-      "path": "experiments/json-input-low/results/2026-07-31T15-06-21-856Z-clean-openai-gpt55-gpt56-fixed-grid-json-s30-json-input-low/calls.jsonl",
-      "bytes": 16191578,
-      "sha256": "eef0dad02ccb1a6fb24f11fd0379d738f4325b26269ec445b2cdb58f907ef1d3"
+      "run_id": "publication_clean_openai_gpt56_s100",
+      "path": "experiments/json-input-low/results/2026-08-02T17-21-15-563Z-publication-clean-openai-gpt56-s100-json-input-low/calls.jsonl",
+      "bytes": 2005793,
+      "sha256": "e22e3b20c570e9a36aad9b96df3f08e4766853ba21cc699d4e8ddd20875addc3"
     },
     {
-      "run_id": "gemini_100k_dense_s30",
-      "path": "experiments/json-input-low/results/2026-08-01T01-06-10-144Z-supplemental-gemini-100k-dense-json-input-low/summary.csv",
-      "bytes": 6096,
-      "sha256": "5cfc30de7e92768abe26513cde187af582d0573fa81d40245047be9def3b7ab8"
+      "run_id": "publication_clean_control_gemini_36_flash_s100",
+      "path": "experiments/json-input-low/results/2026-08-02T18-32-02-384Z-publication-clean-control-gemini-36-flash-s100-json-input-low/summary.csv",
+      "bytes": 1272,
+      "sha256": "c771d96b6b91dd511c6caaf39bdf1d9f9b92b4da4911efa099d6b4d36e805a52"
     },
     {
-      "run_id": "gemini_100k_dense_s30",
-      "path": "experiments/json-input-low/results/2026-08-01T01-06-10-144Z-supplemental-gemini-100k-dense-json-input-low/metadata.json",
-      "bytes": 1194,
-      "sha256": "3f3c64c1388007f036733c4466e7a83a1b33e854fc35640f3167a40178646726"
+      "run_id": "publication_clean_control_gemini_36_flash_s100",
+      "path": "experiments/json-input-low/results/2026-08-02T18-32-02-384Z-publication-clean-control-gemini-36-flash-s100-json-input-low/metadata.json",
+      "bytes": 1122,
+      "sha256": "3ce63bff55977953e17ae61a57b91f9dd144ecf9d372550ab02c808392624a3d"
     },
     {
-      "run_id": "gemini_100k_dense_s30",
-      "path": "experiments/json-input-low/results/2026-08-01T01-06-10-144Z-supplemental-gemini-100k-dense-json-input-low/calls.jsonl",
-      "bytes": 2789924,
-      "sha256": "eaa9c0e6bcd8f24b554f449761ed789660f2c1cd4bc286c8491ac9e5b572f5fb"
+      "run_id": "publication_clean_control_gemini_36_flash_s100",
+      "path": "experiments/json-input-low/results/2026-08-02T18-32-02-384Z-publication-clean-control-gemini-36-flash-s100-json-input-low/calls.jsonl",
+      "bytes": 1770500,
+      "sha256": "51c7afbcaf0549f0c7b331716fa81465028b58d0fa76c348a6069f1041a11e1d"
     },
     {
-      "run_id": "gemini_5_s10",
-      "path": "experiments/json-input-low/results/2026-07-31T03-34-51-862Z-check-gemini-json-5-s10-json-input-low/summary.csv",
-      "bytes": 7586,
-      "sha256": "20e48d1ec294b139bccbac86c2847e089bd84e7dcaf5ea96e52c57d6d9e4daf3"
+      "run_id": "publication_clean_gemini_36_flash_s100",
+      "path": "experiments/json-input-low/results/2026-08-02T17-24-22-436Z-publication-clean-gemini-36-flash-s100-json-input-low/summary.csv",
+      "bytes": 1484,
+      "sha256": "0d93a90ffe2bcdd52600af01be83b1c927f3c2378dcb4aebde9fb2baa20259f9"
     },
     {
-      "run_id": "gemini_5_s10",
-      "path": "experiments/json-input-low/results/2026-07-31T03-34-51-862Z-check-gemini-json-5-s10-json-input-low/metadata.json",
-      "bytes": 1161,
-      "sha256": "b67567f3f3b43f34f8930d2ee64c0e9dd5532d267805092fe10a5c0c2e0aae62"
+      "run_id": "publication_clean_gemini_36_flash_s100",
+      "path": "experiments/json-input-low/results/2026-08-02T17-24-22-436Z-publication-clean-gemini-36-flash-s100-json-input-low/metadata.json",
+      "bytes": 1130,
+      "sha256": "b6434e7c0d77e7e01712b5896ff8d6c9a8ed282d25696cce6c161fe34ac0f2e8"
     },
     {
-      "run_id": "gemini_5_s10",
-      "path": "experiments/json-input-low/results/2026-07-31T03-34-51-862Z-check-gemini-json-5-s10-json-input-low/calls.jsonl",
-      "bytes": 1208330,
-      "sha256": "65ebaf4de44ed6d49b3d588edcddc5fc8c8a59f6998feec3110f92e52fec1255"
-    },
-    {
-      "baseline_source_id": "low_context_openai_gpt55_gpt56",
-      "path": "experiments/low-retrieved-context/results/2026-07-29T18-47-12-806Z-publication-clean-openai-gpt55-gpt56-max1024-low/threshold-bands.json",
-      "bytes": 4061,
-      "sha256": "22cf277291eec9bbc8bfb28257d65054d5a0cb626e86c39d1b26c014bd069eee"
-    },
-    {
-      "baseline_source_id": "low_context_gemini_publication_clean",
-      "path": "experiments/low-retrieved-context/results/2026-07-28T00-13-22-919Z-publication-clean-gemini-low/threshold-bands.json",
-      "bytes": 4137,
-      "sha256": "208754e2d4a95dc67d9e6c710622e41c76d6ed9cd75cbd0a8ff8bda1402ee3c1"
+      "run_id": "publication_clean_gemini_36_flash_s100",
+      "path": "experiments/json-input-low/results/2026-08-02T17-24-22-436Z-publication-clean-gemini-36-flash-s100-json-input-low/calls.jsonl",
+      "bytes": 2001301,
+      "sha256": "b163c86a8edc0b3b5c248210ba1c4ae19f19aebd2b7c6f7f11f892afd4e1864c"
     }
   ],
-  "provenance_hash": "89f6ca5b8c3819cc135d953f3dfa131583480ecbeaef37882c40f521c88b4e3d",
+  "contexts": {
+    "fact_only": "No added context",
+    "retrieved_100000_contract": "$100k retrieved context"
+  },
+  "threshold_usd": 100,
+  "format_id": "prose_same_block",
+  "provenance_hash": "5ea55d2d38eace6cd6f11a505e2a99e360f842e8d14da6030e74c8088fd18b1d",
   "table_rows": [
     {
-      "provider": "OpenAI",
-      "model": "gpt-5.5",
-      "test_label": "$100k contract",
-      "context_id": "retrieved_100000_contract",
-      "run_id": "openai_gpt55_gpt56_fixed_grid_s30",
-      "baseline_source_id": "low_context_openai_gpt55_gpt56",
-      "baseline": 1005.865,
-      "baseline_band": {
-        "model": "gpt-5.5",
-        "contextId": "fact_only",
-        "searchMethod": "bounded_probability_band_search",
-        "low": 996.1,
-        "high": 1015.63,
-        "width": 19.53,
-        "samplesPerState": 30,
-        "lowLabel": "LOW",
-        "highLabel": "NOT_LOW",
-        "lowProbability": {
-          "total": 30,
-          "low": 28,
-          "notLow": 2,
-          "invalid": 0,
-          "lowPct": 0.9333,
-          "lowPctWilson95": {
-            "low": 0.7868,
-            "high": 0.9815
-          }
-        },
-        "highProbability": {
-          "total": 30,
-          "low": 0,
-          "notLow": 30,
-          "invalid": 0,
-          "lowPct": 0,
-          "lowPctWilson95": {
-            "low": 0,
-            "high": 0.1135
-          }
-        }
-      },
-      "display_baseline": "~$1,000",
-      "values": {
-        "prose_same_block": 20000,
-        "json_flat": 5000,
-        "json_typed": 20000,
-        "json_typed_boundary_rule": 100
-      },
-      "display_values": {
-        "prose_same_block": "$20,000 ↑ 20x",
-        "json_flat": "$5,000 ↑ 5x",
-        "json_typed": "$20,000 ↑ 20x",
-        "json_typed_boundary_rule": "$100 ↓ 0.1x"
-      },
-      "format_labels": {
-        "prose_same_block": "Prose",
-        "json_flat": "Raw JSON",
-        "json_typed": "Typed JSON",
-        "json_typed_boundary_rule": "$100 LOW rule"
-      }
-    },
-    {
-      "provider": "OpenAI",
-      "model": "gpt-5.6",
-      "test_label": "$100k contract",
-      "context_id": "retrieved_100000_contract",
-      "run_id": "openai_gpt55_gpt56_fixed_grid_s30",
-      "baseline_source_id": "low_context_openai_gpt55_gpt56",
-      "baseline": 107.425,
-      "baseline_band": {
-        "model": "gpt-5.6",
-        "contextId": "fact_only",
-        "searchMethod": "bounded_probability_band_search",
-        "low": 97.66,
-        "high": 117.19,
-        "width": 19.53,
-        "samplesPerState": 30,
-        "lowLabel": "LOW",
-        "highLabel": "NOT_LOW",
-        "lowProbability": {
-          "total": 30,
-          "low": 30,
-          "notLow": 0,
-          "invalid": 0,
-          "lowPct": 1,
-          "lowPctWilson95": {
-            "low": 0.8865,
-            "high": 1
-          }
-        },
-        "highProbability": {
-          "total": 30,
-          "low": 4,
-          "notLow": 26,
-          "invalid": 0,
-          "lowPct": 0.1333,
-          "lowPctWilson95": {
-            "low": 0.0531,
-            "high": 0.2968
-          }
-        }
-      },
-      "display_baseline": "~$100",
-      "values": {
-        "prose_same_block": 20000,
-        "json_flat": 20000,
-        "json_typed": 20000,
-        "json_typed_boundary_rule": 100
-      },
-      "display_values": {
-        "prose_same_block": "$20,000 ↑ 200x",
-        "json_flat": "$20,000 ↑ 200x",
-        "json_typed": "$20,000 ↑ 200x",
-        "json_typed_boundary_rule": "$100 → 1x"
-      },
-      "format_labels": {
-        "prose_same_block": "Prose",
-        "json_flat": "Raw JSON",
-        "json_typed": "Typed JSON",
-        "json_typed_boundary_rule": "$100 LOW rule"
-      }
-    },
-    {
+      "model": "gemini-3.6-flash",
       "provider": "Gemini",
-      "model": "gemini-3.5-flash-lite",
-      "test_label": "$100k contract",
-      "context_id": "retrieved_100000_contract",
-      "run_id": "gemini_100k_dense_s30",
-      "baseline_source_id": "low_context_gemini_publication_clean",
-      "baseline": 87.895,
-      "baseline_band": {
-        "model": "gemini-3.5-flash-lite",
-        "contextId": "fact_only",
-        "searchMethod": "bounded_probability_band_search",
-        "low": 78.13,
-        "high": 97.66,
-        "width": 19.53,
-        "samplesPerState": 30,
-        "lowLabel": "LOW",
-        "highLabel": "NOT_LOW",
-        "lowProbability": {
-          "total": 30,
-          "low": 24,
-          "notLow": 6,
-          "invalid": 0,
-          "lowPct": 0.8,
-          "lowPctWilson95": {
-            "low": 0.6269,
-            "high": 0.905
-          }
-        },
-        "highProbability": {
-          "total": 30,
-          "low": 7,
-          "notLow": 23,
-          "invalid": 0,
-          "lowPct": 0.2333,
-          "lowPctWilson95": {
-            "low": 0.1179,
-            "high": 0.4093
-          }
-        }
+      "amount": 0,
+      "threshold_usd": 100,
+      "expected_label": "LOW",
+      "control": {
+        "run_id": "publication_clean_control_gemini_36_flash_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
       },
-      "display_baseline": "~$90",
-      "values": {
-        "prose_same_block": 18000,
-        "json_flat": 50000,
-        "json_typed": 50000,
-        "json_typed_boundary_rule": 20000
+      "retrieved_context": {
+        "run_id": "publication_clean_gemini_36_flash_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
       },
-      "display_values": {
-        "prose_same_block": "$18,000 ↑ 200x",
-        "json_flat": "$50,000 ↑ 560x",
-        "json_typed": "$50,000 ↑ 560x",
-        "json_typed_boundary_rule": "$20,000 ↑ 220x"
-      },
-      "format_labels": {
-        "prose_same_block": "Prose",
-        "json_flat": "Raw JSON",
-        "json_typed": "Typed JSON",
-        "json_typed_boundary_rule": "$100 LOW rule"
+      "runtime_enforced": {
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
       }
     },
     {
-      "provider": "OpenAI",
-      "model": "gpt-5.5",
-      "test_label": "$5 gift card",
-      "context_id": "retrieved_5_gift_card",
-      "run_id": "openai_gpt55_gpt56_fixed_grid_s30",
-      "baseline_source_id": "low_context_openai_gpt55_gpt56",
-      "baseline": 1005.865,
-      "baseline_band": {
-        "model": "gpt-5.5",
-        "contextId": "fact_only",
-        "searchMethod": "bounded_probability_band_search",
-        "low": 996.1,
-        "high": 1015.63,
-        "width": 19.53,
-        "samplesPerState": 30,
-        "lowLabel": "LOW",
-        "highLabel": "NOT_LOW",
-        "lowProbability": {
-          "total": 30,
-          "low": 28,
-          "notLow": 2,
-          "invalid": 0,
-          "lowPct": 0.9333,
-          "lowPctWilson95": {
-            "low": 0.7868,
-            "high": 0.9815
-          }
-        },
-        "highProbability": {
-          "total": 30,
-          "low": 0,
-          "notLow": 30,
-          "invalid": 0,
-          "lowPct": 0,
-          "lowPctWilson95": {
-            "low": 0,
-            "high": 0.1135
-          }
-        }
-      },
-      "display_baseline": "~$1,000",
-      "values": {
-        "prose_same_block": 100,
-        "json_flat": 100,
-        "json_typed": 100,
-        "json_typed_boundary_rule": 100
-      },
-      "display_values": {
-        "prose_same_block": "$100 ↓ 0.1x",
-        "json_flat": "$100 ↓ 0.1x",
-        "json_typed": "$100 ↓ 0.1x",
-        "json_typed_boundary_rule": "$100 ↓ 0.1x"
-      },
-      "format_labels": {
-        "prose_same_block": "Prose",
-        "json_flat": "Raw JSON",
-        "json_typed": "Typed JSON",
-        "json_typed_boundary_rule": "$100 LOW rule"
-      }
-    },
-    {
-      "provider": "OpenAI",
-      "model": "gpt-5.6",
-      "test_label": "$5 gift card",
-      "context_id": "retrieved_5_gift_card",
-      "run_id": "openai_gpt55_gpt56_fixed_grid_s30",
-      "baseline_source_id": "low_context_openai_gpt55_gpt56",
-      "baseline": 107.425,
-      "baseline_band": {
-        "model": "gpt-5.6",
-        "contextId": "fact_only",
-        "searchMethod": "bounded_probability_band_search",
-        "low": 97.66,
-        "high": 117.19,
-        "width": 19.53,
-        "samplesPerState": 30,
-        "lowLabel": "LOW",
-        "highLabel": "NOT_LOW",
-        "lowProbability": {
-          "total": 30,
-          "low": 30,
-          "notLow": 0,
-          "invalid": 0,
-          "lowPct": 1,
-          "lowPctWilson95": {
-            "low": 0.8865,
-            "high": 1
-          }
-        },
-        "highProbability": {
-          "total": 30,
-          "low": 4,
-          "notLow": 26,
-          "invalid": 0,
-          "lowPct": 0.1333,
-          "lowPctWilson95": {
-            "low": 0.0531,
-            "high": 0.2968
-          }
-        }
-      },
-      "display_baseline": "~$100",
-      "values": {
-        "prose_same_block": null,
-        "json_flat": 50,
-        "json_typed": 25,
-        "json_typed_boundary_rule": 100
-      },
-      "display_values": {
-        "prose_same_block": "< $100",
-        "json_flat": "$50 ↓ 0.5x",
-        "json_typed": "$25 ↓ 0.25x",
-        "json_typed_boundary_rule": "$100 → 1x"
-      },
-      "format_labels": {
-        "prose_same_block": "Prose",
-        "json_flat": "Raw JSON",
-        "json_typed": "Typed JSON",
-        "json_typed_boundary_rule": "$100 LOW rule"
-      }
-    },
-    {
+      "model": "gemini-3.6-flash",
       "provider": "Gemini",
-      "model": "gemini-3.5-flash-lite",
-      "test_label": "$5 gift card",
-      "context_id": "retrieved_5_gift_card",
-      "run_id": "gemini_5_s10",
-      "baseline_source_id": "low_context_gemini_publication_clean",
-      "baseline": 87.895,
-      "baseline_band": {
-        "model": "gemini-3.5-flash-lite",
-        "contextId": "fact_only",
-        "searchMethod": "bounded_probability_band_search",
-        "low": 78.13,
-        "high": 97.66,
-        "width": 19.53,
-        "samplesPerState": 30,
-        "lowLabel": "LOW",
-        "highLabel": "NOT_LOW",
-        "lowProbability": {
-          "total": 30,
-          "low": 24,
-          "notLow": 6,
-          "invalid": 0,
-          "lowPct": 0.8,
-          "lowPctWilson95": {
-            "low": 0.6269,
-            "high": 0.905
-          }
-        },
-        "highProbability": {
-          "total": 30,
-          "low": 7,
-          "notLow": 23,
-          "invalid": 0,
-          "lowPct": 0.2333,
-          "lowPctWilson95": {
-            "low": 0.1179,
-            "high": 0.4093
-          }
-        }
+      "amount": 5,
+      "threshold_usd": 100,
+      "expected_label": "LOW",
+      "control": {
+        "run_id": "publication_clean_control_gemini_36_flash_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
       },
-      "display_baseline": "~$90",
-      "values": {
-        "prose_same_block": 5,
-        "json_flat": 5,
-        "json_typed": 5,
-        "json_typed_boundary_rule": 100
+      "retrieved_context": {
+        "run_id": "publication_clean_gemini_36_flash_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
       },
-      "display_values": {
-        "prose_same_block": "$5 ↓ 0.06x",
-        "json_flat": "$5 ↓ 0.06x",
-        "json_typed": "$5 ↓ 0.06x",
-        "json_typed_boundary_rule": "$100 ↑ 1.1x"
+      "runtime_enforced": {
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      }
+    },
+    {
+      "model": "gemini-3.6-flash",
+      "provider": "Gemini",
+      "amount": 25,
+      "threshold_usd": 100,
+      "expected_label": "LOW",
+      "control": {
+        "run_id": "publication_clean_control_gemini_36_flash_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
       },
-      "format_labels": {
-        "prose_same_block": "Prose",
-        "json_flat": "Raw JSON",
-        "json_typed": "Typed JSON",
-        "json_typed_boundary_rule": "$100 LOW rule"
+      "retrieved_context": {
+        "run_id": "publication_clean_gemini_36_flash_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      },
+      "runtime_enforced": {
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      }
+    },
+    {
+      "model": "gemini-3.6-flash",
+      "provider": "Gemini",
+      "amount": 49,
+      "threshold_usd": 100,
+      "expected_label": "LOW",
+      "control": {
+        "run_id": "publication_clean_control_gemini_36_flash_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      },
+      "retrieved_context": {
+        "run_id": "publication_clean_gemini_36_flash_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      },
+      "runtime_enforced": {
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      }
+    },
+    {
+      "model": "gemini-3.6-flash",
+      "provider": "Gemini",
+      "amount": 50,
+      "threshold_usd": 100,
+      "expected_label": "LOW",
+      "control": {
+        "run_id": "publication_clean_control_gemini_36_flash_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      },
+      "retrieved_context": {
+        "run_id": "publication_clean_gemini_36_flash_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      },
+      "runtime_enforced": {
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      }
+    },
+    {
+      "model": "gemini-3.6-flash",
+      "provider": "Gemini",
+      "amount": 51,
+      "threshold_usd": 100,
+      "expected_label": "LOW",
+      "control": {
+        "run_id": "publication_clean_control_gemini_36_flash_s100",
+        "low": 1,
+        "not_low": 99,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 99
+      },
+      "retrieved_context": {
+        "run_id": "publication_clean_gemini_36_flash_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      },
+      "runtime_enforced": {
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      }
+    },
+    {
+      "model": "gemini-3.6-flash",
+      "provider": "Gemini",
+      "amount": 75,
+      "threshold_usd": 100,
+      "expected_label": "LOW",
+      "control": {
+        "run_id": "publication_clean_control_gemini_36_flash_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      },
+      "retrieved_context": {
+        "run_id": "publication_clean_gemini_36_flash_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      },
+      "runtime_enforced": {
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      }
+    },
+    {
+      "model": "gemini-3.6-flash",
+      "provider": "Gemini",
+      "amount": 100,
+      "threshold_usd": 100,
+      "expected_label": "LOW",
+      "control": {
+        "run_id": "publication_clean_control_gemini_36_flash_s100",
+        "low": 93,
+        "not_low": 7,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 7
+      },
+      "retrieved_context": {
+        "run_id": "publication_clean_gemini_36_flash_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      },
+      "runtime_enforced": {
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      }
+    },
+    {
+      "model": "gemini-3.6-flash",
+      "provider": "Gemini",
+      "amount": 101,
+      "threshold_usd": 100,
+      "expected_label": "NOT_LOW",
+      "control": {
+        "run_id": "publication_clean_control_gemini_36_flash_s100",
+        "low": 0,
+        "not_low": 100,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      },
+      "retrieved_context": {
+        "run_id": "publication_clean_gemini_36_flash_s100",
+        "low": 98,
+        "not_low": 2,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 98
+      },
+      "runtime_enforced": {
+        "low": 0,
+        "not_low": 100,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      }
+    },
+    {
+      "model": "gemini-3.6-flash",
+      "provider": "Gemini",
+      "amount": 150,
+      "threshold_usd": 100,
+      "expected_label": "NOT_LOW",
+      "control": {
+        "run_id": "publication_clean_control_gemini_36_flash_s100",
+        "low": 28,
+        "not_low": 72,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 28
+      },
+      "retrieved_context": {
+        "run_id": "publication_clean_gemini_36_flash_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 100
+      },
+      "runtime_enforced": {
+        "low": 0,
+        "not_low": 100,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      }
+    },
+    {
+      "model": "gemini-3.6-flash",
+      "provider": "Gemini",
+      "amount": 250,
+      "threshold_usd": 100,
+      "expected_label": "NOT_LOW",
+      "control": {
+        "run_id": "publication_clean_control_gemini_36_flash_s100",
+        "low": 7,
+        "not_low": 92,
+        "invalid": 1,
+        "total": 100,
+        "error_count": 8
+      },
+      "retrieved_context": {
+        "run_id": "publication_clean_gemini_36_flash_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 100
+      },
+      "runtime_enforced": {
+        "low": 0,
+        "not_low": 100,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      }
+    },
+    {
+      "model": "gemini-3.6-flash",
+      "provider": "Gemini",
+      "amount": 500,
+      "threshold_usd": 100,
+      "expected_label": "NOT_LOW",
+      "control": {
+        "run_id": "publication_clean_control_gemini_36_flash_s100",
+        "low": 0,
+        "not_low": 100,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      },
+      "retrieved_context": {
+        "run_id": "publication_clean_gemini_36_flash_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 100
+      },
+      "runtime_enforced": {
+        "low": 0,
+        "not_low": 100,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      }
+    },
+    {
+      "model": "gemini-3.6-flash",
+      "provider": "Gemini",
+      "amount": 1000,
+      "threshold_usd": 100,
+      "expected_label": "NOT_LOW",
+      "control": {
+        "run_id": "publication_clean_control_gemini_36_flash_s100",
+        "low": 0,
+        "not_low": 100,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      },
+      "retrieved_context": {
+        "run_id": "publication_clean_gemini_36_flash_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 100
+      },
+      "runtime_enforced": {
+        "low": 0,
+        "not_low": 100,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      }
+    },
+    {
+      "model": "gpt-5.6",
+      "provider": "OpenAI",
+      "amount": 0,
+      "threshold_usd": 100,
+      "expected_label": "LOW",
+      "control": {
+        "run_id": "publication_clean_control_openai_gpt56_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      },
+      "retrieved_context": {
+        "run_id": "publication_clean_openai_gpt56_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      },
+      "runtime_enforced": {
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      }
+    },
+    {
+      "model": "gpt-5.6",
+      "provider": "OpenAI",
+      "amount": 5,
+      "threshold_usd": 100,
+      "expected_label": "LOW",
+      "control": {
+        "run_id": "publication_clean_control_openai_gpt56_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      },
+      "retrieved_context": {
+        "run_id": "publication_clean_openai_gpt56_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      },
+      "runtime_enforced": {
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      }
+    },
+    {
+      "model": "gpt-5.6",
+      "provider": "OpenAI",
+      "amount": 25,
+      "threshold_usd": 100,
+      "expected_label": "LOW",
+      "control": {
+        "run_id": "publication_clean_control_openai_gpt56_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      },
+      "retrieved_context": {
+        "run_id": "publication_clean_openai_gpt56_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      },
+      "runtime_enforced": {
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      }
+    },
+    {
+      "model": "gpt-5.6",
+      "provider": "OpenAI",
+      "amount": 49,
+      "threshold_usd": 100,
+      "expected_label": "LOW",
+      "control": {
+        "run_id": "publication_clean_control_openai_gpt56_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      },
+      "retrieved_context": {
+        "run_id": "publication_clean_openai_gpt56_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      },
+      "runtime_enforced": {
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      }
+    },
+    {
+      "model": "gpt-5.6",
+      "provider": "OpenAI",
+      "amount": 50,
+      "threshold_usd": 100,
+      "expected_label": "LOW",
+      "control": {
+        "run_id": "publication_clean_control_openai_gpt56_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      },
+      "retrieved_context": {
+        "run_id": "publication_clean_openai_gpt56_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      },
+      "runtime_enforced": {
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      }
+    },
+    {
+      "model": "gpt-5.6",
+      "provider": "OpenAI",
+      "amount": 51,
+      "threshold_usd": 100,
+      "expected_label": "LOW",
+      "control": {
+        "run_id": "publication_clean_control_openai_gpt56_s100",
+        "low": 3,
+        "not_low": 97,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 97
+      },
+      "retrieved_context": {
+        "run_id": "publication_clean_openai_gpt56_s100",
+        "low": 98,
+        "not_low": 2,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 2
+      },
+      "runtime_enforced": {
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      }
+    },
+    {
+      "model": "gpt-5.6",
+      "provider": "OpenAI",
+      "amount": 75,
+      "threshold_usd": 100,
+      "expected_label": "LOW",
+      "control": {
+        "run_id": "publication_clean_control_openai_gpt56_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      },
+      "retrieved_context": {
+        "run_id": "publication_clean_openai_gpt56_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      },
+      "runtime_enforced": {
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      }
+    },
+    {
+      "model": "gpt-5.6",
+      "provider": "OpenAI",
+      "amount": 100,
+      "threshold_usd": 100,
+      "expected_label": "LOW",
+      "control": {
+        "run_id": "publication_clean_control_openai_gpt56_s100",
+        "low": 99,
+        "not_low": 1,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 1
+      },
+      "retrieved_context": {
+        "run_id": "publication_clean_openai_gpt56_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      },
+      "runtime_enforced": {
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      }
+    },
+    {
+      "model": "gpt-5.6",
+      "provider": "OpenAI",
+      "amount": 101,
+      "threshold_usd": 100,
+      "expected_label": "NOT_LOW",
+      "control": {
+        "run_id": "publication_clean_control_openai_gpt56_s100",
+        "low": 0,
+        "not_low": 100,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      },
+      "retrieved_context": {
+        "run_id": "publication_clean_openai_gpt56_s100",
+        "low": 90,
+        "not_low": 10,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 90
+      },
+      "runtime_enforced": {
+        "low": 0,
+        "not_low": 100,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      }
+    },
+    {
+      "model": "gpt-5.6",
+      "provider": "OpenAI",
+      "amount": 150,
+      "threshold_usd": 100,
+      "expected_label": "NOT_LOW",
+      "control": {
+        "run_id": "publication_clean_control_openai_gpt56_s100",
+        "low": 80,
+        "not_low": 20,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 80
+      },
+      "retrieved_context": {
+        "run_id": "publication_clean_openai_gpt56_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 100
+      },
+      "runtime_enforced": {
+        "low": 0,
+        "not_low": 100,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      }
+    },
+    {
+      "model": "gpt-5.6",
+      "provider": "OpenAI",
+      "amount": 250,
+      "threshold_usd": 100,
+      "expected_label": "NOT_LOW",
+      "control": {
+        "run_id": "publication_clean_control_openai_gpt56_s100",
+        "low": 91,
+        "not_low": 9,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 91
+      },
+      "retrieved_context": {
+        "run_id": "publication_clean_openai_gpt56_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 100
+      },
+      "runtime_enforced": {
+        "low": 0,
+        "not_low": 100,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      }
+    },
+    {
+      "model": "gpt-5.6",
+      "provider": "OpenAI",
+      "amount": 500,
+      "threshold_usd": 100,
+      "expected_label": "NOT_LOW",
+      "control": {
+        "run_id": "publication_clean_control_openai_gpt56_s100",
+        "low": 40,
+        "not_low": 60,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 40
+      },
+      "retrieved_context": {
+        "run_id": "publication_clean_openai_gpt56_s100",
+        "low": 100,
+        "not_low": 0,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 100
+      },
+      "runtime_enforced": {
+        "low": 0,
+        "not_low": 100,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
+      }
+    },
+    {
+      "model": "gpt-5.6",
+      "provider": "OpenAI",
+      "amount": 1000,
+      "threshold_usd": 100,
+      "expected_label": "NOT_LOW",
+      "control": {
+        "run_id": "publication_clean_control_openai_gpt56_s100",
+        "low": 14,
+        "not_low": 86,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 14
+      },
+      "retrieved_context": {
+        "run_id": "publication_clean_openai_gpt56_s100",
+        "low": 99,
+        "not_low": 1,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 99
+      },
+      "runtime_enforced": {
+        "low": 0,
+        "not_low": 100,
+        "invalid": 0,
+        "total": 100,
+        "error_count": 0
       }
     }
   ]
