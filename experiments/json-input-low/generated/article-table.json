@@ -1,7 +1,7 @@
 {
   "schema_version": "json-input-low.article-table.v3",
   "manifest_path": "experiments/json-input-low/manifest.json",
-  "manifest_sha256": "c27698227814d19f9bd603599d3bb78c559aa9de6f98ea5c7df6a80a2327723c",
+  "manifest_sha256": "fb9274316a94ca6272fb2c04af46a022d384c0d64045fd8004b3ac97987b5869",
   "source_run_ids": [
     "publication_clean_control_openai_gpt56_s100",
     "publication_clean_openai_gpt56_s100",
@@ -20,7 +20,7 @@
     "experiments/json-input-low/results/2026-08-02T19-25-24-689Z-publication-clean-gift-card-openai-gpt56-s100-json-input-low",
     "experiments/json-input-low/results/2026-08-02T19-32-20-026Z-publication-clean-gift-card-gemini-36-flash-s100-json-input-low",
     "experiments/json-input-low/results/2026-08-03T02-23-02-957Z-publication-clean-control-openai-gpt56-s100-json-rule-json-input-low",
-    "experiments/json-input-low/results/2026-08-03T03-12-21-754Z-publication-clean-control-gemini-36-flash-s100-json-rule-json-input-low"
+    "experiments/json-input-low/results/2026-08-03T03-31-38-999Z-publication-clean-control-gemini-36-flash-s100-json-rule-json-input-low"
   ],
   "source_files": [
     {
@@ -151,21 +151,21 @@
     },
     {
       "run_id": "publication_clean_control_gemini_36_flash_s100_json_rule",
-      "path": "experiments/json-input-low/results/2026-08-03T03-12-21-754Z-publication-clean-control-gemini-36-flash-s100-json-rule-json-input-low/summary.csv",
+      "path": "experiments/json-input-low/results/2026-08-03T03-31-38-999Z-publication-clean-control-gemini-36-flash-s100-json-rule-json-input-low/summary.csv",
       "bytes": 1382,
       "sha256": "37d0731e47a89e63a046161714fc261ae5fe2a49738ed59ede58bee2ff1ffcde"
     },
     {
       "run_id": "publication_clean_control_gemini_36_flash_s100_json_rule",
-      "path": "experiments/json-input-low/results/2026-08-03T03-12-21-754Z-publication-clean-control-gemini-36-flash-s100-json-rule-json-input-low/metadata.json",
-      "bytes": 1139,
-      "sha256": "6cf5d367560b883c211f712f4c4d31e57db2560e01c416f8ede2ffb5367cea7b"
+      "path": "experiments/json-input-low/results/2026-08-03T03-31-38-999Z-publication-clean-control-gemini-36-flash-s100-json-rule-json-input-low/metadata.json",
+      "bytes": 1163,
+      "sha256": "05336d348d59262e1b08d7892ebff9f64b6aeed257705b9b93016b9a3700b632"
     },
     {
       "run_id": "publication_clean_control_gemini_36_flash_s100_json_rule",
-      "path": "experiments/json-input-low/results/2026-08-03T03-12-21-754Z-publication-clean-control-gemini-36-flash-s100-json-rule-json-input-low/calls.jsonl",
-      "bytes": 2394777,
-      "sha256": "d91c2036886d9613a2bfb5e57a690c837a8fd8ebfe290c16321d27b8f2fc1f77"
+      "path": "experiments/json-input-low/results/2026-08-03T03-31-38-999Z-publication-clean-control-gemini-36-flash-s100-json-rule-json-input-low/calls.jsonl",
+      "bytes": 2434495,
+      "sha256": "7e7789d441f7658745d5e635457aa07fc24e1310064b066c65cdc4ccde47e2f0"
     }
   ],
   "contexts": {
@@ -179,7 +179,7 @@
     "json_typed_boundary_rule",
     "prose_same_block"
   ],
-  "provenance_hash": "049f5a92db13bf64c13322524bdb2e2a93a103e53db0042eca930a0f487118bb",
+  "provenance_hash": "ac039ebd8a98752dea334cad40fadb6726e1254909734f0351c9b36be3fc5bfd",
   "table_rows": [
     {
       "model": "gemini-3.6-flash",

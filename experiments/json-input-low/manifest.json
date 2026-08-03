@@ -1,7 +1,7 @@
 {
   "schema_version": "json-input-low.manifest.v1",
   "experiment_id": "json-input-low",
-  "updated_at": "2026-08-02",
+  "updated_at": "2026-08-03",
   "purpose": "Track the raw runs and derived article-facing table for the JSON input LOW probe.",
   "reader_summary": "Raw runs are immutable. The article table is generated from publication-clean n=100 runs: no-context controls, $100k retrieved-context prose, $5 gift-card prose, and $5 gift-card explicit-boundary JSON checks. Older format-comparison batches remain audit context rather than mixed into article numbers.",
   "raw_data_policy": {
@@ -506,8 +506,8 @@
     {
       "id": "publication_clean_control_openai_gpt56_s100_json_rule",
       "status": "current",
-      "role": "publication_clean_control",
-      "provider": "OpenAI",
+      "role": "publication_clean_control_source",
+      "provider": "openai",
       "model": "gpt-5.6",
       "run_dir": "experiments/json-input-low/results/2026-08-03T02-23-02-957Z-publication-clean-control-openai-gpt56-s100-json-rule-json-input-low",
       "contexts": [
@@ -517,15 +517,33 @@
         "json_typed_boundary_rule"
       ],
       "samples_per_cell": 100,
-      "notes": "No-added-context control for typed JSON with explicit $100 rule. Added to remove article-table n/a control cells for the explicit-rule condition."
+      "notes": "Publication-clean no-added-context control for the explicit $100 JSON boundary-rule condition.",
+      "models": [
+        "gpt-5.6"
+      ],
+      "amounts": [
+        0,
+        5,
+        25,
+        49,
+        50,
+        51,
+        75,
+        100,
+        101,
+        150,
+        250,
+        500,
+        1000
+      ]
     },
     {
       "id": "publication_clean_control_gemini_36_flash_s100_json_rule",
       "status": "current",
-      "role": "publication_clean_control",
-      "provider": "Gemini",
+      "role": "publication_clean_control_source",
+      "provider": "gemini",
       "model": "gemini-3.6-flash",
-      "run_dir": "experiments/json-input-low/results/2026-08-03T03-12-21-754Z-publication-clean-control-gemini-36-flash-s100-json-rule-json-input-low",
+      "run_dir": "experiments/json-input-low/results/2026-08-03T03-31-38-999Z-publication-clean-control-gemini-36-flash-s100-json-rule-json-input-low",
       "contexts": [
         "fact_only"
       ],
@@ -533,7 +551,25 @@
         "json_typed_boundary_rule"
       ],
       "samples_per_cell": 100,
-      "notes": "No-added-context control for typed JSON with explicit $100 rule. Added to remove article-table n/a control cells for the explicit-rule condition."
+      "notes": "Publication-clean no-added-context control for the explicit $100 JSON boundary-rule condition, matched to the Gemini gift-card explicit-rule run.",
+      "models": [
+        "gemini-3.6-flash"
+      ],
+      "amounts": [
+        0,
+        5,
+        25,
+        49,
+        50,
+        51,
+        75,
+        100,
+        101,
+        150,
+        250,
+        500,
+        1000
+      ]
     }
   ],
   "excluded_runs_policy": "Exploratory and private-labeled runs remain in results for audit history, but are excluded from article-facing generated tables unless promoted into this manifest with role article_table_source.",
@@ -622,7 +658,8 @@
         "context_run_id": "publication_clean_gift_card_openai_gpt56_s100",
         "context_id": "retrieved_5_gift_card",
         "format_id": "json_typed_boundary_rule",
-        "control_run_id": "publication_clean_control_openai_gpt56_s100_json_rule"
+        "control_run_id": "publication_clean_control_openai_gpt56_s100_json_rule",
+        "control_context_id": "fact_only"
       },
       {
         "provider": "Gemini",
@@ -632,7 +669,8 @@
         "context_run_id": "publication_clean_gift_card_gemini_36_flash_s100",
         "context_id": "retrieved_5_gift_card",
         "format_id": "json_typed_boundary_rule",
-        "control_run_id": "publication_clean_control_gemini_36_flash_s100_json_rule"
+        "control_run_id": "publication_clean_control_gemini_36_flash_s100_json_rule",
+        "control_context_id": "fact_only"
       }
     ],
     "notes": "This table supersedes the ratio-heavy mixed-run article_table for publication prose. It intentionally separates the ordinary prose classifier from the explicit $100 JSON boundary-rule check. The older article_table object remains historical format-comparison metadata only."

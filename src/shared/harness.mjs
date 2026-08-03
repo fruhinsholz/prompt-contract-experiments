@@ -406,6 +406,7 @@ export async function callClaudeCli({ payload }) {
 }
 
 export async function appendJsonl(file, value) {
+  await mkdir(path.dirname(file), { recursive: true });
   await appendFile(file, `${JSON.stringify(value)}\n`, "utf8");
 }
 
