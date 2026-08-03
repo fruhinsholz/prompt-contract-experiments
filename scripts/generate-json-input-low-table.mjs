@@ -18,6 +18,11 @@ const FORMAT_LABELS = new Map([
   ["json_typed_boundary_rule", "Typed JSON with explicit $100 rule"],
 ]);
 
+const CONTEXT_SHORT_LABELS = new Map([
+  ["retrieved_5_gift_card", "$5"],
+  ["retrieved_100000_contract", "$100k"],
+]);
+
 function rel(...parts) {
   return path.join(ROOT, ...parts);
 }
@@ -201,12 +206,13 @@ function renderColumnGuide() {
 }
 
 function renderExplorerTable(experiment) {
+  const contextHeader = htmlEscape(experiment.context_label_short ?? "Selected context");
   const lines = [
     `<div class="json-low-table" data-json-low-table>`,
     `<table>`,
     `<thead>`,
     `<tr><th scope="col" rowspan="3">Amount</th><th scope="col" rowspan="3">Reference rule</th><th scope="colgroup" colspan="5">GPT-5.6</th><th scope="colgroup" colspan="5">Gemini 3.6 Flash</th></tr>`,
-    `<tr><th scope="colgroup" colspan="2">Baseline prompt</th><th scope="colgroup" colspan="2">Selected context</th><th scope="colgroup">Deterministic check</th><th scope="colgroup" colspan="2">Baseline prompt</th><th scope="colgroup" colspan="2">Selected context</th><th scope="colgroup">Deterministic check</th></tr>`,
+    `<tr><th scope="colgroup" colspan="2">Baseline prompt</th><th scope="colgroup" colspan="2">${contextHeader}</th><th scope="colgroup">Deterministic check</th><th scope="colgroup" colspan="2">Baseline prompt</th><th scope="colgroup" colspan="2">${contextHeader}</th><th scope="colgroup">Deterministic check</th></tr>`,
     `<tr><th scope="col">LOW answers</th><th scope="col">Errors vs rule</th><th scope="col">LOW answers</th><th scope="col">Errors vs rule</th><th scope="col">Errors vs rule</th><th scope="col">LOW answers</th><th scope="col">Errors vs rule</th><th scope="col">LOW answers</th><th scope="col">Errors vs rule</th><th scope="col">Errors vs rule</th></tr>`,
     `</thead>`,
     `<tbody>`,
@@ -244,6 +250,7 @@ function buildExperiments({ config, tableRows }) {
       description: experimentDescription(sectionId),
       takeaway: experimentTakeaway(sectionId),
       format_label: sectionRows[0].format_label,
+      context_label_short: CONTEXT_SHORT_LABELS.get(sectionRows[0].retrieved_context.context_id) ?? "Selected context",
       rows: amounts.map((amount) => {
         const firstRow = sectionRows.find((row) => row.amount === amount);
         return {
