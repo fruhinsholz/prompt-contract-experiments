@@ -190,10 +190,12 @@ function renderExplorerCell(metric) {
 function renderColumnGuide() {
   return [
     `<dl class="json-low-column-guide">`,
-    `<div><dt>Expected</dt><dd>The label produced by the code-owned rule: <code>LOW iff amount &lt;= $100</code>.</dd></div>`,
-    `<div><dt>Model LOW</dt><dd>How often the model itself answered <code>LOW</code> out of <code>n=100</code>.</dd></div>`,
-    `<div><dt>Divergence</dt><dd>How often the model answer differed from the code-owned rule. Non-zero values are bold because they are the trust-boundary failure.</dd></div>`,
-    `<div><dt>Runtime-rule divergence</dt><dd>The same grid checked by code instead of model interpretation.</dd></div>`,
+    `<div><dt>Reference rule</dt><dd>The fixed rule used for evaluation: <code>LOW iff amount &lt;= $100</code>.</dd></div>`,
+    `<div><dt>Baseline prompt</dt><dd>The same classifier without the selected retrieved context.</dd></div>`,
+    `<div><dt>Selected context</dt><dd>The selected experimental context added to the classifier.</dd></div>`,
+    `<div><dt>LOW answers</dt><dd>How often the model answered <code>LOW</code> out of <code>n=100</code>.</dd></div>`,
+    `<div><dt>Errors vs rule</dt><dd>How often the answer differed from the reference rule. Non-zero values are bold because they are the trust-boundary failure.</dd></div>`,
+    `<div><dt>Runtime check</dt><dd>The same amount grid checked by code instead of model interpretation.</dd></div>`,
     `</dl>`,
   ].join("\n");
 }
@@ -203,8 +205,9 @@ function renderExplorerTable(experiment) {
     `<div class="json-low-table" data-json-low-table>`,
     `<table>`,
     `<thead>`,
-    `<tr><th scope="col" rowspan="2">Amount</th><th scope="col" rowspan="2">Expected</th><th scope="colgroup" colspan="5">GPT-5.6</th><th scope="colgroup" colspan="5">Gemini 3.6 Flash</th></tr>`,
-    `<tr><th scope="col">No-context model LOW</th><th scope="col">No-context divergence</th><th scope="col">With-context model LOW</th><th scope="col">With-context divergence</th><th scope="col">Runtime-rule divergence</th><th scope="col">No-context model LOW</th><th scope="col">No-context divergence</th><th scope="col">With-context model LOW</th><th scope="col">With-context divergence</th><th scope="col">Runtime-rule divergence</th></tr>`,
+    `<tr><th scope="col" rowspan="3">Amount</th><th scope="col" rowspan="3">Reference rule</th><th scope="colgroup" colspan="5">GPT-5.6</th><th scope="colgroup" colspan="5">Gemini 3.6 Flash</th></tr>`,
+    `<tr><th scope="colgroup" colspan="2">Baseline prompt</th><th scope="colgroup" colspan="2">Selected context</th><th scope="colgroup">Runtime check</th><th scope="colgroup" colspan="2">Baseline prompt</th><th scope="colgroup" colspan="2">Selected context</th><th scope="colgroup">Runtime check</th></tr>`,
+    `<tr><th scope="col">LOW answers</th><th scope="col">Errors vs rule</th><th scope="col">LOW answers</th><th scope="col">Errors vs rule</th><th scope="col">Errors vs rule</th><th scope="col">LOW answers</th><th scope="col">Errors vs rule</th><th scope="col">LOW answers</th><th scope="col">Errors vs rule</th><th scope="col">Errors vs rule</th></tr>`,
     `</thead>`,
     `<tbody>`,
   ];
@@ -317,7 +320,7 @@ function renderMarkdown({ config, tableRows, provenanceHash }) {
     `<p class="json-low-takeaway" data-json-low-takeaway>${htmlEscape(selectedExperiment.takeaway)}</p>`,
     renderColumnGuide(),
     renderExplorerTable(selectedExperiment),
-    `<p class="json-low-caption">Each value keeps the raw count out of <code>n=100</code>. <code>Divergence</code> means outputs that differ from the expected label under the code-owned rule. <code>Runtime-rule divergence</code> is derived by applying that rule to the same amount grid, not by making another model call. Full prompts, raw calls, and generated data are in <a href="https://github.com/fruhinsholz/prompt-contract-experiments/tree/main/experiments/json-input-low" target="_blank" rel="noopener noreferrer"><code>experiments/json-input-low</code></a>.</p>`,
+    `<p class="json-low-caption">Each value keeps the raw count out of <code>n=100</code>. The prompt-condition groups state what input condition was tested; the result columns report the model answer rate and the error rate against the reference rule. The runtime check is derived by applying that rule to the same amount grid, not by making another model call. Full prompts, raw calls, and generated data are in <a href="https://github.com/fruhinsholz/prompt-contract-experiments/tree/main/experiments/json-input-low" target="_blank" rel="noopener noreferrer"><code>experiments/json-input-low</code></a>.</p>`,
     `<script type="application/json" data-json-low-data>${safeJsonScript(explorerData)}</script>`,
     `</section>`,
     "",
