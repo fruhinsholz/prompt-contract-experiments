@@ -19,8 +19,8 @@ const FORMAT_LABELS = new Map([
 ]);
 
 const CONTEXT_SHORT_LABELS = new Map([
-  ["retrieved_5_gift_card", "$5"],
-  ["retrieved_100000_contract", "$100k"],
+  ["retrieved_5_gift_card", "Context added $5"],
+  ["retrieved_100000_contract", "Context added $100k"],
 ]);
 
 function rel(...parts) {
