@@ -1,0 +1,17 @@
+model,response_models,format_id,context_id,amount,total,low,not_low,invalid,low_pct,not_low_pct,errors
+gpt-5.6,gpt-5.6-sol,json_flat,retrieved_100000_contract,100,30,30,0,0,100.0%,0.0%,0
+gpt-5.6,gpt-5.6-sol,json_flat,retrieved_100000_contract,150,30,30,0,0,100.0%,0.0%,0
+gpt-5.6,gpt-5.6-sol,json_flat,retrieved_100000_contract,15000,30,22,8,0,73.3%,26.7%,0
+gpt-5.6,gpt-5.6-sol,json_flat,retrieved_100000_contract,20000,30,18,12,0,60.0%,40.0%,0
+gpt-5.6,gpt-5.6-sol,json_typed_boundary_rule,retrieved_100000_contract,100,30,30,0,0,100.0%,0.0%,0
+gpt-5.6,gpt-5.6-sol,json_typed_boundary_rule,retrieved_100000_contract,150,30,0,30,0,0.0%,100.0%,0
+gpt-5.6,gpt-5.6-sol,json_typed_boundary_rule,retrieved_100000_contract,15000,30,0,30,0,0.0%,100.0%,0
+gpt-5.6,gpt-5.6-sol,json_typed_boundary_rule,retrieved_100000_contract,20000,30,0,30,0,0.0%,100.0%,0
+gpt-5.6,gpt-5.6-sol,json_typed,retrieved_100000_contract,100,30,30,0,0,100.0%,0.0%,0
+gpt-5.6,gpt-5.6-sol,json_typed,retrieved_100000_contract,150,30,30,0,0,100.0%,0.0%,0
+gpt-5.6,gpt-5.6-sol,json_typed,retrieved_100000_contract,15000,30,30,0,0,100.0%,0.0%,0
+gpt-5.6,gpt-5.6-sol,json_typed,retrieved_100000_contract,20000,30,30,0,0,100.0%,0.0%,0
+gpt-5.6,gpt-5.6-sol,prose_same_block,retrieved_100000_contract,100,30,30,0,0,100.0%,0.0%,0
+gpt-5.6,gpt-5.6-sol,prose_same_block,retrieved_100000_contract,150,30,30,0,0,100.0%,0.0%,0
+gpt-5.6,gpt-5.6-sol,prose_same_block,retrieved_100000_contract,15000,30,24,6,0,80.0%,20.0%,0
+gpt-5.6,gpt-5.6-sol,prose_same_block,retrieved_100000_contract,20000,30,28,2,0,93.3%,6.7%,0

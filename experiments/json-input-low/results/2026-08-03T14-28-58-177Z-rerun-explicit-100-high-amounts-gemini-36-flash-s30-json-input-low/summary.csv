@@ -1,0 +1,17 @@
+model,response_models,format_id,context_id,amount,total,low,not_low,invalid,low_pct,not_low_pct,errors
+gemini-3.6-flash,gemini-3.6-flash,json_flat,retrieved_100000_contract,100,30,30,0,0,100.0%,0.0%,0
+gemini-3.6-flash,gemini-3.6-flash,json_flat,retrieved_100000_contract,150,30,30,0,0,100.0%,0.0%,0
+gemini-3.6-flash,gemini-3.6-flash,json_flat,retrieved_100000_contract,15000,30,23,7,0,76.7%,23.3%,0
+gemini-3.6-flash,gemini-3.6-flash,json_flat,retrieved_100000_contract,20000,30,18,12,0,60.0%,40.0%,0
+gemini-3.6-flash,gemini-3.6-flash,json_typed_boundary_rule,retrieved_100000_contract,100,30,30,0,0,100.0%,0.0%,0
+gemini-3.6-flash,gemini-3.6-flash,json_typed_boundary_rule,retrieved_100000_contract,150,30,0,30,0,0.0%,100.0%,0
+gemini-3.6-flash,gemini-3.6-flash,json_typed_boundary_rule,retrieved_100000_contract,15000,30,0,30,0,0.0%,100.0%,0
+gemini-3.6-flash,gemini-3.6-flash,json_typed_boundary_rule,retrieved_100000_contract,20000,30,0,30,0,0.0%,100.0%,0
+gemini-3.6-flash,gemini-3.6-flash,json_typed,retrieved_100000_contract,100,30,30,0,0,100.0%,0.0%,0
+gemini-3.6-flash,gemini-3.6-flash,json_typed,retrieved_100000_contract,150,30,30,0,0,100.0%,0.0%,0
+gemini-3.6-flash,gemini-3.6-flash,json_typed,retrieved_100000_contract,15000,30,30,0,0,100.0%,0.0%,0
+gemini-3.6-flash,gemini-3.6-flash,json_typed,retrieved_100000_contract,20000,30,30,0,0,100.0%,0.0%,0
+gemini-3.6-flash,gemini-3.6-flash,prose_same_block,retrieved_100000_contract,100,30,30,0,0,100.0%,0.0%,0
+gemini-3.6-flash,gemini-3.6-flash,prose_same_block,retrieved_100000_contract,150,30,30,0,0,100.0%,0.0%,0
+gemini-3.6-flash,gemini-3.6-flash,prose_same_block,retrieved_100000_contract,15000,30,25,4,1,83.3%,13.3%,0
+gemini-3.6-flash,gemini-3.6-flash,prose_same_block,retrieved_100000_contract,20000,30,21,8,1,70.0%,26.7%,0

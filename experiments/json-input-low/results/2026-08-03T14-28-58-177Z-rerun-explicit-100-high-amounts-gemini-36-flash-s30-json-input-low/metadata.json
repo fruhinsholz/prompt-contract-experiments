@@ -1,0 +1,32 @@
+{
+  "testbed": "json-input-low",
+  "createdAt": "2026-08-03T14:28:58.178Z",
+  "commitHash": "b34aee6c7888bd1d8542821357718927bd9f7353",
+  "commandLine": "/usr/bin/node /home/eric/workspace/prompt-contract-experiments/src/json-input-low.mjs --provider gemini --models gemini-3.6-flash --contexts retrieved_100000_contract --formats prose_same_block,json_flat,json_typed,json_typed_boundary_rule --amounts 100,150,15000,20000 --samples 30 --max-output-tokens 256 --reasoning-effort none --max-calls 600 --concurrency 8 --gzip-jsonl --label rerun-explicit-100-high-amounts-gemini-36-flash-s30",
+  "provider": "gemini",
+  "requestedModels": [
+    "gemini-3.6-flash"
+  ],
+  "apiParameters": {
+    "temperature": 0,
+    "maxOutputTokens": 256,
+    "reasoningEffort": "none",
+    "seed": null
+  },
+  "samplesPerState": 30,
+  "epochs": 10,
+  "maxCalls": 600,
+  "dryRun": false,
+  "promptFiles": [
+    "system-prompt.txt",
+    "user-template-prose.txt",
+    "user-template-json.txt"
+  ],
+  "fixtureFile": "fixture.json",
+  "resultFiles": {
+    "rawJsonl": "calls.jsonl",
+    "summaryCsv": "summary.csv",
+    "summaryMarkdown": "summary.md",
+    "analysis": "analysis.md"
+  }
+}

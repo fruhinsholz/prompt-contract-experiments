@@ -59,6 +59,16 @@ The generated Markdown includes a provenance marker with the manifest path, sour
 
 Older clean and check batches remain in `results/` so readers can see how the experiment evolved, but they are not mixed into the article table unless promoted in the manifest.
 
+## Targeted High-Amount Rerun
+
+On 2026-08-03 we reran the historical high-amount `$100k` context cells that had produced the confusing early readout. The rerun used current article models, the same suspicious high amounts (`$15,000` and `$20,000`), and `n=30` per cell:
+
+- `results/2026-08-03T14-26-42-626Z-rerun-explicit-100-high-amounts-openai-gpt56-s30-json-input-low/`
+- `results/2026-08-03T14-28-58-177Z-rerun-explicit-100-high-amounts-gemini-36-flash-s30-json-input-low/`
+
+The rerun reproduced the main drift for `prose_same_block`, `json_flat`, and `json_typed`: both models still classified many high-dollar claims as `LOW` under the `$100k` retrieved context. It did not reproduce the old anomaly for `json_typed_boundary_rule`: with the explicit `$100` policy field, both current models returned `NOT_LOW` for every sample above `$100`.
+
+Use this rerun as supporting audit evidence, not as a replacement for the publication-clean article table. It explains why the old mixed-run `$100 LOW rule` row should not carry the main claim: the historical Gemini 3.5 result was useful for discovering the issue, but it mixed older model/version behavior and a non-publication-clean grid. The stable article claim remains narrower: JSON form alone does not isolate the boundary; explicit prompt-side policy can help, but deterministic enforcement still belongs outside model interpretation.
 ## Conclusion
 
 JSON changed the surface form of the prompt, but it did not remove the hidden-boundary problem in the exploratory format runs. The publication-clean result narrows the article-facing claim: with the ordinary prose prompt, retrieved context moves both OpenAI and Gemini strongly. A `$100k` enterprise note moves classifications above the code-owned `$100` boundary toward `LOW`; a `$5 gift-card` note moves classifications above `$5` toward `NOT_LOW`.
