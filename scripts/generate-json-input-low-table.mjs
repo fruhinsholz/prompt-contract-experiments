@@ -199,9 +199,10 @@ function renderColumnGuide() {
     `<div><dt>Baseline prompt</dt><dd>The same classifier for the same amount grid without the selected retrieved context.</dd></div>`,
     `<div><dt>Selected context</dt><dd>The selected experimental context added to the classifier.</dd></div>`,
     `<div><dt>LOW answers</dt><dd>How often the model answered <code>LOW</code> out of <code>n=100</code>.</dd></div>`,
-    `<div><dt>Errors vs rule</dt><dd>How often the answer differed from the reference rule. Non-zero values are bold because they are the trust-boundary failure.</dd></div>`,
+    `<div><dt>Policy mismatches</dt><dd>How often the model-owned answer crossed the system-owned policy boundary. Non-zero values are bold because they are the trust-boundary failure.</dd></div>`,
     `<div><dt>Deterministic check</dt><dd>The same amount grid checked by code instead of model interpretation. This is the control condition: the $100 rule is enforced outside the model.</dd></div>`,
     `</dl>`,
+    `<p class="json-low-note">These counts are not expected to form a smooth dose-response curve. The point is narrower: nearby context can move a consequence-bearing boundary at all. Occasional divergences between LOW-answer counts and policy-mismatch counts are shown rather than smoothed away; once interpretation owns the boundary, the system cannot guarantee a clean explanation for every cell.</p>`,
   ].join("\n");
 }
 
@@ -213,7 +214,7 @@ function renderExplorerTable(experiment) {
     `<thead>`,
     `<tr><th scope="col" rowspan="3">Amount</th><th scope="col" rowspan="3">Reference rule</th><th scope="colgroup" colspan="5">GPT-5.6</th><th scope="colgroup" colspan="5">Gemini 3.6 Flash</th></tr>`,
     `<tr><th scope="colgroup" colspan="2">Baseline prompt</th><th scope="colgroup" colspan="2">${contextHeader}</th><th scope="colgroup">Deterministic check</th><th scope="colgroup" colspan="2">Baseline prompt</th><th scope="colgroup" colspan="2">${contextHeader}</th><th scope="colgroup">Deterministic check</th></tr>`,
-    `<tr><th scope="col">LOW answers</th><th scope="col">Errors vs rule</th><th scope="col">LOW answers</th><th scope="col">Errors vs rule</th><th scope="col">Errors vs rule</th><th scope="col">LOW answers</th><th scope="col">Errors vs rule</th><th scope="col">LOW answers</th><th scope="col">Errors vs rule</th><th scope="col">Errors vs rule</th></tr>`,
+    `<tr><th scope="col">LOW answers</th><th scope="col">Policy mismatches</th><th scope="col">LOW answers</th><th scope="col">Policy mismatches</th><th scope="col">Policy mismatches</th><th scope="col">LOW answers</th><th scope="col">Policy mismatches</th><th scope="col">LOW answers</th><th scope="col">Policy mismatches</th><th scope="col">Policy mismatches</th></tr>`,
     `</thead>`,
     `<tbody>`,
   ];
