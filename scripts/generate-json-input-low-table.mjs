@@ -48,21 +48,23 @@ function money(value) {
   return "$" + Number(value).toLocaleString("en-US");
 }
 
-function resultLabel({ kind, count, total, expectedLabel }) {
+function resultLabel({ count, total }) {
   if (count === null || total === null) return "Not run";
   if (count !== 0 && count !== total) return "Mixed";
-  if (kind === "errors") return count === 0 ? "Correct" : "Incorrect";
-  if (expectedLabel === "LOW") return count === total ? "Correct" : "Incorrect";
-  if (expectedLabel === "NOT_LOW") return count === 0 ? "Correct" : "Incorrect";
-  throw new Error(`Unsupported expected label: ${expectedLabel}`);
+  return count === 0 ? "Correct" : "Incorrect";
 }
 
-function renderResult({ kind, count, total, expectedLabel }) {
-  const label = resultLabel({ kind, count, total, expectedLabel });
+function labelClass(label) {
+  return label.toLowerCase().replace(/\s+/g, "-");
+}
+
+function renderResult({ kind, count, total }) {
   const value = count === null || total === null
     ? "n/a"
     : `${count}/${total}`;
-  return `<span class="json-low-result"><span class="json-low-result__value">${value}</span><span class="json-low-result__label">${label}</span></span>`;
+  if (kind !== "errors") return `<span class="json-low-value">${value}</span>`;
+  const label = resultLabel({ count, total });
+  return `<span class="json-low-result"><span class="json-low-result__value">${value}</span><span class="json-low-result__label json-low-result__label--${labelClass(label)}">${label}</span></span>`;
 }
 
 async function fileInfo(relativePath) {
@@ -240,7 +242,7 @@ function renderMarkdown({ config, tableRows, provenanceHash }) {
       lines.push("");
     }
   }
-  lines.push("Caption: each value keeps the raw count out of `n=100`; the label below it applies only to that result cell. In error columns, `Correct` means `0/100` errors and `Incorrect` means `100/100` errors. In LOW columns, `Correct` depends on `Expected`: `100/100` LOW is correct for `LOW`, and `0/100` LOW is correct for `NOT_LOW`. `Mixed` means behavior was not stable across the 100 trials. `Runtime errors` are derived by applying the code-owned rule to the same amount grid, not by making another model call. Generated from `" + MANIFEST_PATH + "`.");
+  lines.push("Caption: each value keeps the raw count out of `n=100`. Verdict labels appear only in error columns: `Correct` means `0/100` errors, `Incorrect` means `100/100` errors, and `Mixed` means an intermediate error count across the 100 trials. `Runtime errors` are derived by applying the code-owned rule to the same amount grid, not by making another model call. Generated from `" + MANIFEST_PATH + "`.");
   lines.push("");
   lines.push(`<!-- /generated:json-input-low-table -->`);
   return `${lines.join("\n")}\n`;
