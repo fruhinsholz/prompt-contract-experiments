@@ -155,96 +155,154 @@ function buildTableRows({ manifest, config, runIndexes }) {
   return tableRows.sort((a, b) => `${a.section_id}:${a.model}:${a.format_id}:${a.amount}`.localeCompare(`${b.section_id}:${b.model}:${b.format_id}:${b.amount}`, undefined, { numeric: true }));
 }
 
-function renderMarkdown({ config, tableRows, provenanceHash }) {
-  const sourceRunIds = [...new Set(tableRows.flatMap((row) => [row.control?.run_id, row.retrieved_context.run_id]).filter(Boolean))];
+function experimentDescription(sectionId) {
+  const descriptions = new Map([
+    ["retrieved_100000_contract_prose", "Prose classifier with retrieved context saying contracts above $100,000 require executive review. This tests whether nearby business context moves the LOW boundary even though the refund rule is unchanged."],
+    ["retrieved_5_gift_card_prose", "Prose classifier with retrieved context saying this account usually treats $5 gift cards as low-value gestures. This tests whether a nearby small-value reference pulls the boundary downward."],
+    ["retrieved_5_gift_card_explicit_rule", "Typed JSON prompt with the $100 rule stated explicitly, plus the same $5 gift-card context. This tests whether JSON improves steering while still leaving enforcement inside model behavior."],
+  ]);
+  return descriptions.get(sectionId) ?? "Generated publication-clean LOW boundary experiment.";
+}
+
+function experimentTakeaway(sectionId) {
+  const takeaways = new Map([
+    ["retrieved_100000_contract_prose", "The prose classifier moves with the $100k context; the runtime rule stays at zero errors."],
+    ["retrieved_5_gift_card_prose", "The prose classifier moves with the $5 context; the runtime rule stays unchanged."],
+    ["retrieved_5_gift_card_explicit_rule", "Typed JSON makes the intended rule more legible, but enforcement is still only deterministic when code owns the boundary."],
+  ]);
+  return takeaways.get(sectionId) ?? "Runtime enforcement is the stable boundary.";
+}
+
+function htmlEscape(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function renderExplorerCell(metric) {
+  if (!metric) return "";
+  return renderResult(metric);
+}
+
+function renderExplorerTable(experiment) {
   const lines = [
-    `<!-- generated:json-input-low-table manifest:${MANIFEST_PATH} source_runs:${sourceRunIds.join(",")} hash:${provenanceHash} -->`,
-    "",
-    "Publication-clean LOW boundary probe. Counts are generated from fixed-grid `n=100` runs. The table compares prompt-only classification under retrieved context with deterministic runtime enforcement. It intentionally reports raw counts instead of fold multipliers.",
-    "",
-    `Operational rule: \`LOW iff refund_claim_amount_usd <= ${config.threshold_usd}\`.`,
-    `Default prompt format: \`${config.format_id}\`.`,
-    "",
+    `<div class="json-low-table" data-json-low-table>`,
+    `<table>`,
+    `<thead>`,
+    `<tr><th scope="col" rowspan="2">Amount</th><th scope="col" rowspan="2">Expected</th><th scope="colgroup" colspan="3">GPT-5.6</th><th scope="colgroup" colspan="3">Gemini 3.6 Flash</th></tr>`,
+    `<tr><th scope="col">Control LOW</th><th scope="col">Context LOW</th><th scope="col">Runtime errors</th><th scope="col">Control LOW</th><th scope="col">Context LOW</th><th scope="col">Runtime errors</th></tr>`,
+    `</thead>`,
+    `<tbody>`,
   ];
+  for (const row of experiment.rows) {
+    const modelCells = row.models.map((model) => [
+      renderExplorerCell(model.control_low),
+      renderExplorerCell(model.context_low),
+      renderExplorerCell(model.runtime_errors),
+    ].map((cell) => `<td>${cell}</td>`).join("")).join("");
+    lines.push(`<tr><th scope="row">${htmlEscape(money(row.amount))}</th><td><code>${htmlEscape(row.expected_label)}</code></td>${modelCells}</tr>`);
+  }
+  lines.push(`</tbody>`, `</table>`, `</div>`);
+  return lines.join("\n");
+}
+
+function buildExperiments({ config, tableRows }) {
   const modelLabels = new Map([
     ["gpt-5.6", "GPT-5.6"],
     ["gemini-3.6-flash", "Gemini 3.6 Flash"],
   ]);
+  const experiments = [];
   for (const sectionId of [...new Set(config.rows.map((row) => row.section_id ?? row.context_id))]) {
     const sectionRows = tableRows.filter((row) => row.section_id === sectionId);
-    lines.push(`## ${sectionRows[0].section_label}`, "");
-    for (const formatId of [...new Set(config.rows.filter((row) => (row.section_id ?? row.context_id) === sectionId).map((row) => row.format_id ?? config.format_id))]) {
-      const rows = sectionRows.filter((item) => item.format_id === formatId);
-      const rowsByModelAmount = new Map(rows.map((row) => [`${row.model}\u0000${row.amount}`, row]));
-      const models = [...new Set(config.rows
-        .filter((row) => (row.section_id ?? row.context_id) === sectionId && (row.format_id ?? config.format_id) === formatId)
-        .map((row) => row.model))];
-      const amounts = [...new Set(rows.map((row) => row.amount))].sort((a, b) => a - b);
-      const modelHeader = (metric) => models.map((model) => `${metric}<br>${modelLabels.get(model) ?? model}`);
-      const headers = [
-        "Amount",
-        "Expected",
-        ...modelHeader("Control LOW"),
-        ...modelHeader("Control errors"),
-        ...modelHeader("Context LOW"),
-        ...modelHeader("Context errors"),
-        ...modelHeader("Runtime errors"),
-      ];
-      lines.push(
-        `### ${rows[0].format_label}`,
-        "",
-        `| ${headers.join(" | ")} |`,
-        `| ${headers.map((header) => header === "Amount" ? "---:" : "---").join(" | ")} |`,
-      );
-      for (const amount of amounts) {
-        const firstRow = rows.find((row) => row.amount === amount);
-        const cell = (model, renderer) => {
-          const row = rowsByModelAmount.get(`${model}\u0000${amount}`);
-          if (!row) return "";
-          return renderer(row);
+    const models = [...new Set(config.rows
+      .filter((row) => (row.section_id ?? row.context_id) === sectionId)
+      .map((row) => row.model))];
+    const amounts = [...new Set(sectionRows.map((row) => row.amount))].sort((a, b) => a - b);
+    const byModelAmount = new Map(sectionRows.map((row) => [`${row.model}\u0000${row.amount}`, row]));
+    experiments.push({
+      id: sectionId,
+      label: sectionRows[0].section_label,
+      description: experimentDescription(sectionId),
+      takeaway: experimentTakeaway(sectionId),
+      format_label: sectionRows[0].format_label,
+      rows: amounts.map((amount) => {
+        const firstRow = sectionRows.find((row) => row.amount === amount);
+        return {
+          amount,
+          expected_label: firstRow.expected_label,
+          models: models.map((model) => {
+            const row = byModelAmount.get(`${model}\u0000${amount}`);
+            return {
+              id: model,
+              label: modelLabels.get(model) ?? model,
+              control_low: {
+                kind: "low",
+                count: row.control?.low ?? null,
+                total: row.control?.total ?? null,
+              },
+              context_low: {
+                kind: "low",
+                count: row.retrieved_context.low,
+                total: row.retrieved_context.total,
+              },
+              context_errors: {
+                kind: "errors",
+                count: row.retrieved_context.error_count,
+                total: row.retrieved_context.total,
+              },
+              runtime_errors: {
+                kind: "errors",
+                count: row.runtime_enforced.error_count,
+                total: row.runtime_enforced.total,
+              },
+            };
+          }),
         };
-        const cells = [
-          money(amount),
-          `\`${firstRow.expected_label}\``,
-          ...models.map((model) => cell(model, (row) => renderResult({
-            kind: "low",
-            count: row.control?.low ?? null,
-            total: row.control?.total ?? null,
-            expectedLabel: row.expected_label,
-          }))),
-          ...models.map((model) => cell(model, (row) => renderResult({
-            kind: "errors",
-            count: row.control?.error_count ?? null,
-            total: row.control?.total ?? null,
-            expectedLabel: row.expected_label,
-          }))),
-          ...models.map((model) => cell(model, (row) => renderResult({
-            kind: "low",
-            count: row.retrieved_context.low,
-            total: row.retrieved_context.total,
-            expectedLabel: row.expected_label,
-          }))),
-          ...models.map((model) => cell(model, (row) => renderResult({
-            kind: "errors",
-            count: row.retrieved_context.error_count,
-            total: row.retrieved_context.total,
-            expectedLabel: row.expected_label,
-          }))),
-          ...models.map((model) => cell(model, (row) => renderResult({
-            kind: "errors",
-            count: row.runtime_enforced.error_count,
-            total: row.runtime_enforced.total,
-            expectedLabel: row.expected_label,
-          }))),
-        ];
-        lines.push(`| ${cells.join(" | ")} |`);
-      }
-      lines.push("");
-    }
+      }),
+    });
   }
-  lines.push("Caption: each value keeps the raw count out of `n=100`. Verdict labels appear only in error columns: `Correct` means `0/100` errors, `Incorrect` means `100/100` errors, and `Mixed` means an intermediate error count across the 100 trials. `Runtime errors` are derived by applying the code-owned rule to the same amount grid, not by making another model call. Generated from `" + MANIFEST_PATH + "`.");
-  lines.push("");
-  lines.push(`<!-- /generated:json-input-low-table -->`);
+  return experiments;
+}
+
+function safeJsonScript(value) {
+  return JSON.stringify(value).replace(/</g, "\\u003c");
+}
+
+function renderMarkdown({ config, tableRows, provenanceHash }) {
+  const sourceRunIds = [...new Set(tableRows.flatMap((row) => [row.control?.run_id, row.retrieved_context.run_id]).filter(Boolean))];
+  const experiments = buildExperiments({ config, tableRows });
+  const selectedExperiment = experiments[0];
+  const explorerData = {
+    schema_version: "json-input-low.article-explorer.v1",
+    threshold_usd: config.threshold_usd,
+    default_experiment_id: selectedExperiment.id,
+    source_runs: sourceRunIds,
+    provenance_hash: provenanceHash,
+    experiments,
+  };
+  const lines = [
+    `<!-- generated:json-input-low-table manifest:${MANIFEST_PATH} source_runs:${sourceRunIds.join(",")} hash:${provenanceHash} -->`,
+    "",
+    `<section class="json-low-explorer" data-json-low-explorer>`,
+    `<p class="json-low-kicker">Publication-clean LOW boundary probe. Counts are generated from fixed-grid <code>n=100</code> runs.</p>`,
+    `<p>Operational rule: <code>LOW iff refund_claim_amount_usd &lt;= ${config.threshold_usd}</code>.</p>`,
+    `<div class="json-low-controls">`,
+    `<label for="json-low-experiment">Experiment</label>`,
+    `<select id="json-low-experiment" data-json-low-experiment>`,
+    ...experiments.map((experiment) => `<option value="${htmlEscape(experiment.id)}"${experiment.id === selectedExperiment.id ? " selected" : ""}>${htmlEscape(experiment.label)}</option>`),
+    `</select>`,
+    `</div>`,
+    `<p class="json-low-description" data-json-low-description>${htmlEscape(selectedExperiment.description)}</p>`,
+    `<p class="json-low-takeaway" data-json-low-takeaway>${htmlEscape(selectedExperiment.takeaway)}</p>`,
+    renderExplorerTable(selectedExperiment),
+    `<p class="json-low-caption">Each value keeps the raw count out of <code>n=100</code>. <code>Runtime errors</code> are derived by applying the code-owned rule to the same amount grid, not by making another model call. Full prompts, raw calls, and generated data are in <a href="https://github.com/fruhinsholz/prompt-contract-experiments/tree/main/experiments/json-input-low" target="_blank" rel="noopener noreferrer"><code>experiments/json-input-low</code></a>.</p>`,
+    `<script type="application/json" data-json-low-data>${safeJsonScript(explorerData)}</script>`,
+    `</section>`,
+    "",
+    `<!-- /generated:json-input-low-table -->`,
+  ];
   return `${lines.join("\n")}\n`;
 }
 
