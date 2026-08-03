@@ -64,7 +64,8 @@ function renderResult({ kind, count, total }) {
     : `${count}/${total}`;
   if (kind !== "errors") return `<span class="json-low-value">${value}</span>`;
   const label = resultLabel({ count, total });
-  return `<span class="json-low-result"><span class="json-low-result__value">${value}</span><span class="json-low-result__label json-low-result__label--${labelClass(label)}">${label}</span></span>`;
+  const emphasis = count && count > 0 ? " json-low-result--warning" : "";
+  return `<span class="json-low-result${emphasis}"><span class="json-low-result__value">${value}</span><span class="json-low-result__label json-low-result__label--${labelClass(label)}">${label}</span></span>`;
 }
 
 async function fileInfo(relativePath) {
@@ -186,6 +187,17 @@ function renderExplorerCell(metric) {
   return renderResult(metric);
 }
 
+function renderColumnGuide() {
+  return [
+    `<dl class="json-low-column-guide">`,
+    `<div><dt>Expected</dt><dd>The label produced by the code-owned rule: <code>LOW iff amount &lt;= $100</code>.</dd></div>`,
+    `<div><dt>Model LOW</dt><dd>How often the model itself answered <code>LOW</code> out of <code>n=100</code>.</dd></div>`,
+    `<div><dt>Divergence</dt><dd>How often the model answer differed from the code-owned rule. Non-zero values are bold because they are the trust-boundary failure.</dd></div>`,
+    `<div><dt>Runtime-rule divergence</dt><dd>The same grid checked by code instead of model interpretation.</dd></div>`,
+    `</dl>`,
+  ].join("\n");
+}
+
 function renderExplorerTable(experiment) {
   const lines = [
     `<div class="json-low-table" data-json-low-table>`,
@@ -303,6 +315,7 @@ function renderMarkdown({ config, tableRows, provenanceHash }) {
     `</div>`,
     `<p class="json-low-description" data-json-low-description>${htmlEscape(selectedExperiment.description)}</p>`,
     `<p class="json-low-takeaway" data-json-low-takeaway>${htmlEscape(selectedExperiment.takeaway)}</p>`,
+    renderColumnGuide(),
     renderExplorerTable(selectedExperiment),
     `<p class="json-low-caption">Each value keeps the raw count out of <code>n=100</code>. <code>Divergence</code> means outputs that differ from the expected label under the code-owned rule. <code>Runtime-rule divergence</code> is derived by applying that rule to the same amount grid, not by making another model call. Full prompts, raw calls, and generated data are in <a href="https://github.com/fruhinsholz/prompt-contract-experiments/tree/main/experiments/json-input-low" target="_blank" rel="noopener noreferrer"><code>experiments/json-input-low</code></a>.</p>`,
     `<script type="application/json" data-json-low-data>${safeJsonScript(explorerData)}</script>`,
