@@ -44,10 +44,6 @@ function parseCsv(text) {
   });
 }
 
-function pct(value) {
-  return `${(value * 100).toFixed(1)}%`;
-}
-
 function money(value) {
   return "$" + Number(value).toLocaleString("en-US");
 }
@@ -61,11 +57,11 @@ function resultLabel({ kind, count, total, expectedLabel }) {
   throw new Error(`Unsupported expected label: ${expectedLabel}`);
 }
 
-function renderResult({ kind, count, total, expectedLabel, includePercent = false }) {
+function renderResult({ kind, count, total, expectedLabel }) {
   const label = resultLabel({ kind, count, total, expectedLabel });
   const value = count === null || total === null
     ? "n/a"
-    : `${count}/${total}${includePercent ? ` (${pct(count / total)})` : ""}`;
+    : `${count}/${total}`;
   return `<span class="json-low-result"><span class="json-low-result__value">${value}</span><span class="json-low-result__label">${label}</span></span>`;
 }
 
@@ -168,55 +164,83 @@ function renderMarkdown({ config, tableRows, provenanceHash }) {
     `Default prompt format: \`${config.format_id}\`.`,
     "",
   ];
-  for (const sectionId of [...new Set(tableRows.map((row) => row.section_id))]) {
+  const modelLabels = new Map([
+    ["gpt-5.6", "GPT-5.6"],
+    ["gemini-3.6-flash", "Gemini 3.6 Flash"],
+  ]);
+  for (const sectionId of [...new Set(config.rows.map((row) => row.section_id ?? row.context_id))]) {
     const sectionRows = tableRows.filter((row) => row.section_id === sectionId);
     lines.push(`## ${sectionRows[0].section_label}`, "");
-    for (const model of [...new Set(sectionRows.map((row) => row.model))].sort()) {
-      for (const formatId of [...new Set(sectionRows.filter((row) => row.model === model).map((row) => row.format_id))].sort()) {
-        const rows = sectionRows.filter((item) => item.model === model && item.format_id === formatId).sort((a, b) => a.amount - b.amount);
-        lines.push(`### ${model} - ${rows[0].format_label}`, "", "| Amount | Expected | Control LOW | Control errors | Context LOW | Context errors | Runtime errors |", "| ---: | --- | ---: | ---: | ---: | ---: | ---: |");
-        for (const row of rows) {
-          const cells = {
-            controlLow: renderResult({
-              kind: "low",
-              count: row.control?.low ?? null,
-              total: row.control?.total ?? null,
-              expectedLabel: row.expected_label,
-            }),
-            controlErrors: renderResult({
-              kind: "errors",
-              count: row.control?.error_count ?? null,
-              total: row.control?.total ?? null,
-              expectedLabel: row.expected_label,
-              includePercent: true,
-            }),
-            contextLow: renderResult({
-              kind: "low",
-              count: row.retrieved_context.low,
-              total: row.retrieved_context.total,
-              expectedLabel: row.expected_label,
-            }),
-            contextErrors: renderResult({
-              kind: "errors",
-              count: row.retrieved_context.error_count,
-              total: row.retrieved_context.total,
-              expectedLabel: row.expected_label,
-              includePercent: true,
-            }),
-            runtimeErrors: renderResult({
-              kind: "errors",
-              count: row.runtime_enforced.error_count,
-              total: row.runtime_enforced.total,
-              expectedLabel: row.expected_label,
-            }),
-          };
-          lines.push(`| ${money(row.amount)} | \`${row.expected_label}\` | ${cells.controlLow} | ${cells.controlErrors} | ${cells.contextLow} | ${cells.contextErrors} | ${cells.runtimeErrors} |`);
-        }
-        lines.push("");
+    for (const formatId of [...new Set(config.rows.filter((row) => (row.section_id ?? row.context_id) === sectionId).map((row) => row.format_id ?? config.format_id))]) {
+      const rows = sectionRows.filter((item) => item.format_id === formatId);
+      const rowsByModelAmount = new Map(rows.map((row) => [`${row.model}\u0000${row.amount}`, row]));
+      const models = [...new Set(config.rows
+        .filter((row) => (row.section_id ?? row.context_id) === sectionId && (row.format_id ?? config.format_id) === formatId)
+        .map((row) => row.model))];
+      const amounts = [...new Set(rows.map((row) => row.amount))].sort((a, b) => a - b);
+      const modelHeader = (metric) => models.map((model) => `${metric}<br>${modelLabels.get(model) ?? model}`);
+      const headers = [
+        "Amount",
+        "Expected",
+        ...modelHeader("Control LOW"),
+        ...modelHeader("Control errors"),
+        ...modelHeader("Context LOW"),
+        ...modelHeader("Context errors"),
+        ...modelHeader("Runtime errors"),
+      ];
+      lines.push(
+        `### ${rows[0].format_label}`,
+        "",
+        `| ${headers.join(" | ")} |`,
+        `| ${headers.map((header) => header === "Amount" ? "---:" : "---").join(" | ")} |`,
+      );
+      for (const amount of amounts) {
+        const firstRow = rows.find((row) => row.amount === amount);
+        const cell = (model, renderer) => {
+          const row = rowsByModelAmount.get(`${model}\u0000${amount}`);
+          if (!row) return "";
+          return renderer(row);
+        };
+        const cells = [
+          money(amount),
+          `\`${firstRow.expected_label}\``,
+          ...models.map((model) => cell(model, (row) => renderResult({
+            kind: "low",
+            count: row.control?.low ?? null,
+            total: row.control?.total ?? null,
+            expectedLabel: row.expected_label,
+          }))),
+          ...models.map((model) => cell(model, (row) => renderResult({
+            kind: "errors",
+            count: row.control?.error_count ?? null,
+            total: row.control?.total ?? null,
+            expectedLabel: row.expected_label,
+          }))),
+          ...models.map((model) => cell(model, (row) => renderResult({
+            kind: "low",
+            count: row.retrieved_context.low,
+            total: row.retrieved_context.total,
+            expectedLabel: row.expected_label,
+          }))),
+          ...models.map((model) => cell(model, (row) => renderResult({
+            kind: "errors",
+            count: row.retrieved_context.error_count,
+            total: row.retrieved_context.total,
+            expectedLabel: row.expected_label,
+          }))),
+          ...models.map((model) => cell(model, (row) => renderResult({
+            kind: "errors",
+            count: row.runtime_enforced.error_count,
+            total: row.runtime_enforced.total,
+            expectedLabel: row.expected_label,
+          }))),
+        ];
+        lines.push(`| ${cells.join(" | ")} |`);
       }
+      lines.push("");
     }
   }
-  lines.push("Caption: `Control` is the matched no-added-context run when available. `Context` is the retrieved-context condition named by the section. In error columns, `Correct` means `0/100` errors and `Incorrect` means `100/100` errors. In LOW columns, `Correct` depends on `Expected`: `100/100` LOW is correct for `LOW`, and `0/100` LOW is correct for `NOT_LOW`. `Mixed` means behavior was not stable across the 100 trials. `n/a` means not run or not applicable in this condition, not failure. `Runtime errors` are derived by applying the code-owned rule to the same amount grid, not by making another model call. Generated from `" + MANIFEST_PATH + "`.");
+  lines.push("Caption: each value keeps the raw count out of `n=100`; the label below it applies only to that result cell. In error columns, `Correct` means `0/100` errors and `Incorrect` means `100/100` errors. In LOW columns, `Correct` depends on `Expected`: `100/100` LOW is correct for `LOW`, and `0/100` LOW is correct for `NOT_LOW`. `Mixed` means behavior was not stable across the 100 trials. `Runtime errors` are derived by applying the code-owned rule to the same amount grid, not by making another model call. Generated from `" + MANIFEST_PATH + "`.");
   lines.push("");
   lines.push(`<!-- /generated:json-input-low-table -->`);
   return `${lines.join("\n")}\n`;
