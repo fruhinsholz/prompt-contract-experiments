@@ -2,6 +2,8 @@
 
 This repository contains the reproducible evidence behind [When Model Judgment Becomes an Operational Contract](https://blog.fruhinsholz.com/articles/when-model-judgment-becomes-an-operational-contract/). The article argues that prompts can hide operational contracts: when model judgment controls a consequence-bearing value, the boundary should be externalized, pinned, versioned, and enforced outside the model.
 
+This is the public evidence repository for the article. The blog implementation and draft source remain private in `fruhinsholz/us-blog`; publication checks should verify this repository for public experiment access, not make the blog repo public.
+
 The repository is intentionally narrow. It is not a benchmark suite and it is not a general prompt-bias archive. It keeps only the experiments used by the article, the scripts needed to reproduce them, the latest clean result sets, generated result images, generated article tables, and a downloadable skill for finding similar contract-shaped risks, plus an experimental protocol for context-influence benches around exact labels and thresholds.
 
 The article uses two kinds of examples. First, the `LOW` refund experiment shows that a vague label can hide a dollar threshold. The same refund case is classified under three context conditions: fact only, nearby context mentioning a `$5` gift card, and nearby context mentioning a `$100,000` contract. The tested case does not change, but the observed transition band for `LOW` moves.
