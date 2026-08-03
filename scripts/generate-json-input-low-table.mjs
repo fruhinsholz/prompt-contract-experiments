@@ -167,11 +167,11 @@ function experimentDescription(sectionId) {
 
 function experimentTakeaway(sectionId) {
   const takeaways = new Map([
-    ["retrieved_100000_contract_prose", "The prose classifier moves with the $100k context; the runtime rule stays at zero errors."],
-    ["retrieved_5_gift_card_prose", "The prose classifier moves with the $5 context; the runtime rule stays unchanged."],
-    ["retrieved_5_gift_card_explicit_rule", "Typed JSON makes the intended rule more legible, but enforcement is still only deterministic when code owns the boundary."],
+    ["retrieved_100000_contract_prose", "The prose classifier moves with the $100k context; the deterministic check stays at zero errors."],
+    ["retrieved_5_gift_card_prose", "The prose classifier moves with the $5 context; the deterministic check stays unchanged."],
+    ["retrieved_5_gift_card_explicit_rule", "Typed JSON makes the intended rule more legible, but enforcement still requires the deterministic check outside model judgment."],
   ]);
-  return takeaways.get(sectionId) ?? "Runtime enforcement is the stable boundary.";
+  return takeaways.get(sectionId) ?? "The deterministic check is the stable boundary.";
 }
 
 function htmlEscape(value) {
@@ -191,11 +191,11 @@ function renderColumnGuide() {
   return [
     `<dl class="json-low-column-guide">`,
     `<div><dt>Reference rule</dt><dd>The fixed rule used for evaluation: <code>LOW iff amount &lt;= $100</code>.</dd></div>`,
-    `<div><dt>Baseline prompt</dt><dd>The same classifier without the selected retrieved context.</dd></div>`,
+    `<div><dt>Baseline prompt</dt><dd>The same classifier for the same amount grid without the selected retrieved context.</dd></div>`,
     `<div><dt>Selected context</dt><dd>The selected experimental context added to the classifier.</dd></div>`,
     `<div><dt>LOW answers</dt><dd>How often the model answered <code>LOW</code> out of <code>n=100</code>.</dd></div>`,
     `<div><dt>Errors vs rule</dt><dd>How often the answer differed from the reference rule. Non-zero values are bold because they are the trust-boundary failure.</dd></div>`,
-    `<div><dt>Runtime check</dt><dd>The same amount grid checked by code instead of model interpretation.</dd></div>`,
+    `<div><dt>Deterministic check</dt><dd>The same amount grid checked by code instead of model interpretation. This is the control condition: the $100 rule is enforced outside the model.</dd></div>`,
     `</dl>`,
   ].join("\n");
 }
@@ -206,7 +206,7 @@ function renderExplorerTable(experiment) {
     `<table>`,
     `<thead>`,
     `<tr><th scope="col" rowspan="3">Amount</th><th scope="col" rowspan="3">Reference rule</th><th scope="colgroup" colspan="5">GPT-5.6</th><th scope="colgroup" colspan="5">Gemini 3.6 Flash</th></tr>`,
-    `<tr><th scope="colgroup" colspan="2">Baseline prompt</th><th scope="colgroup" colspan="2">Selected context</th><th scope="colgroup">Runtime check</th><th scope="colgroup" colspan="2">Baseline prompt</th><th scope="colgroup" colspan="2">Selected context</th><th scope="colgroup">Runtime check</th></tr>`,
+    `<tr><th scope="colgroup" colspan="2">Baseline prompt</th><th scope="colgroup" colspan="2">Selected context</th><th scope="colgroup">Deterministic check</th><th scope="colgroup" colspan="2">Baseline prompt</th><th scope="colgroup" colspan="2">Selected context</th><th scope="colgroup">Deterministic check</th></tr>`,
     `<tr><th scope="col">LOW answers</th><th scope="col">Errors vs rule</th><th scope="col">LOW answers</th><th scope="col">Errors vs rule</th><th scope="col">Errors vs rule</th><th scope="col">LOW answers</th><th scope="col">Errors vs rule</th><th scope="col">LOW answers</th><th scope="col">Errors vs rule</th><th scope="col">Errors vs rule</th></tr>`,
     `</thead>`,
     `<tbody>`,
@@ -320,7 +320,7 @@ function renderMarkdown({ config, tableRows, provenanceHash }) {
     `<p class="json-low-takeaway" data-json-low-takeaway>${htmlEscape(selectedExperiment.takeaway)}</p>`,
     renderColumnGuide(),
     renderExplorerTable(selectedExperiment),
-    `<p class="json-low-caption">Each value keeps the raw count out of <code>n=100</code>. The prompt-condition groups state what input condition was tested; the result columns report the model answer rate and the error rate against the reference rule. The runtime check is derived by applying that rule to the same amount grid, not by making another model call. Full prompts, raw calls, and generated data are in <a href="https://github.com/fruhinsholz/prompt-contract-experiments/tree/main/experiments/json-input-low" target="_blank" rel="noopener noreferrer"><code>experiments/json-input-low</code></a>.</p>`,
+    `<p class="json-low-caption">Each value keeps the raw count out of <code>n=100</code>. The prompt-condition groups state what input condition was tested; the result columns report the model answer rate and the error rate against the reference rule. The deterministic check is derived by applying that rule to the same amount grid, not by making another model call. Full prompts, raw calls, and generated data are in <a href="https://github.com/fruhinsholz/prompt-contract-experiments/tree/main/experiments/json-input-low" target="_blank" rel="noopener noreferrer"><code>experiments/json-input-low</code></a>.</p>`,
     `<script type="application/json" data-json-low-data>${safeJsonScript(explorerData)}</script>`,
     `</section>`,
     "",
