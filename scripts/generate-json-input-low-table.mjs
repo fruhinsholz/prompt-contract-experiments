@@ -52,6 +52,23 @@ function money(value) {
   return "$" + Number(value).toLocaleString("en-US");
 }
 
+function resultLabel({ kind, count, total, expectedLabel }) {
+  if (count === null || total === null) return "Not run";
+  if (count !== 0 && count !== total) return "Mixed";
+  if (kind === "errors") return count === 0 ? "Correct" : "Incorrect";
+  if (expectedLabel === "LOW") return count === total ? "Correct" : "Incorrect";
+  if (expectedLabel === "NOT_LOW") return count === 0 ? "Correct" : "Incorrect";
+  throw new Error(`Unsupported expected label: ${expectedLabel}`);
+}
+
+function renderResult({ kind, count, total, expectedLabel, includePercent = false }) {
+  const label = resultLabel({ kind, count, total, expectedLabel });
+  const value = count === null || total === null
+    ? "n/a"
+    : `${count}/${total}${includePercent ? ` (${pct(count / total)})` : ""}`;
+  return `<span class="json-low-result"><span class="json-low-result__value">${value}</span><span class="json-low-result__label">${label}</span></span>`;
+}
+
 async function fileInfo(relativePath) {
   const info = await stat(rel(relativePath));
   return {
@@ -159,15 +176,47 @@ function renderMarkdown({ config, tableRows, provenanceHash }) {
         const rows = sectionRows.filter((item) => item.model === model && item.format_id === formatId).sort((a, b) => a.amount - b.amount);
         lines.push(`### ${model} - ${rows[0].format_label}`, "", "| Amount | Expected | Control LOW | Control errors | Context LOW | Context errors | Runtime errors |", "| ---: | --- | ---: | ---: | ---: | ---: | ---: |");
         for (const row of rows) {
-          const cRate = row.control ? row.control.error_count / row.control.total : null;
-          const kRate = row.retrieved_context.error_count / row.retrieved_context.total;
-          lines.push(`| ${money(row.amount)} | \`${row.expected_label}\` | ${row.control ? `${row.control.low}/${row.control.total}` : "n/a"} | ${row.control ? `${row.control.error_count}/${row.control.total} (${pct(cRate)})` : "n/a"} | ${row.retrieved_context.low}/${row.retrieved_context.total} | ${row.retrieved_context.error_count}/${row.retrieved_context.total} (${pct(kRate)}) | ${row.runtime_enforced.error_count}/${row.runtime_enforced.total} |`);
+          const cells = {
+            controlLow: renderResult({
+              kind: "low",
+              count: row.control?.low ?? null,
+              total: row.control?.total ?? null,
+              expectedLabel: row.expected_label,
+            }),
+            controlErrors: renderResult({
+              kind: "errors",
+              count: row.control?.error_count ?? null,
+              total: row.control?.total ?? null,
+              expectedLabel: row.expected_label,
+              includePercent: true,
+            }),
+            contextLow: renderResult({
+              kind: "low",
+              count: row.retrieved_context.low,
+              total: row.retrieved_context.total,
+              expectedLabel: row.expected_label,
+            }),
+            contextErrors: renderResult({
+              kind: "errors",
+              count: row.retrieved_context.error_count,
+              total: row.retrieved_context.total,
+              expectedLabel: row.expected_label,
+              includePercent: true,
+            }),
+            runtimeErrors: renderResult({
+              kind: "errors",
+              count: row.runtime_enforced.error_count,
+              total: row.runtime_enforced.total,
+              expectedLabel: row.expected_label,
+            }),
+          };
+          lines.push(`| ${money(row.amount)} | \`${row.expected_label}\` | ${cells.controlLow} | ${cells.controlErrors} | ${cells.contextLow} | ${cells.contextErrors} | ${cells.runtimeErrors} |`);
         }
         lines.push("");
       }
     }
   }
-  lines.push("Caption: `Control` is the matched no-added-context run when available. `Context` is the retrieved-context condition named by the section. `Runtime errors` are derived by applying the code-owned rule to the same amount grid, not by making another model call. Generated from `" + MANIFEST_PATH + "`.");
+  lines.push("Caption: `Control` is the matched no-added-context run when available. `Context` is the retrieved-context condition named by the section. In error columns, `Correct` means `0/100` errors and `Incorrect` means `100/100` errors. In LOW columns, `Correct` depends on `Expected`: `100/100` LOW is correct for `LOW`, and `0/100` LOW is correct for `NOT_LOW`. `Mixed` means behavior was not stable across the 100 trials. `n/a` means not run or not applicable in this condition, not failure. `Runtime errors` are derived by applying the code-owned rule to the same amount grid, not by making another model call. Generated from `" + MANIFEST_PATH + "`.");
   lines.push("");
   lines.push(`<!-- /generated:json-input-low-table -->`);
   return `${lines.join("\n")}\n`;
