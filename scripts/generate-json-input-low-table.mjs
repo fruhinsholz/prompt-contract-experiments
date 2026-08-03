@@ -50,8 +50,8 @@ function money(value) {
 
 function resultLabel({ count, total }) {
   if (count === null || total === null) return "Not run";
-  if (count !== 0 && count !== total) return "Mixed";
-  return count === 0 ? "Correct" : "Incorrect";
+  if (count !== 0 && count !== total) return "Some";
+  return count === 0 ? "None" : "All";
 }
 
 function labelClass(label) {
@@ -191,15 +191,17 @@ function renderExplorerTable(experiment) {
     `<div class="json-low-table" data-json-low-table>`,
     `<table>`,
     `<thead>`,
-    `<tr><th scope="col" rowspan="2">Amount</th><th scope="col" rowspan="2">Expected</th><th scope="colgroup" colspan="3">GPT-5.6</th><th scope="colgroup" colspan="3">Gemini 3.6 Flash</th></tr>`,
-    `<tr><th scope="col">Control LOW</th><th scope="col">Context LOW</th><th scope="col">Runtime errors</th><th scope="col">Control LOW</th><th scope="col">Context LOW</th><th scope="col">Runtime errors</th></tr>`,
+    `<tr><th scope="col" rowspan="2">Amount</th><th scope="col" rowspan="2">Expected</th><th scope="colgroup" colspan="5">GPT-5.6</th><th scope="colgroup" colspan="5">Gemini 3.6 Flash</th></tr>`,
+    `<tr><th scope="col">No-context model LOW</th><th scope="col">No-context divergence</th><th scope="col">With-context model LOW</th><th scope="col">With-context divergence</th><th scope="col">Runtime-rule divergence</th><th scope="col">No-context model LOW</th><th scope="col">No-context divergence</th><th scope="col">With-context model LOW</th><th scope="col">With-context divergence</th><th scope="col">Runtime-rule divergence</th></tr>`,
     `</thead>`,
     `<tbody>`,
   ];
   for (const row of experiment.rows) {
     const modelCells = row.models.map((model) => [
       renderExplorerCell(model.control_low),
+      renderExplorerCell(model.control_errors),
       renderExplorerCell(model.context_low),
+      renderExplorerCell(model.context_errors),
       renderExplorerCell(model.runtime_errors),
     ].map((cell) => `<td>${cell}</td>`).join("")).join("");
     lines.push(`<tr><th scope="row">${htmlEscape(money(row.amount))}</th><td><code>${htmlEscape(row.expected_label)}</code></td>${modelCells}</tr>`);
@@ -240,6 +242,11 @@ function buildExperiments({ config, tableRows }) {
               control_low: {
                 kind: "low",
                 count: row.control?.low ?? null,
+                total: row.control?.total ?? null,
+              },
+              control_errors: {
+                kind: "errors",
+                count: row.control?.error_count ?? null,
                 total: row.control?.total ?? null,
               },
               context_low: {
@@ -297,7 +304,7 @@ function renderMarkdown({ config, tableRows, provenanceHash }) {
     `<p class="json-low-description" data-json-low-description>${htmlEscape(selectedExperiment.description)}</p>`,
     `<p class="json-low-takeaway" data-json-low-takeaway>${htmlEscape(selectedExperiment.takeaway)}</p>`,
     renderExplorerTable(selectedExperiment),
-    `<p class="json-low-caption">Each value keeps the raw count out of <code>n=100</code>. <code>Runtime errors</code> are derived by applying the code-owned rule to the same amount grid, not by making another model call. Full prompts, raw calls, and generated data are in <a href="https://github.com/fruhinsholz/prompt-contract-experiments/tree/main/experiments/json-input-low" target="_blank" rel="noopener noreferrer"><code>experiments/json-input-low</code></a>.</p>`,
+    `<p class="json-low-caption">Each value keeps the raw count out of <code>n=100</code>. <code>Divergence</code> means outputs that differ from the expected label under the code-owned rule. <code>Runtime-rule divergence</code> is derived by applying that rule to the same amount grid, not by making another model call. Full prompts, raw calls, and generated data are in <a href="https://github.com/fruhinsholz/prompt-contract-experiments/tree/main/experiments/json-input-low" target="_blank" rel="noopener noreferrer"><code>experiments/json-input-low</code></a>.</p>`,
     `<script type="application/json" data-json-low-data>${safeJsonScript(explorerData)}</script>`,
     `</section>`,
     "",
