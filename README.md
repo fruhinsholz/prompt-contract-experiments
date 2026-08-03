@@ -60,7 +60,19 @@ npm install
 npm run check
 ```
 
-Live runs need `OPENAI_API_KEY` or `GEMINI_API_KEY` in the environment. Do not commit secrets.
+Live runs need `OPENAI_API_KEY` or `GEMINI_API_KEY` in the environment. Do not commit secrets. On `eric-bee`, use the shared Infisical provider-key project instead of hand-maintained `.env.local` files:
+
+```bash
+token=$(sudo -n infisical-admin admin-login --plain --silent)
+sudo -n infisical-admin run \
+  --token "$token" \
+  --projectId 91f5f9d9-7b4f-46ce-b3ad-07c65bb9aaa6 \
+  --env prod \
+  --path /shared \
+  -- npm run <script> -- <args>
+```
+
+The canonical secret location is documented in [infra/infisical/ai-provider-keys.md](infra/infisical/ai-provider-keys.md). The `us-blog/private/infisical-access.env` file points to the `Blog management` project, not to AI provider keys.
 
 ## Smoke Test
 
@@ -72,9 +84,9 @@ The commands below use Gemini because the sample is intentionally small. Use any
 npm install --package-lock=false
 npm run check
 
-export GEMINI_API_KEY="..."
-npm run thresholds:low:retrieved-context -- --provider gemini --models gemini-3.5-flash-lite --contexts fact_only --samples 1 --refine-samples 1 --epochs 1 --max-output-tokens 256 --reasoning-effort none --max-calls 20 --label smoke-gemini-low
-npm run thresholds:enough -- --provider gemini --models gemini-3.5-flash-lite --mode contract --samples 1 --epochs 1 --max-output-tokens 256 --reasoning-effort none --max-calls 20 --label smoke-gemini-enough
+token=$(sudo -n infisical-admin admin-login --plain --silent)
+sudo -n infisical-admin run --token "$token" --projectId 91f5f9d9-7b4f-46ce-b3ad-07c65bb9aaa6 --env prod --path /shared -- npm run thresholds:low:retrieved-context -- --provider gemini --models gemini-3.5-flash-lite --contexts fact_only --samples 1 --refine-samples 1 --epochs 1 --max-output-tokens 256 --reasoning-effort none --max-calls 20 --label smoke-gemini-low
+sudo -n infisical-admin run --token "$token" --projectId 91f5f9d9-7b4f-46ce-b3ad-07c65bb9aaa6 --env prod --path /shared -- npm run thresholds:enough -- --provider gemini --models gemini-3.5-flash-lite --mode contract --samples 1 --epochs 1 --max-output-tokens 256 --reasoning-effort none --max-calls 20 --label smoke-gemini-enough
 npm run results:graphs
 ```
 

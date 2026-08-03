@@ -13,6 +13,20 @@ npm run check
 
 Live provider runs need `OPENAI_API_KEY` or `GEMINI_API_KEY` in the environment. Do not commit secrets.
 
+On `eric-bee`, load shared provider keys from Infisical project `ai-provider-keys`, environment `prod`, path `/shared`. Run the target command under `infisical run`:
+
+```bash
+token=$(sudo -n infisical-admin admin-login --plain --silent)
+sudo -n infisical-admin run \
+  --token "$token" \
+  --projectId 91f5f9d9-7b4f-46ce-b3ad-07c65bb9aaa6 \
+  --env prod \
+  --path /shared \
+  -- npm run <script> -- <args>
+```
+
+Do not use `us-blog/private/infisical-access.env` for these runs; it targets the `Blog management` project, not shared AI provider keys. See [infra/infisical/ai-provider-keys.md](../infra/infisical/ai-provider-keys.md).
+
 ## Results
 
 Each experiment stores its clean runs under its local `results/` directory. A run directory contains raw `calls.jsonl`, metadata, exact prompts, fixture data, summaries, and threshold files. Raw calls are the evidence. Markdown, CSV, SVG, and article table files are generated views over that evidence.

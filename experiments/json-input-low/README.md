@@ -190,14 +190,26 @@ Return only the label.
 
 ## Run
 
+Live OpenAI and Gemini runs should be executed under the shared Infisical provider-key project on `eric-bee`; do not use `us-blog/private/infisical-access.env` for these experiments.
+
 ```bash
-npm run thresholds:low:json-input -- --provider openai --models gpt-5.5,gpt-5.6 --contexts all --formats all --amounts 25,50,75,100,150,250,500,1000,5000,10000,20000 --samples 30 --max-output-tokens 1024 --max-calls 11000 --concurrency 8 --gzip-jsonl --label clean-openai-gpt55-gpt56-fixed-grid-json-s30
+token=$(sudo -n infisical-admin admin-login --plain --silent)
+```
+
+```bash
+sudo -n infisical-admin run --token "$token" --projectId 91f5f9d9-7b4f-46ce-b3ad-07c65bb9aaa6 --env prod --path /shared -- npm run thresholds:low:json-input -- --provider openai --models gpt-5.5,gpt-5.6 --contexts all --formats all --amounts 25,50,75,100,150,250,500,1000,5000,10000,20000 --samples 30 --max-output-tokens 1024 --max-calls 11000 --concurrency 8 --gzip-jsonl --label clean-openai-gpt55-gpt56-fixed-grid-json-s30
 ```
 
 For a first cheaper pass, use only the two most relevant contexts:
 
 ```bash
-npm run thresholds:low:json-input -- --provider openai --models gpt-5.5,gpt-5.6 --contexts fact_only,retrieved_100000_contract --formats prose_same_block,json_typed_boundary_rule --amounts 100,200 --samples 1 --max-output-tokens 1024 --max-calls 50 --concurrency 4 --label micro-smoke-openai-gpt55-gpt56-json-max1024-s1
+sudo -n infisical-admin run --token "$token" --projectId 91f5f9d9-7b4f-46ce-b3ad-07c65bb9aaa6 --env prod --path /shared -- npm run thresholds:low:json-input -- --provider openai --models gpt-5.5,gpt-5.6 --contexts fact_only,retrieved_100000_contract --formats prose_same_block,json_typed_boundary_rule --amounts 100,200 --samples 1 --max-output-tokens 1024 --max-calls 50 --concurrency 4 --label micro-smoke-openai-gpt55-gpt56-json-max1024-s1
+```
+
+Gemini reruns use the same Infisical wrapper:
+
+```bash
+sudo -n infisical-admin run --token "$token" --projectId 91f5f9d9-7b4f-46ce-b3ad-07c65bb9aaa6 --env prod --path /shared -- npm run thresholds:low:json-input -- --provider gemini --models gemini-3.6-flash --contexts fact_only,retrieved_100000_contract --formats json_typed_boundary_rule --amounts 25,50,75,100,150,250,500,1000,5000,10000,20000 --samples 100 --max-output-tokens 256 --reasoning-effort none --max-calls 2500 --concurrency 8 --gzip-jsonl --label gemini-json-boundary-rule-control-s100
 ```
 
 If API keys are not loaded but the local Claude CLI is authenticated:
