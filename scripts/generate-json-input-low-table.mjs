@@ -174,7 +174,7 @@ function experimentTakeaway(sectionId) {
   const takeaways = new Map([
     ["retrieved_100000_contract_prose", "Read this as upward drift: once the prompt sees a nearby $100,000 business threshold, many amounts above the intended $100 boundary start looking LOW. The model is not failing to read the number; it is borrowing scale from context."],
     ["retrieved_5_gift_card_prose", "Read this as downward drift: the same classifier sees $5 as the nearby example of low value, so ordinary refund amounts like $25, $50, or $100 stop looking LOW. The boundary moved because the context changed, not because the rule changed."],
-    ["retrieved_5_gift_card_explicit_rule", "Read this as the control boundary starting to appear: the $5 context is still present, but the explicit $100 rule keeps the model aligned on this grid. The important part is that the rule is now inspectable and can also be enforced deterministically outside the model."],
+    ["retrieved_5_gift_card_explicit_rule", "Read this as improved prompt-side compliance, not as an enforcement boundary: the $5 context is still present, and the explicit $100 rule keeps the model aligned on this grid. The important part is that the rule is now inspectable and can also be enforced deterministically outside the model."],
   ]);
   return takeaways.get(sectionId) ?? "The deterministic check is the stable boundary.";
 }
@@ -328,7 +328,7 @@ function renderMarkdown({ config, tableRows, provenanceHash }) {
     `<p class="json-low-takeaway" data-json-low-takeaway>${htmlEscape(selectedExperiment.takeaway)}</p>`,
     renderColumnGuide(),
     renderExplorerTable(selectedExperiment),
-    `<p class="json-low-caption">Each value keeps the raw count out of <code>n=100</code>. The table is meant to be read as drift, not as a model leaderboard: the same word, LOW, changes meaning when nearby context changes. The deterministic check is derived by applying the reference rule to the same amount grid, not by making another model call. Full prompts, raw calls, and generated data are in <a href="https://github.com/fruhinsholz/prompt-contract-experiments/tree/main/experiments/json-input-low" target="_blank" rel="noopener noreferrer"><code>experiments/json-input-low</code></a>.</p>`,
+    `<p class="json-low-caption">Each value keeps the raw count out of <code>n=100</code>. Read this as improved prompt-side compliance, not as an enforcement boundary: explicit prose or JSON rules are still interpreted by the model. In this table, only the deterministic check guarantees <code>LOW iff refund_claim_amount_usd &lt;= 100</code>. Full prompts, raw calls, and generated data are in <a href="https://github.com/fruhinsholz/prompt-contract-experiments/tree/main/experiments/json-input-low" target="_blank" rel="noopener noreferrer"><code>experiments/json-input-low</code></a>.</p>`,
     `<script type="application/json" data-json-low-data>${safeJsonScript(explorerData)}</script>`,
     `</section>`,
     "",
