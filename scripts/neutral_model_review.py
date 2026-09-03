@@ -196,7 +196,6 @@ def build_payload(
             "system": system,
             "messages": [{"role": "user", "content": user}],
             "max_tokens": max_tokens,
-            "thinking": {"type": "disabled"},
         }
         if temperature != 0:
             payload["temperature"] = temperature
