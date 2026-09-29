@@ -1,0 +1,551 @@
+Compare Article A and Article B as serious practitioner essays for experienced AI-system engineers. Score each article from 1.0 to 10.0 on empirical rigor, technical precision, narrative force, practical value, originality, calibration of claims, and publication readiness. Then provide an overall score for each article, a publication verdict, a plausible percentile range among serious practitioner essays, the strongest strength, the largest weakness, the three highest-value revisions, and a direct comparison explaining which article is stronger and why. Percentiles are estimates, not measured corpus ranks. Use this exact JSON shape: {"reviewer_summary":"...","article_a":{"title":"...","scores":{"empirical_rigor":0,"technical_precision":0,"narrative_force":0,"practical_value":0,"originality":0,"calibration_of_claims":0,"publication_readiness":0},"overall_score":0,"verdict":"publish|publish_with_revisions|not_yet_publishable","percentile_range":"...","strongest_strength":"...","largest_weakness":"...","highest_value_revisions":["...","...","..."]},"article_b":{"title":"...","scores":{"empirical_rigor":0,"technical_precision":0,"narrative_force":0,"practical_value":0,"originality":0,"calibration_of_claims":0,"publication_readiness":0},"overall_score":0,"verdict":"publish|publish_with_revisions|not_yet_publishable","percentile_range":"...","strongest_strength":"...","largest_weakness":"...","highest_value_revisions":["...","...","..."]},"comparison":{"winner":"A|B|tie","confidence":"low|medium|high","reason":"..."}}
+
+## Article A: JSON Legibility Is Not Control
+
+---
+title: "JSON Legibility Is Not Control: When a Schema Rename Moves the Decision Boundary"
+description: "Changing only model-facing choice keys shifted a review score in every tested boundary state, and a fixed threshold amplified that shift into different routing decisions."
+pubDate: 2026-09-28
+updatedDate: 2026-09-29
+draftPublishedAt: 2026-09-29 07:24:07-07:00
+topic: "llm-reliability"
+tags: ["llms", "json", "structured-output", "evals", "jev"]
+canonicalPath: "/articles/json-legibility-is-not-control/"
+draft: true
+---
+
+In standard software engineering, identifiers belong to the machine.
+
+When you rename an enum member from `PENDING_REVIEW` to `AWAITING_TRIAGE`, the behavior of your application does not change. The compiler validates the call sites, the database serializes the new string, and downstream control flow proceeds as designed. To traditional runtimes, schema keys are arbitrary symbols: syntactic scaffolding with zero semantic friction.
+
+Specialized decision engines such as Jev, a "System 1" classification model engineered for fast, typed routing rather than conversational token generation, seem to promise that same developer experience. You define a typed JSON structure of candidate choices, pass the current state, and receive a selected key with a probability for every declared choice. No chat boilerplate, no chain-of-thought parsing, and no Markdown extraction. To the developer writing the integration, it feels like calling a fast, typed microservice.
+
+In theory, no practitioner should be shocked that a language model reads its schema keys. We all know keys are tokens, and transformers attend to every token in the context window.
+
+Furthermore, Jev's own design principles encourage descriptive, expressive keys. The engine expects choice names that faithfully summarize the underlying classification task. In this experiment, neither naming scheme was an adversarial trick or a sloppy refactor. Both the `work_capacity` family (`full_essential_work_capacity`) and the `work_impediment` family (`essential_work_unimpeded`) were clean, idiomatic representations of the same domain question. Both followed documented best practices, and an engineer could reasonably approve either triad in a pull request.
+
+What is counterintuitive is not that the model noticed the rename, but the operational magnitude of the shift.
+
+Our engineering intuition expects proportion. When a schema provides complete, exhaustive, paragraph-length definitions inside the dictionary values, we assume the model will anchor on those definitions and treat the keys as lightweight handles. We might anticipate fractional jitter at the margins.
+
+Instead, changing only the key names, while keeping the question, the complete definitions, the state descriptions, and the model version byte-for-byte identical, shifted the output distribution across four boundary states by **12.13 percentage points**.
+
+Under the experiment's fixed 0.50 threshold, that lexical refactor would have turned 20 of 80 sampled decisions from automated pass-through into manual human review. In total, **20 of 80 decisions triggered review** under the capacity naming scheme and **40 of 80 did** under the impediment naming scheme.
+
+To the type system, the edit was a routine schema refactor. To the model, it was a prompt change. To an application routing cases from the resulting probabilities, it became a silent policy change.
+
+This was a controlled experiment using Jev 1.13.0, not a production incident. The result does not estimate how often schema renames cause routing changes in production. It demonstrates a narrower risk: typed output can constrain the available choices without making their names semantically inert.
+
+## The Rename
+
+Jev received a structured `choice` object. Its keys identified three outcomes, while its values contained the full descriptions of those outcomes. The comparison changed only the key family:
+
+```diff
+ {
+-  "full_essential_work_capacity": "The person can complete every essential job duty at normal quality and pace without assistance.",
+-  "limited_essential_work_capacity": "The person can complete some essential job duties, but at least one essential duty cannot be completed at normal quality or pace.",
+-  "no_essential_work_capacity": "The person cannot complete any essential job duty."
++  "essential_work_unimpeded": "The person can complete every essential job duty at normal quality and pace without assistance.",
++  "essential_work_impeded": "The person can complete some essential job duties, but at least one essential duty cannot be completed at normal quality or pace.",
++  "essential_work_halted": "The person cannot complete any essential job duty."
+ }
+```
+
+The values and their order stayed identical. The capacity family and the impediment family were both coherent, plausible ways to name the same three-member application domain.
+
+> **Held constant**
+>
+> - **State:** the same four boundary-state texts, plus the same clear-state guardrails
+> - **Question:** "To what extent can the person currently perform their essential work?"
+> - **Descriptions:** the same complete descriptions for full, partial, and no work
+> - **Order:** full, partial, none
+> - **Threshold:** human review at a review score of at least 0.50
+> - **Model:** Jev returned `jev-1.13.0`
+> - **Sampling plan:** twenty complete balanced blocks, with every state-family cell represented once per block
+
+Jev exposes no temperature control. Repeated requests for the same input returned different probabilities. The experiment preserved that variation, but it did not establish whether it came from serving nondeterminism, request scheduling, or another source.
+
+## The Operational Rule
+
+The experiment mapped every returned key back to one of three stable semantic outcomes: full work, partial work, or no work. Jev returned a probability for each declared key. After the semantic mapping, the application added the returned probabilities for partial work and no work:
+
+```text
+review_score = P(partial) + P(none)
+```
+
+The deterministic branch was:
+
+```text
+if review_score >= 0.50:
+    human_review
+else:
+    automatic_full_capacity
+```
+
+The **0.50 threshold was experimental and pre-specified**. It was fixed in the study plan before result analysis and implemented in deterministic code. Git history does not independently establish preregistration, because the plan and results first entered that history together. It was not a deployed production policy.
+
+This separation matters, but it is not sufficient protection. The model produced an uncalibrated distribution. Deterministic code faithfully converted that distribution into an action.
+
+## How the Boundary States Were Chosen
+
+The four states were not intended to represent a production population. They were selected to expose movement around the application boundary.
+
+A frozen calibration set contained twelve candidate states and only neutral `A/B/C` keys. Each state was evaluated in ten balanced blocks. The pre-specified rule selected states whose mean review score fell inside `[0.35, 0.65]`, then filled any remaining slots with the states closest to 0.50. Two states were inside the interval. Two were selected by the fallback rule.
+
+The later capacity-versus-impediment comparison did not participate in that selection. This neutral-only calibration protects the comparison from outcome-based state picking, but the resulting sample is deliberately enriched for threshold-adjacent cases. It supports an existence result and a boundary-risk analysis, not an estimate of review-rate change across ordinary production traffic.
+
+## What Was Observed
+
+The primary comparison contains **80 sampled decisions from four states repeated across twenty balanced blocks**. The analysis preserves that repeated, paired block structure.
+
+| Model-facing key family | Mean review score | Human review |
+|---|---:|---:|
+| `work_capacity_level` | 45.11% | 20/80 (25%) |
+| `work_impediment` | 57.24% | 40/80 (50%) |
+
+Changing from capacity keys to impediment keys increased the mean review score by **+12.13 percentage points**. The hierarchical bootstrap 95% interval was **[6.88, 19.78] percentage points**.
+
+The mean difference was positive in every boundary state:
+
+| Boundary state | Capacity score | Impediment score | Difference | Capacity review | Impediment review |
+|---|---:|---:|---:|---:|---:|
+| Close to normal pace | 9.70% | 33.15% | **+23.45 pp** | 0/20 | 0/20 |
+| Unsure, one slight delay | 43.90% | 50.15% | **+6.25 pp** | 0/20 | 9/20 |
+| One duty slightly slower | 87.70% | 95.65% | **+7.95 pp** | 20/20 | 20/20 |
+| Maybe one slight delay | 39.15% | 50.00% | **+10.85 pp** | 0/20 | 11/20 |
+
+Repeated-call variance was itself operationally consequential, separate from the rename: for `Maybe one slight delay` under the unchanged impediment schema, scores ranged from **41% to 57%**, producing human review in **11 of 20 identical requests** at the 0.50 threshold.
+
+The score moved in all four states, but the downstream branch changed only in the two states closest to 0.50. The clearest exhibit is `Close to normal pace`: it had the largest mean shift, **+23.45 points**, and no branch change. A distribution can move substantially without changing an action until a threshold amplifies it.
+
+### The exact branch count depends on the threshold
+
+The pre-specified 0.50 threshold produced the memorable `20/80` versus `40/80` result. Applying nearby thresholds to the same preserved responses shows why that count should not carry the scientific claim by itself:
+
+| Review threshold | Capacity review | Impediment review |
+|---:|---:|---:|
+| 0.49 | 21/80 | 44/80 |
+| 0.50 | 20/80 | 40/80 |
+| 0.51 | 20/80 | 38/80 |
+| 0.52 | 20/80 | 37/80 |
+| 0.55 | 20/80 | 24/80 |
+| 0.60 | 20/80 | 20/80 |
+
+The exact twofold increase is fragile. The direction of the score shift across all four states, the +12.13-point aggregate difference, and the concentration of branch changes near the boundary are the more general findings.
+
+### The result does not depend on one state
+
+A leave-one-state-out sensitivity analysis repeated the aggregate comparison after omitting each boundary state in turn. Every remaining three-state estimate was positive, ranging from **+8.35 to +14.08 percentage points**, and every 95% interval remained above zero.
+
+| Omitted state | Difference across remaining states | Hierarchical bootstrap 95% interval |
+|---|---:|---:|
+| Close to normal pace | +8.35 pp | [6.15, 10.83] pp |
+| Unsure, one slight delay | +14.08 pp | [8.08, 23.17] pp |
+| One duty slightly slower | +13.52 pp | [6.35, 23.13] pp |
+| Maybe one slight delay | +12.55 pp | [6.12, 23.12] pp |
+
+These are sensitivity summaries over three retained states, not new confirmatory tests.
+
+### The branch changes were paired
+
+Across the 80 paired boundary decisions:
+
+- **20** moved from automatic processing under capacity keys to human review under impediment keys;
+- **0** moved from human review to automatic processing;
+- **40** remained automatic under both families;
+- **20** remained in human review under both families.
+
+The additional reviews were paired transitions within the balanced design, not a subtraction between unrelated samples.
+
+## Why "Negative Wording" Is Not Enough
+
+The same run included another coherent family:
+
+```json
+[
+  "no_essential_duty_prevented",
+  "some_essential_duties_prevented",
+  "all_essential_duties_prevented"
+]
+```
+
+If negative wording alone explained the result, the prevention family should have behaved like the impediment family. It did not.
+
+| Key family | Mean review score | Human review |
+|---|---:|---:|
+| `work_capacity_level` | 45.11% | 20/80 |
+| `duty_prevention` | 45.86% | 21/80 |
+| `work_impediment` | 57.24% | 40/80 |
+
+The explicit `no / some / all ... prevented` scale stayed close to the `full / limited / no ... capacity` scale. The asymmetric `unimpeded / impeded / halted` scale produced the larger shift.
+
+One plausible linguistic interpretation is that bare `impeded` supplies a stronger partial-impairment cue than labels that state degree explicitly. That interpretation describes the observed pattern. It does not identify Jev's internal mechanism.
+
+## The Main Objection Is Correct
+
+`Impeded` and `limited capacity` are **not strict synonyms**. This experiment does not demonstrate invariance, or a violation of invariance, between interchangeable synonyms. It would be wrong to deny that the model could reasonably react to their difference in meaning.
+
+The families should instead be understood as coherent and plausible framings of the same typed application domain. A developer could reasonably choose either triad while keeping the full descriptions unchanged.
+
+That qualification does not remove the engineering risk. It defines it precisely:
+
+> Plausible model-facing schema names are not guaranteed to be operationally interchangeable, even when the complete descriptions remain identical.
+
+The typed interface accepted the same three semantic outcomes under both families. The application interpreted those outcomes using the same rule. Yet the names changed the model's distribution enough to change the branch for 20 paired sampled decisions.
+
+## From Experiment to Production Analogy
+
+### What the experiment observed
+
+In this Jev 1.13.0 task, a change limited to the model-facing choice-key family increased the mean review score in all four selected boundary states. Under the pre-specified 0.50 threshold, it moved 20 of 80 paired sampled decisions from automatic processing to human review and none in the reverse direction.
+
+### The production analogy
+
+In a production system, the same pattern could turn an apparently local schema refactor into a routing-policy change. If an application escalates, approves, blocks, prices, or prioritizes work from model probabilities, a distribution shift near its threshold can change actions even when the output remains valid and the descriptions remain unchanged.
+
+This is an analogy, not an observed incident. The experiment does not estimate production frequency, cost, or harm. The opposite rename direction could also reduce reviews, but that is a consequence of the measured sensitivity, not a separately observed production outcome.
+
+### Engineering recommendations
+
+1. **Treat model-visible renames as prompt changes.** Review and version identifiers with the prompts and descriptions that surround them.
+2. **Separate internal identifiers from model-facing labels.** Map versioned prompt labels onto stable internal enums instead of treating one string as both language and application identity.
+3. **Invalidate calibration when model-facing language changes.** A schema rename, description edit, model update, or prompt change should trigger recalibration against labeled cases.
+4. **Regression-test branch behavior near operational thresholds.** Compare paired branch transitions and action rates, not only mean scores or winning labels.
+5. **Gate releases on an explicit tolerance.** Define the acceptable action-rate delta and block a schema change when the boundary suite exceeds it.
+6. **Define an abstention band around operational thresholds.** Route cases inside an empirically calibrated band to review so that small repeated-call variations cannot change the automated action. Averaging several calls may reduce variance, but it remains nondeterministic and must be validated separately for stability, calibration, latency, and cost.
+7. **Keep true invariants in deterministic code.** Code should own hard constraints, but a fixed threshold over an uncalibrated model probability is still model judgment entering the core through a number.
+
+## What Typed Output Guarantees
+
+Typed output can guarantee that a response belongs to a declared domain. It can reject malformed values, simplify parsing, and make contracts inspectable. Those are substantial benefits.
+
+It cannot, by itself, guarantee that alternative names for that domain leave the model's distribution unchanged. Developers review schema identifiers as code. Models consume those identifiers as language.
+
+The result is not an argument against structured output. It is an argument for treating the model-facing portion of a schema as part of the prompt surface.
+
+## Limits
+
+- The result covers one task family and one returned model version, Jev 1.13.0.
+- It uses four repeated boundary states, not 80 distinct situations.
+- The threshold was experimental and pre-specified, not deployed.
+- The follow-up was pre-specified as descriptive and specified no minimum-effect or equivalence margin.
+- The boundary sample was deliberately selected using neutral-key calibration and is not representative production traffic.
+- The Jev request did not contain a temperature field; the source of repeated-call variation is not established.
+- The large branch effect is driven by one lexical framing.
+- The key families are plausible alternatives, not strict synonyms.
+- The analysis establishes a controlled existence result, not production prevalence.
+- No result here identifies an internal mechanism.
+
+Clear-state guardrails also remained stable: every clear-full call took the automatic branch, and every clear-partial call went to human review across all five tested families. The observed sensitivity was concentrated near the threshold.
+
+## Audit Appendix
+
+The main narrative deliberately excludes secondary experiments and full methodological machinery:
+
+- The earlier `LOW` placement experiment established that structured placement can steer a classification distribution, but it is not needed to understand this routing result.
+- A separate `noul` experiment found no material neighboring-question effect on its tested target. That negative result narrows the claim rather than weakening it.
+- Full prompt ablations remain robustness evidence, not proof of equivalence.
+- The five-block `blocked` pilot is exploratory and does not establish equivalence with capacity or prevention wording.
+- The [public experiment repository at commit `22f3810`](https://github.com/fruhinsholz/article-experiments/tree/22f38108ef4b389eceabe66c1615b9724f4ac2a3/articles/json-legibility-is-not-control) contains the exact stimuli, pre-specified plan, raw responses needed to reproduce the threshold table, analysis code, randomization seed, job order, risk sensitivity analysis, and editorial review.
+
+These audit materials matter for verification. They do not need to compete with the primary result in the article's main line.
+
+## The Architectural Boundary
+
+The rename did not break JSON. It did not produce an invalid choice. It changed the distribution inside a valid typed domain, and deterministic application code converted that shift into additional human reviews near its boundary.
+
+That is the boundary to preserve: **typed output constrains the output domain, but it does not make model-facing names semantically inert.**
+
+JSON is legible to the model, but legibility is not control. A deterministic branch cannot repair an unstable input contract. Version the language the model sees, calibrate the probabilities the application consumes, and reserve deterministic code for guarantees that do not depend on model judgment.
+
+
+## Article B: When Model Judgment Becomes an Operational Contract
+
+---
+title: "When Model Judgment Becomes an Operational Contract"
+description: "When model judgment controls a real outcome, a prompt becomes an operational contract. The lesson: externalize the boundary, version it, test it, and enforce it outside the model."
+pubDate: 2026-07-25
+updatedDate: 2026-08-03
+topic: "llm-reliability"
+tags: ["llms", "prompts", "determinism", "architecture", "agents"]
+canonicalPath: "/articles/when-model-judgment-becomes-an-operational-contract/"
+draft: false
+---
+
+<p>Imagine a large online retailer adding a small retention offer to a support flow: after an escalation is completed, the customer may receive a $5 gift card. The note is not refund policy. It is marketing context.</p>
+
+<p>The claim assistant still receives the same instruction:</p>
+
+<blockquote>
+<p>Do not escalate that claim if the value is low.</p>
+</blockquote>
+
+<p>Nothing in that instruction says $5 is the escalation threshold. But the assembled context has placed a fresh $5 anchor beside the word <code>low</code>. A workflow that used to resolve routine claims can begin escalating claims that used to stay automatic.</p>
+
+<p>The visible number is not the important part. The same failure appears when the boundary is not numeric at all: <code>similar</code> in record merging can decide whether two customer records are merged, <code>enough evidence</code> in approvals can decide whether a case closes, and <code>safe</code> in tool execution can decide whether a command runs. The architectural problem is not that someone forgot to write $50 in a prompt. It is that the system does not know which words are carrying hidden operational contracts.</p>
+
+<p>The policy did not change. The claims queue did. That is <strong>contract drift</strong>: the system stored language, then asked the model to reconstruct a consequence-bearing boundary from the current context window.</p>
+
+<p>This is why a prompt edit can be an architecture change. A prompt is often where an operational contract becomes visible after the system failed to represent it anywhere else. It may look like one sentence, no schema migration, no API redesign, no new permission model. But that sentence may be deciding what evidence is enough, what action is safe, what amount needs approval, and what contract the rest of the system quietly depends on.</p>
+
+<p>Architecture, here, does not mean where components run. It means where operational responsibility lives: what the model may judge, what the runtime must enforce, and what the system can audit without asking the model to agree.</p>
+
+<p>The question is no longer whether the prompt is good. It is whether the prompt owns something the architecture should own.</p>
+
+<h2 id="hidden-contract-word">1. The Contract Was Hidden In A Word</h2>
+
+<p>The refund example is not a story about gift cards. It is a story about an owned threshold that does not exist.</p>
+
+<p>The instruction says only that the value is <code>low</code>. Everyone can understand the sentence. That is part of the trap. The word feels like shared business language, so the prompt looks like product policy. But the system has not defined a threshold. It has delegated the threshold.</p>
+
+<p>That may be useful when the model is producing advice. It is dangerous when the inferred value decides whether approval is required. The prompt can still read as product policy, but the system cannot audit <code>low</code> as a business rule because no owned value exists yet.</p>
+
+<p>If the business rule is <code>amount &lt; 50</code>, store the value outside the prompt. Version it, test it, and log it. Let the model summarize the request, classify the customer's explanation, identify missing evidence, or recommend escalation. Do not let it invent the boundary that decides whether approval is required.</p>
+
+<p>The prompt can say what low risk means in human terms. The system has to decide what low amount means in executable terms.</p>
+
+<h2 id="same-case-different-context">2. Same Case, Different Context</h2>
+
+<p>A prompt is rarely alone. It is attached to product instructions, examples, retrieved documents, user messages, tool results, policies, previous decisions, memory summaries, and partial state from the current workflow.</p>
+
+<p>The test isolates that surface. The refund case stays the same. The instruction stays the same. One variable changes: a plausible retrieved-context fragment placed above the case.</p>
+
+<p>In one condition there is no added context. In the second, a separate product note mentions a $5 gift card. In the third, a separate enterprise account note says contracts above $100,000 require executive review.</p>
+
+<p>The fragment has no authority. It is not policy, and it is not a fact about the claimant. But for that turn, the request payload is the decision surface. What is in context can participate in the decision; what is outside context cannot.</p>
+
+<p>At a technical level, this is expected. Attention is part of why LLMs are useful: nearby tokens can shape how other tokens are interpreted. The architectural problem starts when that useful context sensitivity becomes the only place a workflow stores a boundary it needs to keep stable.</p>
+
+<p>In the GPT-5.6 run, the clean prompt first treated claims as <code>NOT_LOW</code> around $98-$117. With the nearby $5 gift-card note, that boundary moved down to about $39-$59. With the $100,000 contract-review note, it moved beyond $20,000. An $80 claim can skip review in one assembled payload and require escalation in another, without a policy diff.</p>
+
+<p>That does not make the model broken. It is why the model is useful. The model adapts words to context. But serious workflows usually anchor consequence-bearing words before the next case arrives.</p>
+
+<h2 id="json-legible-not-control">3. JSON Is Legible, Not Control</h2>
+
+<p>A natural repair is to structure the input. Put the instruction in one JSON field. Put the retrieved context in another. Type the fields. Make the shape explicit.</p>
+
+<p>That helps legibility. It does not create an execution boundary before inference.</p>
+
+<p>The probe asks the model to classify the same refund-case template across a grid of claim amounts. One sampled case looks like this when we test a <code>$X</code> claim:</p>
+
+<blockquote><p>A customer submitted a refund claim for <code>$X</code> for a consumer purchase.</p></blockquote>
+
+<p>The publication-clean table below uses a fixed grid from <code>$0</code> to <code>$1,000</code> with <code>n=100</code> samples per cell. It separates two questions: what happens when the ordinary prose classifier sees retrieved context, and what happens when a typed JSON prompt states the <code>$100</code> rule explicitly. Older raw-JSON and typed-JSON format comparisons remain <a href="https://github.com/fruhinsholz/prompt-contract-experiments/blob/45b075c/experiments/json-input-low/manifest.json" target="_blank" rel="noopener noreferrer">audit evidence in the manifest</a>, but they are not mixed into this main table. The article-facing evidence snapshot is <a href="https://github.com/fruhinsholz/prompt-contract-experiments/tree/45b075c" target="_blank" rel="noopener noreferrer"><code>45b075c</code></a>.</p>
+
+<!-- generated:json-input-low-table manifest:experiments/json-input-low/manifest.json source_runs:publication_clean_control_gemini_36_flash_s100_json_rule,publication_clean_gift_card_gemini_36_flash_s100,publication_clean_control_openai_gpt56_s100_json_rule,publication_clean_gift_card_openai_gpt56_s100,publication_clean_control_gemini_36_flash_s100,publication_clean_control_openai_gpt56_s100,publication_clean_gemini_36_flash_s100,publication_clean_openai_gpt56_s100 hash:ac039ebd8a98752dea334cad40fadb6726e1254909734f0351c9b36be3fc5bfd -->
+
+<section class="json-low-explorer" data-json-low-explorer>
+<p class="json-low-kicker">Publication-clean LOW boundary probe. Counts are generated from fixed-grid <code>n=100</code> runs.</p>
+<p>Operational rule: <code>LOW iff refund_claim_amount_usd &lt;= 100</code>.</p>
+<div class="json-low-controls">
+<label for="json-low-experiment">Experiment</label>
+<select id="json-low-experiment" data-json-low-experiment>
+<option value="retrieved_100000_contract_prose" selected>$100k retrieved context - prose classifier</option>
+<option value="retrieved_5_gift_card_prose">$5 gift-card context - prose classifier</option>
+<option value="retrieved_5_gift_card_explicit_rule">$5 gift-card context - explicit $100 JSON rule</option>
+</select>
+</div>
+<p class="json-low-description" data-json-low-description>Prose classifier with retrieved context saying contracts above $100,000 require executive review. This tests whether nearby business context moves the LOW boundary even though the refund rule is unchanged.</p>
+<p class="json-low-takeaway" data-json-low-takeaway>Read this as upward drift: once the prompt sees a nearby $100,000 business threshold, many amounts above the intended $100 boundary start looking LOW. The model is not failing to read the number; it is borrowing scale from context.</p>
+<dl class="json-low-column-guide">
+<div><dt>Reference rule</dt><dd>The fixed rule used for evaluation: <code>LOW iff amount &lt;= $100</code>.</dd></div>
+<div><dt>Baseline prompt</dt><dd>The same classifier for the same amount grid without the selected retrieved context.</dd></div>
+<div><dt>Selected context</dt><dd>The selected experimental context added to the classifier.</dd></div>
+<div><dt>LOW answers</dt><dd>How often the model answered <code>LOW</code> out of <code>n=100</code>.</dd></div>
+<div><dt>Policy mismatches</dt><dd>How often the model-owned answer crossed the system-owned policy boundary. Non-zero values are bold because they are the trust-boundary failure.</dd></div>
+<div><dt>Deterministic check</dt><dd>The same amount grid checked by code instead of model interpretation. This is the control condition: the $100 rule is enforced outside the model.</dd></div>
+</dl>
+<p class="json-low-note">These counts are not expected to form a smooth dose-response curve. The point is narrower: nearby context can move a consequence-bearing boundary at all. Occasional divergences between LOW-answer counts and policy-mismatch counts are shown rather than smoothed away; once interpretation owns the boundary, the system cannot guarantee a clean explanation for every cell.</p>
+<div class="json-low-table" data-json-low-table>
+<table>
+<thead>
+<tr><th scope="col" rowspan="3">Amount</th><th scope="col" rowspan="3">Reference rule</th><th scope="colgroup" colspan="5">GPT-5.6</th><th scope="colgroup" colspan="5">Gemini 3.6 Flash</th></tr>
+<tr><th scope="colgroup" colspan="2">Baseline prompt</th><th scope="colgroup" colspan="2">Context added $100k</th><th scope="colgroup">Deterministic check</th><th scope="colgroup" colspan="2">Baseline prompt</th><th scope="colgroup" colspan="2">Context added $100k</th><th scope="colgroup">Deterministic check</th></tr>
+<tr><th scope="col">LOW answers</th><th scope="col">Policy mismatches</th><th scope="col">LOW answers</th><th scope="col">Policy mismatches</th><th scope="col">Policy mismatches</th><th scope="col">LOW answers</th><th scope="col">Policy mismatches</th><th scope="col">LOW answers</th><th scope="col">Policy mismatches</th><th scope="col">Policy mismatches</th></tr>
+</thead>
+<tbody>
+<tr><th scope="row">$0</th><td><code>LOW</code></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td></tr>
+<tr><th scope="row">$5</th><td><code>LOW</code></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td></tr>
+<tr><th scope="row">$25</th><td><code>LOW</code></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td></tr>
+<tr><th scope="row">$49</th><td><code>LOW</code></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td></tr>
+<tr><th scope="row">$50</th><td><code>LOW</code></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td></tr>
+<tr><th scope="row">$51</th><td><code>LOW</code></td><td><span class="json-low-value">3/100</span></td><td><span class="json-low-result json-low-result--warning"><span class="json-low-result__value">97/100</span><span class="json-low-result__label json-low-result__label--some">Some</span></span></td><td><span class="json-low-value">98/100</span></td><td><span class="json-low-result json-low-result--warning"><span class="json-low-result__value">2/100</span><span class="json-low-result__label json-low-result__label--some">Some</span></span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-value">1/100</span></td><td><span class="json-low-result json-low-result--warning"><span class="json-low-result__value">99/100</span><span class="json-low-result__label json-low-result__label--some">Some</span></span></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td></tr>
+<tr><th scope="row">$75</th><td><code>LOW</code></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td></tr>
+<tr><th scope="row">$100</th><td><code>LOW</code></td><td><span class="json-low-value">99/100</span></td><td><span class="json-low-result json-low-result--warning"><span class="json-low-result__value">1/100</span><span class="json-low-result__label json-low-result__label--some">Some</span></span></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-value">93/100</span></td><td><span class="json-low-result json-low-result--warning"><span class="json-low-result__value">7/100</span><span class="json-low-result__label json-low-result__label--some">Some</span></span></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td></tr>
+<tr><th scope="row">$101</th><td><code>NOT_LOW</code></td><td><span class="json-low-value">0/100</span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-value">90/100</span></td><td><span class="json-low-result json-low-result--warning"><span class="json-low-result__value">90/100</span><span class="json-low-result__label json-low-result__label--some">Some</span></span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-value">0/100</span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-value">98/100</span></td><td><span class="json-low-result json-low-result--warning"><span class="json-low-result__value">98/100</span><span class="json-low-result__label json-low-result__label--some">Some</span></span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td></tr>
+<tr><th scope="row">$150</th><td><code>NOT_LOW</code></td><td><span class="json-low-value">80/100</span></td><td><span class="json-low-result json-low-result--warning"><span class="json-low-result__value">80/100</span><span class="json-low-result__label json-low-result__label--some">Some</span></span></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result json-low-result--warning"><span class="json-low-result__value">100/100</span><span class="json-low-result__label json-low-result__label--all">All</span></span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-value">28/100</span></td><td><span class="json-low-result json-low-result--warning"><span class="json-low-result__value">28/100</span><span class="json-low-result__label json-low-result__label--some">Some</span></span></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result json-low-result--warning"><span class="json-low-result__value">100/100</span><span class="json-low-result__label json-low-result__label--all">All</span></span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td></tr>
+<tr><th scope="row">$250</th><td><code>NOT_LOW</code></td><td><span class="json-low-value">91/100</span></td><td><span class="json-low-result json-low-result--warning"><span class="json-low-result__value">91/100</span><span class="json-low-result__label json-low-result__label--some">Some</span></span></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result json-low-result--warning"><span class="json-low-result__value">100/100</span><span class="json-low-result__label json-low-result__label--all">All</span></span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-value">7/100</span></td><td><span class="json-low-result json-low-result--warning"><span class="json-low-result__value">8/100</span><span class="json-low-result__label json-low-result__label--some">Some</span></span></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result json-low-result--warning"><span class="json-low-result__value">100/100</span><span class="json-low-result__label json-low-result__label--all">All</span></span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td></tr>
+<tr><th scope="row">$500</th><td><code>NOT_LOW</code></td><td><span class="json-low-value">40/100</span></td><td><span class="json-low-result json-low-result--warning"><span class="json-low-result__value">40/100</span><span class="json-low-result__label json-low-result__label--some">Some</span></span></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result json-low-result--warning"><span class="json-low-result__value">100/100</span><span class="json-low-result__label json-low-result__label--all">All</span></span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-value">0/100</span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result json-low-result--warning"><span class="json-low-result__value">100/100</span><span class="json-low-result__label json-low-result__label--all">All</span></span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td></tr>
+<tr><th scope="row">$1,000</th><td><code>NOT_LOW</code></td><td><span class="json-low-value">14/100</span></td><td><span class="json-low-result json-low-result--warning"><span class="json-low-result__value">14/100</span><span class="json-low-result__label json-low-result__label--some">Some</span></span></td><td><span class="json-low-value">99/100</span></td><td><span class="json-low-result json-low-result--warning"><span class="json-low-result__value">99/100</span><span class="json-low-result__label json-low-result__label--some">Some</span></span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-value">0/100</span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td><td><span class="json-low-value">100/100</span></td><td><span class="json-low-result json-low-result--warning"><span class="json-low-result__value">100/100</span><span class="json-low-result__label json-low-result__label--all">All</span></span></td><td><span class="json-low-result"><span class="json-low-result__value">0/100</span><span class="json-low-result__label json-low-result__label--none">None</span></span></td></tr>
+</tbody>
+</table>
+</div>
+<p class="json-low-caption">Each value keeps the raw count out of <code>n=100</code>. Read this as improved prompt-side compliance, not as an enforcement boundary: explicit prose or JSON rules are still interpreted by the model. In this table, only the deterministic check guarantees <code>LOW iff refund_claim_amount_usd &lt;= 100</code>. Full prompts, raw calls, and generated data are in <a href="https://github.com/fruhinsholz/prompt-contract-experiments/tree/main/experiments/json-input-low" target="_blank" rel="noopener noreferrer"><code>experiments/json-input-low</code></a>.</p>
+<script type="application/json" data-json-low-data>{"schema_version":"json-input-low.article-explorer.v1","threshold_usd":100,"default_experiment_id":"retrieved_100000_contract_prose","source_runs":["publication_clean_control_gemini_36_flash_s100_json_rule","publication_clean_gift_card_gemini_36_flash_s100","publication_clean_control_openai_gpt56_s100_json_rule","publication_clean_gift_card_openai_gpt56_s100","publication_clean_control_gemini_36_flash_s100","publication_clean_control_openai_gpt56_s100","publication_clean_gemini_36_flash_s100","publication_clean_openai_gpt56_s100"],"provenance_hash":"ac039ebd8a98752dea334cad40fadb6726e1254909734f0351c9b36be3fc5bfd","experiments":[{"id":"retrieved_100000_contract_prose","label":"$100k retrieved context - prose classifier","description":"Prose classifier with retrieved context saying contracts above $100,000 require executive review. This tests whether nearby business context moves the LOW boundary even though the refund rule is unchanged.","takeaway":"Read this as upward drift: once the prompt sees a nearby $100,000 business threshold, many amounts above the intended $100 boundary start looking LOW. The model is not failing to read the number; it is borrowing scale from context.","format_label":"Prose prompt","context_label_short":"Context added $100k","rows":[{"amount":0,"expected_label":"LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":5,"expected_label":"LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":25,"expected_label":"LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":49,"expected_label":"LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":50,"expected_label":"LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":51,"expected_label":"LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":3,"total":100},"control_errors":{"kind":"errors","count":97,"total":100},"context_low":{"kind":"low","count":98,"total":100},"context_errors":{"kind":"errors","count":2,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":1,"total":100},"control_errors":{"kind":"errors","count":99,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":75,"expected_label":"LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":100,"expected_label":"LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":99,"total":100},"control_errors":{"kind":"errors","count":1,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":93,"total":100},"control_errors":{"kind":"errors","count":7,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":101,"expected_label":"NOT_LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":0,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":90,"total":100},"context_errors":{"kind":"errors","count":90,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":0,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":98,"total":100},"context_errors":{"kind":"errors","count":98,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":150,"expected_label":"NOT_LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":80,"total":100},"control_errors":{"kind":"errors","count":80,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":100,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":28,"total":100},"control_errors":{"kind":"errors","count":28,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":100,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":250,"expected_label":"NOT_LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":91,"total":100},"control_errors":{"kind":"errors","count":91,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":100,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":7,"total":100},"control_errors":{"kind":"errors","count":8,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":100,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":500,"expected_label":"NOT_LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":40,"total":100},"control_errors":{"kind":"errors","count":40,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":100,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":0,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":100,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":1000,"expected_label":"NOT_LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":14,"total":100},"control_errors":{"kind":"errors","count":14,"total":100},"context_low":{"kind":"low","count":99,"total":100},"context_errors":{"kind":"errors","count":99,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":0,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":100,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]}]},{"id":"retrieved_5_gift_card_prose","label":"$5 gift-card context - prose classifier","description":"Prose classifier with retrieved context saying this account usually treats $5 gift cards as low-value gestures. This tests whether a nearby small-value reference pulls the boundary downward.","takeaway":"Read this as downward drift: the same classifier sees $5 as the nearby example of low value, so ordinary refund amounts like $25, $50, or $100 stop looking LOW. The boundary moved because the context changed, not because the rule changed.","format_label":"Prose prompt","context_label_short":"Context added $5","rows":[{"amount":0,"expected_label":"LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":5,"expected_label":"LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":90,"total":100},"context_errors":{"kind":"errors","count":10,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":25,"expected_label":"LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":1,"total":100},"context_errors":{"kind":"errors","count":99,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":0,"total":100},"context_errors":{"kind":"errors","count":100,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":49,"expected_label":"LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":2,"total":100},"context_errors":{"kind":"errors","count":98,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":0,"total":100},"context_errors":{"kind":"errors","count":100,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":50,"expected_label":"LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":1,"total":100},"context_errors":{"kind":"errors","count":99,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":0,"total":100},"context_errors":{"kind":"errors","count":100,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":51,"expected_label":"LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":3,"total":100},"control_errors":{"kind":"errors","count":97,"total":100},"context_low":{"kind":"low","count":0,"total":100},"context_errors":{"kind":"errors","count":100,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":1,"total":100},"control_errors":{"kind":"errors","count":99,"total":100},"context_low":{"kind":"low","count":0,"total":100},"context_errors":{"kind":"errors","count":100,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":75,"expected_label":"LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":0,"total":100},"context_errors":{"kind":"errors","count":100,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":0,"total":100},"context_errors":{"kind":"errors","count":100,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":100,"expected_label":"LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":99,"total":100},"control_errors":{"kind":"errors","count":1,"total":100},"context_low":{"kind":"low","count":0,"total":100},"context_errors":{"kind":"errors","count":100,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":93,"total":100},"control_errors":{"kind":"errors","count":7,"total":100},"context_low":{"kind":"low","count":0,"total":100},"context_errors":{"kind":"errors","count":100,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":101,"expected_label":"NOT_LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":0,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":0,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":0,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":0,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":150,"expected_label":"NOT_LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":80,"total":100},"control_errors":{"kind":"errors","count":80,"total":100},"context_low":{"kind":"low","count":0,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":28,"total":100},"control_errors":{"kind":"errors","count":28,"total":100},"context_low":{"kind":"low","count":0,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":250,"expected_label":"NOT_LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":91,"total":100},"control_errors":{"kind":"errors","count":91,"total":100},"context_low":{"kind":"low","count":0,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":7,"total":100},"control_errors":{"kind":"errors","count":8,"total":100},"context_low":{"kind":"low","count":0,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":500,"expected_label":"NOT_LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":40,"total":100},"control_errors":{"kind":"errors","count":40,"total":100},"context_low":{"kind":"low","count":0,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":0,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":0,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":1000,"expected_label":"NOT_LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":14,"total":100},"control_errors":{"kind":"errors","count":14,"total":100},"context_low":{"kind":"low","count":0,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":0,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":0,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]}]},{"id":"retrieved_5_gift_card_explicit_rule","label":"$5 gift-card context - explicit $100 JSON rule","description":"Typed JSON prompt with the $100 rule stated explicitly, plus the same $5 gift-card context. This tests whether JSON improves steering while still leaving enforcement inside model behavior.","takeaway":"Read this as improved prompt-side compliance, not as an enforcement boundary: the $5 context is still present, and the explicit $100 rule keeps the model aligned on this grid. The important part is that the rule is now inspectable and can also be enforced deterministically outside the model.","format_label":"Typed JSON with explicit $100 rule","context_label_short":"Context added $5","rows":[{"amount":0,"expected_label":"LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":5,"expected_label":"LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":25,"expected_label":"LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":49,"expected_label":"LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":50,"expected_label":"LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":51,"expected_label":"LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":75,"expected_label":"LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":100,"expected_label":"LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":100,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":100,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":101,"expected_label":"NOT_LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":0,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":0,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":0,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":0,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":150,"expected_label":"NOT_LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":0,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":0,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":0,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":0,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":250,"expected_label":"NOT_LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":0,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":0,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":0,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":0,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":500,"expected_label":"NOT_LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":0,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":0,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":0,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":0,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]},{"amount":1000,"expected_label":"NOT_LOW","models":[{"id":"gpt-5.6","label":"GPT-5.6","control_low":{"kind":"low","count":0,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":0,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}},{"id":"gemini-3.6-flash","label":"Gemini 3.6 Flash","control_low":{"kind":"low","count":0,"total":100},"control_errors":{"kind":"errors","count":0,"total":100},"context_low":{"kind":"low","count":0,"total":100},"context_errors":{"kind":"errors","count":0,"total":100},"runtime_errors":{"kind":"errors","count":0,"total":100}}]}]}]}</script>
+</section>
+
+<!-- /generated:json-input-low-table -->
+
+<p>The ordinary prose classifier moved with nearby context. A <code>$5</code> gift-card note pushed the boundary down; a <code>$100,000</code> contract-review note pushed it up. In this fixed-grid table, the only prompt-side condition that stayed close to the intended <code>$100</code> boundary was not JSON out of the box; it was typed JSON with an explicit boundary rule. That is useful, but limited: the rule only becomes explicit after the system has already identified the boundary worth protecting. Historical exploratory runs also showed that explicit prompt-side rules can fail, so this remains steering, not deterministic enforcement. Compliance remains model behavior.</p>
+
+<p>The deterministic check column is the real contrast. It applies the code-owned rule, <code>LOW iff refund_claim_amount_usd &lt;= 100</code>, outside the JSON prompt and outside the model call, to the same grid without asking the model to infer the threshold. The reliable enforcement boundary belongs outside the model.</p>
+
+<p>JSON can describe the contract. It is not the contract.</p>
+
+<h2 id="bash-quoting-incident">4. The Bash Quoting Incident</h2>
+
+<p>The same pattern appeared outside refunds.</p>
+
+<p>An agent had been helping me administer three Raspberry Pis over SSH: create a dashboard, deploy a home automation app, adjust a config, clean up after a test. Later, two machines showed a small but suspicious symptom: their shell prompt customization had disappeared. The cluster was fine. The damage was contained. But something had touched user-home state in a way I had not intended.</p>
+
+<p>The useful question was not how to restore prompt colors. It was why an approved command had crossed the wrong boundary. The proximate problem looked like command transport. The deeper problem was that the boundary lived in prose until the case where the distinction mattered.</p>
+
+<p>I had given the model a prose rule: when command text becomes too fragile to quote safely, encode it or block it. That sounded operational. But the executable boundary still depended on model judgment at the moment of execution.</p>
+
+<p>The repair was not a better sentence. It was structure: build commands as <code>argv</code> when possible, make the remote interpreter explicit, require absolute target paths, start from a safe working directory, block destructive operations by default, and log the approved command separately from the executed command.</p>
+
+<p>A prompt can say <code>do not delete user files</code> or <code>treat untrusted text as data</code>. But if the model's intent cannot be translated into a verifiable command with its validations and controls intact, the boundary is only aspirational. The system has not gained a safety property. It has gained an instruction.</p>
+
+<h2 id="evals-hide-problem">5. Evals Can Hide The Same Problem</h2>
+
+<p>The natural reaction to a failure like this is to add an eval.</p>
+
+<p>That reaction is not wrong. Evals are useful. A CI eval can prevent a bad prompt from shipping. A production judge can create alerts, route suspicious cases to review, and show where the system is drifting under real context.</p>
+
+<p>But observability is still downstream of the decision. A clean eval can detect that the label moves when a promotional note is present. It can trace the failure back to retrieved context, prior state, or another adjacent fragment. That is useful diagnostic evidence.</p>
+
+<p>It can also push the team into the wrong repair path: spending its energy protecting model judgment from every contamination shape instead of giving the runtime the value the model was trying to infer. Each eval catches another symptom. None of them turns <code>LOW</code> into a policy.</p>
+
+<p>The judge can still help. It can detect strange cases, explain uncertainty, create monitoring signals, and route edge cases to humans. Those explanations are useful when they expose the assumption that moved the outcome. They are still review artifacts, not ownership of the boundary.</p>
+
+<h2 id="runtime-owns-boundary">6. The Runtime Owns The Boundary</h2>
+
+<p>This is the positive claim: prompts can propose, explain, and review. They should not own the boundary where a system changes state, skips review, triggers a workflow, blocks one, or otherwise lets a consequence-bearing decision take effect.</p>
+
+<p>The model may own judgment. The system must own guarantees.</p>
+
+<p>The subjective part is the judgment: <code>safe</code>, <code>low risk</code>, <code>reasonable</code>, <code>allowed</code>, <code>enough</code>, <code>too difficult</code>. Underneath those words is often a scalar the system forgot to own: a dollar amount, score, count, rank, permission class, proof standard, risk cutoff, or difficulty ceiling.</p>
+
+<p>For shell execution, the boundary is not the sentence “be careful with destructive commands.” It is the shape of the command that can be executed, the directory it can start from, the paths it can touch, the user it can run as, and the side effects that require a separate gate.</p>
+
+<p>A model can still help produce the action. It can translate the user's intent into a structured proposal:</p>
+
+<pre><code class="language-json">{
+  "tool": "shell_command",
+  "host": "approved-runner",
+  "intent": "inspect the article draft",
+  "argv": ["sed", "-n", "210,260p", "/workspace/article/index.md"],
+  "cwd": "/workspace/article",
+  "side_effect": "read_only"
+}</code></pre>
+
+<p>That is the handoff. The model proposes an action. The runtime decides whether the proposal fits the contract.</p>
+
+<pre><code class="language-text">host and cwd must be approved before execution
+argv must stay structured, not re-parsed from shell text
+side effects, target paths, and results must be logged and gated</code></pre>
+
+<p>None of those rules needs to be clever. They should be deterministic so they can be reviewed in code. They can be versioned. They can fail closed. They can be audited after the fact.</p>
+
+<p>The model's judgment still matters. It may decide that the user is asking to inspect a file rather than deploy a service. It may choose the right tool. It may explain why a command looks suspicious. It may ask for confirmation when the situation is ambiguous.</p>
+
+<p>That is the architectural move. Keep the model in the loop where judgment is useful. Move the boundary into machinery that does not need to agree with the model to protect the system.</p>
+
+<h2 id="externalize-pin-verify">7. Pattern: Externalize, Pin, And Verify Judgment</h2>
+
+<p>The pattern is simple: when model judgment produces a value the system will rely on, move ownership of that value out of the prompt before it becomes authority. Then require the model to declare what it used, so the runtime can verify compliance without trusting the explanation.</p>
+
+<p>Do not leave the contract in a sentence like this:</p>
+
+<pre><code class="language-text">Approve the case when there is enough evidence.</code></pre>
+
+<p>In a refund review gate, the model can summarize receipts, account notes, prior tickets, and contradictions. But the gate should own the sufficiency rule: which signals count, which categories are required, what score cuts off approval, and which missing field forces human review.</p>
+
+<p>Make the policy inspectable:</p>
+
+<pre><code class="language-json">{
+  "version": "2026-07-30",
+  "minimum_independent_signals": 3,
+  "minimum_average_score": 0.72,
+  "required_categories": ["identity", "ownership"],
+  "force_review_if_any_score_below": 0.40,
+  "owner": "evidence-policy"
+}</code></pre>
+
+<p>Make the model's use of the policy inspectable without letting it own the arithmetic:</p>
+
+<pre><code class="language-json">{
+  "evidence_policy_version": "2026-07-30",
+  "evidence_record_id": "case-4821",
+  "sufficiency_result": "approved"
+}</code></pre>
+
+<p>Then validate the declaration by recomputing from the evidence record:</p>
+
+<pre><code class="language-python">policy = load_json("policy/evidence-sufficiency.json")
+evidence = load_json("evidence-record.json")
+output = load_json("case-output.json")
+
+assert output["evidence_policy_version"] == policy["version"]
+assert output["evidence_record_id"] == evidence["id"]
+
+signals = evidence["signals"]
+independent_signals = count_independent_sources(signals)
+average_score = mean(signal["score"] for signal in signals)
+categories = {signal["category"] for signal in signals}
+
+assert independent_signals >= policy["minimum_independent_signals"]
+assert average_score >= policy["minimum_average_score"]
+assert set(policy["required_categories"]).issubset(categories)
+assert min(signal["score"] for signal in signals) >= policy["force_review_if_any_score_below"]
+assert output["sufficiency_result"] == "approved"</code></pre>
+
+<p>That output check matters. The evidence record is the external source here: receipts, account facts, ticket history, and scores the application stored or computed before the model responded. The fields that control the decision must be application-owned or independently computed; if a model produced them, this verifier only moves the hidden contract one step upstream. The model cannot merely sound persuaded; it must leave a machine-readable claim that the runtime can compare with the policy and recomputed facts.</p>
+
+<p>But output validation is not the same as ownership. If the validator is the first place where <code>enough evidence</code> becomes three signals, two categories, and a score cutoff, the system is still letting the model choose and hoping to catch drift afterward. The stronger architecture is: external owner first, model declaration second, deterministic verifier third.</p>
+
+<p>Externalize ownership. Declare usage. Verify deterministically.</p>
+
+<h2 id="detect-consequence-bearing-judgment">8. Detection: Look For Consequence-Bearing Judgment</h2>
+
+<p>The audit is not looking for important prompts. It is looking for hidden operational contracts.</p>
+
+<p>A hidden operational contract appears when vague judgment changes what the system may do, but the system has no owned rule for that value.</p>
+
+<p>The test is simple: vague judgment, real consequence, missing rule outside the prompt. Words like <code>safe</code>, <code>low</code>, <code>enough</code>, <code>sensitive</code>, <code>allowed</code>, <code>reasonable</code>, and <code>similar</code> are not defects by themselves. They become defects when the system lets them decide writes, deletions, publication, approvals, escalation, refusal, cost, privacy, or permissions.</p>
+
+<p>A useful finding should name the operational parts:</p>
+
+<pre><code class="language-text">Potential hidden contract:
+- Instruction: "Approve the case when there is enough evidence."
+- Decision: evidence_sufficiency
+- Consequence: changes approval, escalation, and review behavior
+- External pin: missing
+- Hidden value: minimum signal count, required categories, score cutoff, review override
+- Model-upgrade failure mode: one model may treat a persuasive summary as sufficient, another may require independent proof
+- Suggested pin: policy.evidence_sufficiency in a versioned policy file</code></pre>
+
+<p>The detector finds candidates, not proven defects. Vague language is not automatically bad. A prompt can say “write clearly” or “be concise” without hiding a system contract. The dangerous cases are narrower: the model's interpretation changes whether the system acts, what it touches, what it publishes, what it refuses, what it escalates, or what it spends.</p>
+
+<p>Some findings should stay in language because the consequence is low, the policy is genuinely contextual, or the cost of pinning the value would exceed the risk. Externalizing every judgment creates stale config, brittle gates, and policies nobody owns.</p>
+
+<p>The architectural question is narrower: when a different interpretation changes approval, execution, publication, privacy, cost, or access, the value needs an owner outside the prompt.</p>
+
+<p>I ran the same detector against a private internal prompt inventory. The useful findings were not generic prompt-quality complaints; they were candidate contracts around durable memory writes, context retention, publication routing, tool side effects, and privacy gates. In each case, the detector had to name the value being inferred before the architecture question became visible.</p>
+
+<p>The article-facing detector is deliberately small. The <a href="/downloads/prompt-contract-boundary-detector-skill.md">boundary detector skill</a> is an optional diagnostic aid for finding candidate hidden contracts; it is not a guarantee and it is not the evidence for the article. The implementation and experiment materials are in the <a href="https://github.com/fruhinsholz/prompt-contract-experiments/tree/45b075c" target="_blank" rel="noopener noreferrer">prompt-contract-experiments GitHub repo</a>.</p>
+
+<h2 id="what-it-means">9. What It Means</h2>
+
+<p>For a product team, the warning sign is not the word <code>low</code>, <code>safe</code>, <code>similar</code>, or <code>enough</code>. Those words are often the right interface for intent. The warning sign is when a different interpretation of the word changes what the product does: which claim skips review, which record gets merged, which command executes, which answer is published, which user is refused, which case reaches a human.</p>
+
+<p>For engineers, the failure mode is narrower than “prompts are brittle.” The concrete failure mode is an unowned value. A dollar threshold, proof standard, count, permission class, distance function, or risk cutoff has been left inside language, then treated downstream as if it were a system property.</p>
+
+<p>The owner is the missing part. If a prompt decides whether a claim skips review, someone owns that review boundary. If no team can point to the versioned rule, test, or deterministic check, the contract exists only as model behavior.</p>
+
+<p>This is not an argument against model judgment. It is an argument for noticing when model judgment has quietly become part of an operational contract.</p>
+
+<p>Language remains the right medium for intent, explanation, and review. It is the wrong storage layer for guarantees.</p>
+
+<p>When model judgment controls a consequence-bearing value, promote the value out of the prompt. Pin it. Version it. Enforce it. Then let the model do what it is good at around that boundary, not instead of it.</p>
+
