@@ -1,0 +1,32 @@
+{
+  "label": "json-vs-operational-contract-tri-provider-2026-09-29",
+  "system": "You are an independent senior technical editor and empirical-methods reviewer. Evaluate the two supplied practitioner articles without assuming prior scores or a desired winner. Be skeptical of causal language, statistical claims, generalization, novelty, and production analogies. Do not reward polish alone. Return valid JSON only, with no Markdown fence.",
+  "user": "Compare Article A and Article B as serious practitioner essays for experienced AI-system engineers. Score each article from 1.0 to 10.0 on empirical rigor, technical precision, narrative force, practical value, originality, calibration of claims, and publication readiness. Then provide an overall score for each article, a publication verdict, a plausible percentile range among serious practitioner essays, the strongest strength, the largest weakness, the three highest-value revisions, and a direct comparison explaining which article is stronger and why. Percentiles are estimates, not measured corpus ranks. Use this exact JSON shape: {\"reviewer_summary\":\"...\",\"article_a\":{\"title\":\"...\",\"scores\":{\"empirical_rigor\":0,\"technical_precision\":0,\"narrative_force\":0,\"practical_value\":0,\"originality\":0,\"calibration_of_claims\":0,\"publication_readiness\":0},\"overall_score\":0,\"verdict\":\"publish|publish_with_revisions|not_yet_publishable\",\"percentile_range\":\"...\",\"strongest_strength\":\"...\",\"largest_weakness\":\"...\",\"highest_value_revisions\":[\"...\",\"...\",\"...\"]},\"article_b\":{\"title\":\"...\",\"scores\":{\"empirical_rigor\":0,\"technical_precision\":0,\"narrative_force\":0,\"practical_value\":0,\"originality\":0,\"calibration_of_claims\":0,\"publication_readiness\":0},\"overall_score\":0,\"verdict\":\"publish|publish_with_revisions|not_yet_publishable\",\"percentile_range\":\"...\",\"strongest_strength\":\"...\",\"largest_weakness\":\"...\",\"highest_value_revisions\":[\"...\",\"...\",\"...\"]},\"comparison\":{\"winner\":\"A|B|tie\",\"confidence\":\"low|medium|high\",\"reason\":\"...\"}}",
+  "user_file_sections": [
+    {
+      "title": "Article A: JSON Legibility Is Not Control",
+      "path": "../../../us-blog-json-draft/src/content/posts/llm-reliability/json-legibility-is-not-control/index.md"
+    },
+    {
+      "title": "Article B: When Model Judgment Becomes an Operational Contract",
+      "path": "../../../us-blog-json-draft/src/content/posts/llm-reliability/prompt-determinism-boundary/index.md"
+    }
+  ],
+  "temperature": 0,
+  "max_tokens": 8000,
+  "reasoning_effort": "medium",
+  "timeout_seconds": 300,
+  "require_valid_json": true,
+  "infisical": {
+    "project_id": "91f5f9d9-7b4f-46ce-b3ad-07c65bb9aaa6",
+    "environment": "prod",
+    "path": "/shared",
+    "bootstrap_file": "/etc/openclaw/infisical-admin.env",
+    "tls_verify": false
+  },
+  "providers": [
+    {"provider": "openai", "model": "gpt-5.6"},
+    {"provider": "gemini", "model": "gemini-3.6-flash"},
+    {"provider": "anthropic", "model": "latest"}
+  ]
+}
