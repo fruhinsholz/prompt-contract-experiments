@@ -379,16 +379,26 @@ def main() -> int:
     for item in providers:
         provider = item["provider"]
         requested_model = item["model"]
+        provider_max_tokens = int(item.get("max_tokens", max_tokens))
         started_at = utc_now()
         resolved_model = requested_model
         model_list_response = None
         if provider == "anthropic" and not args.dry_run:
             resolved_model, model_list_response = resolve_anthropic_model(requested_model, timeout, api_keys)
-        payload = build_payload(provider, resolved_model, system, user, temperature, max_tokens, reasoning_effort)
+        payload = build_payload(
+            provider,
+            resolved_model,
+            system,
+            user,
+            temperature,
+            provider_max_tokens,
+            reasoning_effort,
+        )
         request_record = {
             "provider": provider,
             "requested_model": requested_model,
             "resolved_model": resolved_model,
+            "max_tokens": provider_max_tokens,
             "request_payload": payload,
             "model_list_response": model_list_response,
         }
