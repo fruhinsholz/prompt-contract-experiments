@@ -1,0 +1,30 @@
+{
+  "created_at": "2026-09-30T14:46:19.119Z",
+  "manifest_path": "/var/lib/openclaw/.openclaw/workspace/prompt-contract-experiments/neutral-reviews/manifests/json-narrative-article-repository-tri-provider-2026-09-30.json",
+  "command_line": [
+    "scripts/neutral_model_review.py",
+    "--manifest",
+    "neutral-reviews/manifests/json-narrative-article-repository-tri-provider-2026-09-30.json"
+  ],
+  "commit_hash": "f78bb8baf7e6c690f1765f94522ae575e7bf0a5b",
+  "temperature": 0.0,
+  "max_tokens": 12000,
+  "reasoning_effort": "medium",
+  "require_valid_json": true,
+  "dry_run": false,
+  "providers": [
+    {
+      "provider": "openai",
+      "model": "gpt-5.6"
+    },
+    {
+      "provider": "gemini",
+      "model": "gemini-3.6-flash"
+    },
+    {
+      "provider": "anthropic",
+      "model": "latest",
+      "max_tokens": 16000
+    }
+  ]
+}
