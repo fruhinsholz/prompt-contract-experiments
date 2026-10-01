@@ -1,0 +1,148 @@
+Rate the supplied article as a serious practitioner essay for experienced AI-system engineers. Score each dimension from 1.0 to 10.0: empirical rigor, technical precision, narrative force, practical value, originality, calibration of claims, publication readiness, main-article readability, and auditability from the article alone. Provide an overall score, a publication verdict, a plausible percentile range among serious practitioner essays, the strongest strength, the largest weakness, and the three highest-value revisions. Explicitly identify any claim that the article alone contradicts or cannot support. Percentiles are estimates, not measured corpus ranks. Use this exact JSON shape: {"reviewer_summary":"...","article":{"title":"...","scores":{"empirical_rigor":0,"technical_precision":0,"narrative_force":0,"practical_value":0,"originality":0,"calibration_of_claims":0,"publication_readiness":0,"main_article_readability":0,"auditability_from_article_alone":0},"overall_score":0,"verdict":"publish|publish_with_revisions|not_yet_publishable","percentile_range":"...","strongest_strength":"...","largest_weakness":"...","highest_value_revisions":["...","...","..."],"unsupported_or_unverifiable_claims":["..."]},"confidence":"..."}
+
+## Article
+
+---
+title: "JSON Legibility Is Not Control: When Schema Names Move a Routing Boundary"
+description: "A preregistered 720-call experiment found that renaming model-facing JSON keys shifted both Jev scores and thresholded routing while the case content and application policy stayed fixed."
+pubDate: 2026-09-30
+updatedDate: 2026-09-30
+draftPublishedAt: 2026-09-30 19:45:00-07:00
+topic: "llm-reliability"
+tags: ["llms", "json", "structured-output", "evals", "jev"]
+canonicalPath: "/draft/json-legibility-is-not-control-editorial/"
+draft: true
+---
+
+Consider a fictional code review. A routing service uses Jev, TypeSafe's first public [System One Model](https://typesafe.ai/blog/introducing-system-one-models-and-jev), to decide whether a case can continue automatically or needs human review. An engineer cleans up three awkward JSON key names. The case data, question, choice descriptions, and routing code do not change. The pull request looks like a vocabulary cleanup of the JSON keys, not a change to the values or case content.
+
+Then the human-review rate rises.
+
+The scene is hypothetical. The experiment behind it is not.
+
+Jev receives application state, a question, and a typed JSON object of candidate choices. It returns one selected key and a score for every declared choice. Deterministic code can then turn those scores into an action. To a developer, this feels much like calling a typed microservice.
+
+But a model-facing schema is different from an ordinary enum. Its identifiers are also language.
+
+The choice values in my experiment contained complete definitions. I expected those definitions to dominate the short keys naming them. The keys might add noise, but they should not materially move an application boundary.
+
+That expectation was wrong.
+
+In a preregistered 720-call experiment, changing only the model-facing key names shifted the primary review score by **6.88 percentage points**, with a complete-block bootstrap 95% interval of **5.63 to 8.13 points**. At a fixed experimental threshold, the human-review rate rose from **45.8% to 70.8%** across two states deliberately selected near that boundary.
+
+Those figures describe the selected boundary cases in this experiment. They are not an estimate of production traffic.
+
+Nothing became invalid JSON. Every response stayed inside the declared domain. The semantic movement happened within that valid domain.
+
+## The Two Schemas
+
+The experiment compared two sets of model-facing keys:
+
+```diff
+ {
+-  "no_essential_duties_prevented": "The person can complete every essential job duty at normal quality and pace without assistance.",
+-  "some_essential_duties_prevented": "The person can complete some essential job duties, but at least one essential duty cannot be completed at normal quality or pace.",
+-  "all_essential_duties_prevented": "The person cannot complete any essential job duty."
++  "essential_work_unimpeded": "The person can complete every essential job duty at normal quality and pace without assistance.",
++  "essential_work_impeded": "The person can complete some essential job duties, but at least one essential duty cannot be completed at normal quality or pace.",
++  "essential_work_halted": "The person cannot complete any essential job duty."
+ }
+```
+
+Only the key names changed. For every matched call, the case state, operational question, three semantic outcomes, complete choice descriptions, mapping from each key to those outcomes, choice order, returned-model requirement, and routing threshold remained fixed.
+
+The two key families are not strict synonyms. The prevention family states an explicit `no / some / all` scale. The impediment family uses the asymmetric terms `unimpeded / impeded / halted`. They are two coherent ways to frame the same typed application domain.
+
+That qualification matters. The experiment does not ask whether arbitrary symbols are interchangeable. It asks whether two plausible schema designs, mapped to the same outcomes and definitions and applied to the same question about the same case, produce the same model distribution.
+
+## A Clean Prospective Test
+
+Before the first call, I committed the preregistration, stimuli, analysis code, and randomization seed. The runner then wrote all 720 planned job positions and source hashes to `run.json` before sending the first request.
+
+The test used:
+
+- two primary states selected during test-bed development because they sat near the fixed threshold;
+- two range controls, one on each side of the boundary;
+- one unambiguous full-work guardrail and one unambiguous partial-work guardrail;
+- 60 complete blocks with randomized call order inside each block;
+- all six semantic choice orders, each used in exactly ten blocks;
+- the same choice order for both key families inside each block.
+
+The interface documented by Jev does not expose a temperature parameter, so none was sent. I did not set temperature to zero or assume an undocumented default.
+
+The application calculated:
+
+```text
+review_score = score(partial work) + score(no work)
+```
+
+It then applied one deterministic rule:
+
+```text
+human_review if review_score >= 0.50
+automatic otherwise
+```
+
+The `0.50` threshold was an experimental, preregistered policy, not a deployed production rule. The primary estimand gave the two adjacent states equal weight inside each block, then averaged the 60 complete-block effects. The interval resampled those complete blocks, preserving the paired design.
+
+## The Result
+
+![Mean review score for prevention and impediment key families across the two primary states](/web_images/json-routing-boundary-prospective.svg)
+
+| Primary state | Prevention keys | Impediment keys | Difference |
+|---|---:|---:|---:|
+| One duty might occasionally take longer | 46.63% | 52.15% | +5.52 pp |
+| Unsure whether one duty may take longer | 47.68% | 55.93% | +8.25 pp |
+| **Equal-weight primary mean** | **47.16%** | **54.04%** | **+6.88 pp** |
+
+The score shift was positive in both selected primary states and exceeded the preregistered five-point minimum. Its 95% interval remained above zero.
+
+The fixed threshold translated part of that score movement into a larger routing difference:
+
+| Model-facing key family | Human review |
+|---|---:|
+| Prevention | 55/120, or 45.8% |
+| Impediment | 85/120, or 70.8% |
+
+Among the 120 block-matched primary call pairs, **33 crossed from automatic routing under prevention keys to human review under impediment keys**. Three crossed in the reverse direction. The net review-rate difference was **+25.0 percentage points**, with a 95% complete-block interval of **+15.0 to +35.8 points**.
+
+These were observed transitions between separate model calls. They were not 30 cases whose counterfactual outcome was known. Nor do the review rates estimate how often a rename would change routing in production: the primary states were chosen specifically because they were close to the experimental threshold.
+
+The controls make the boundary effect easier to interpret. The two range states also showed positive score shifts, **+12.33** and **+6.17 points**, but neither changed routing because both stayed away from `0.50`. The clear full-work and partial-work guardrails routed correctly in **240 of 240 calls** across both families.
+
+The threshold did not create the score shift. It converted part of that shift into an operational difference.
+
+## What Typed Output Guarantees
+
+Typed output gives useful guarantees. It can constrain the response to declared keys, reject malformed structures, and simplify parsing.
+
+It does not guarantee semantic invariance among valid responses.
+
+This experiment separates two boundaries:
+
+1. **Syntax boundary:** the response must match the declared shape.
+2. **Routing boundary:** application code converts a model score into an action.
+
+The first remained intact. The input to the second moved because model-visible identifiers changed.
+
+That leads to a practical rule:
+
+> Treat every model-visible schema rename as a prompt change, even when ordinary application code treats it as a refactor.
+
+Version those names. Evaluate them on cases near real operational thresholds. Map them onto stable internal enums rather than forcing one string to serve as both natural-language framing and durable program identity. Test downstream action rates and score distributions, not only schema validity.
+
+## Limits
+
+This is a controlled existence result, not a prevalence estimate.
+
+- It covers one task, one returned Jev version, and six deliberately selected state texts.
+- The two key families are plausible alternatives, not strict synonyms.
+- The primary states were selected to probe a boundary, not to represent production traffic.
+- The `0.50` threshold was experimental and preregistered, not a deployed policy.
+- Jev's returned scores are not treated here as calibrated probabilities.
+- The experiment does not establish which wording is more correct or identify an internal mechanism.
+
+The [technical appendix](/draft/json-legibility-is-not-control-technical-appendix/) contains the complete estimand, transition table, guardrails, randomization, retry rules, and audit trail. The [public experiment repository](https://github.com/fruhinsholz/article-experiments/tree/6a79286a4b50ec4c732127b990b4d36d4d278a94/articles/json-legibility-is-not-control/current) contains the preregistration, frozen stimuli, exact executed runner, planned job order, raw responses, and reproducible analysis.
+
+JSON is legible to the model. Legibility is not control.
+
