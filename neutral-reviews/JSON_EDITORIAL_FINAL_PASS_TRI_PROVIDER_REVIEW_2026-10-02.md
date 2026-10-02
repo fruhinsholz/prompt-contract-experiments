@@ -78,3 +78,4 @@ The article is publishable as a narrow, Jev-specific existence result. The highe
 - Manifest: `neutral-reviews/manifests/json-editorial-final-pass-tri-provider-2026-10-02.json`
 - Validated responses: `neutral-reviews/results/2026-10-02T080747-956Z-json-editorial-final-pass-tri-provider-2026-10-02/`
 - Dry validation: `neutral-reviews/results/2026-10-02T080731-950Z-json-editorial-final-pass-tri-provider-2026-10-02/`
+- Audit commit: `e746109`
