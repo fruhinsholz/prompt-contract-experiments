@@ -1,0 +1,40 @@
+{
+  "created_at": "2026-10-06T05:19:35.199Z",
+  "manifest_path": "/var/lib/openclaw/.openclaw/workspace/prompt-contract-experiments/neutral-reviews/manifests/json-production-article-jev-web-researched-grade-percentile-tri-provider-2026-10-05.json",
+  "command_line": [
+    "scripts/neutral_model_review.py",
+    "--manifest",
+    "neutral-reviews/manifests/json-production-article-jev-web-researched-grade-percentile-tri-provider-2026-10-05.json",
+    "--dry-run"
+  ],
+  "commit_hash": "6f5a6c33d2f2da6f55f3a2a5c9149c4f33236e78",
+  "temperature": 0.0,
+  "max_tokens": 14000,
+  "reasoning_effort": "medium",
+  "web_search": {
+    "enabled": true,
+    "allowed_domains": [
+      "typesafe.ai"
+    ],
+    "search_context_size": "medium",
+    "max_uses": 5,
+    "anthropic_tool_type": "web_search_20250305"
+  },
+  "require_valid_json": true,
+  "dry_run": true,
+  "providers": [
+    {
+      "provider": "openai",
+      "model": "gpt-5.6"
+    },
+    {
+      "provider": "gemini",
+      "model": "gemini-3.6-flash"
+    },
+    {
+      "provider": "anthropic",
+      "model": "latest",
+      "max_tokens": 18000
+    }
+  ]
+}

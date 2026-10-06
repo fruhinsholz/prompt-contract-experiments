@@ -264,6 +264,7 @@ def build_payload(
     temperature: float,
     max_tokens: int,
     reasoning_effort: str | None,
+    web_search: dict[str, Any] | None,
 ) -> dict[str, Any]:
     if provider == "openai":
         payload: dict[str, Any] = {
@@ -278,6 +279,13 @@ def build_payload(
             payload["temperature"] = temperature
         if reasoning_effort:
             payload["reasoning"] = {"effort": reasoning_effort}
+        if web_search and web_search.get("enabled"):
+            tool: dict[str, Any] = {"type": "web_search"}
+            if allowed_domains := web_search.get("allowed_domains"):
+                tool["filters"] = {"allowed_domains": allowed_domains}
+            if search_context_size := web_search.get("search_context_size"):
+                tool["search_context_size"] = search_context_size
+            payload["tools"] = [tool]
         return payload
     if provider == "gemini":
         payload = {
@@ -294,6 +302,10 @@ def build_payload(
             payload["generationConfig"]["thinkingConfig"] = {
                 "thinkingLevel": "minimal" if reasoning_effort == "none" else reasoning_effort
             }
+        if web_search and web_search.get("enabled"):
+            payload["tools"] = [{"google_search": {}}]
+            if web_search.get("gemini_url_context"):
+                payload["tools"].append({"url_context": {}})
         return payload
     if provider == "anthropic":
         payload = {
@@ -304,6 +316,15 @@ def build_payload(
         }
         if temperature != 0:
             payload["temperature"] = temperature
+        if web_search and web_search.get("enabled"):
+            tool = {
+                "type": web_search.get("anthropic_tool_type", "web_search_20250305"),
+                "name": "web_search",
+                "max_uses": int(web_search.get("max_uses", 5)),
+            }
+            if allowed_domains := web_search.get("allowed_domains"):
+                tool["allowed_domains"] = allowed_domains
+            payload["tools"] = [tool]
         return payload
     raise ValueError(f"Unsupported provider: {provider}")
 
@@ -351,6 +372,7 @@ def main() -> int:
     temperature = float(manifest.get("temperature", 0))
     max_tokens = int(manifest.get("max_tokens", 1600))
     reasoning_effort = manifest.get("reasoning_effort")
+    web_search = manifest.get("web_search")
     timeout = int(manifest.get("timeout_seconds", 180))
     require_valid_json = bool(manifest.get("require_valid_json", False))
     providers = [item for item in manifest["providers"] if not args.provider or item["provider"] == args.provider]
@@ -366,6 +388,7 @@ def main() -> int:
         "temperature": temperature,
         "max_tokens": max_tokens,
         "reasoning_effort": reasoning_effort,
+        "web_search": web_search,
         "require_valid_json": require_valid_json,
         "dry_run": args.dry_run,
         "providers": providers,
@@ -393,6 +416,7 @@ def main() -> int:
             temperature,
             provider_max_tokens,
             reasoning_effort,
+            web_search,
         )
         request_record = {
             "provider": provider,

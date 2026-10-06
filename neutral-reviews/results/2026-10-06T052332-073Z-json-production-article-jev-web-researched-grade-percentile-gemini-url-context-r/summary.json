@@ -1,0 +1,14 @@
+{
+  "run_dir": "/var/lib/openclaw/.openclaw/workspace/prompt-contract-experiments/neutral-reviews/results/2026-10-06T052332-073Z-json-production-article-jev-web-researched-grade-percentile-gemini-url-context-r",
+  "outputs": [
+    {
+      "provider": "gemini",
+      "requested_model": "gemini-3.6-flash",
+      "resolved_model": "gemini-3.6-flash",
+      "reported_model": "gemini-3.6-flash",
+      "valid_json": true,
+      "error": null,
+      "text_file": "gemini-gemini-3-6-flash.md"
+    }
+  ]
+}
