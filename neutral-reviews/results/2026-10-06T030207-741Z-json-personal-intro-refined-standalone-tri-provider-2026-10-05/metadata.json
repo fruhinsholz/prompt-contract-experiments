@@ -1,0 +1,30 @@
+{
+  "created_at": "2026-10-06T03:02:07.915Z",
+  "manifest_path": "/var/lib/openclaw/.openclaw/workspace/prompt-contract-experiments/neutral-reviews/manifests/json-personal-intro-refined-standalone-tri-provider-2026-10-05.json",
+  "command_line": [
+    "scripts/neutral_model_review.py",
+    "--manifest",
+    "neutral-reviews/manifests/json-personal-intro-refined-standalone-tri-provider-2026-10-05.json"
+  ],
+  "commit_hash": "68a76b207578de811a620d8e54d796c20e0c3a73",
+  "temperature": 0.0,
+  "max_tokens": 10000,
+  "reasoning_effort": "medium",
+  "require_valid_json": true,
+  "dry_run": false,
+  "providers": [
+    {
+      "provider": "openai",
+      "model": "gpt-5.6"
+    },
+    {
+      "provider": "gemini",
+      "model": "gemini-3.6-flash"
+    },
+    {
+      "provider": "anthropic",
+      "model": "latest",
+      "max_tokens": 16000
+    }
+  ]
+}
