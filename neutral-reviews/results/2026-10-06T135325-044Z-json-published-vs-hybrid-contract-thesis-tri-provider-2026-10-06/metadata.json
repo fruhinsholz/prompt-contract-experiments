@@ -1,0 +1,31 @@
+{
+  "created_at": "2026-10-06T13:53:25.234Z",
+  "manifest_path": "/var/lib/openclaw/.openclaw/workspace/prompt-contract-json-software-review/neutral-reviews/manifests/json-published-vs-hybrid-contract-thesis-tri-provider-2026-10-06.json",
+  "command_line": [
+    "scripts/neutral_model_review.py",
+    "--manifest",
+    "neutral-reviews/manifests/json-published-vs-hybrid-contract-thesis-tri-provider-2026-10-06.json"
+  ],
+  "commit_hash": "b951bef1367303bdfab3ca9c306c8431c3771e8d",
+  "temperature": 0.0,
+  "max_tokens": 12000,
+  "reasoning_effort": "medium",
+  "web_search": null,
+  "require_valid_json": true,
+  "dry_run": false,
+  "providers": [
+    {
+      "provider": "openai",
+      "model": "gpt-5.6"
+    },
+    {
+      "provider": "gemini",
+      "model": "gemini-3.6-flash"
+    },
+    {
+      "provider": "anthropic",
+      "model": "latest",
+      "max_tokens": 16000
+    }
+  ]
+}
