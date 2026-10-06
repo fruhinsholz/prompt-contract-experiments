@@ -1,0 +1,14 @@
+{
+  "run_dir": "/var/lib/openclaw/.openclaw/workspace/prompt-contract-experiments/neutral-reviews/results/2026-10-06T013834-685Z-json-order-aware-b-standalone-tri-provider-2026-10-05",
+  "outputs": [
+    {
+      "provider": "anthropic",
+      "requested_model": "latest",
+      "resolved_model": "claude-sonnet-5-5",
+      "reported_model": "claude-sonnet-5-5",
+      "valid_json": true,
+      "error": null,
+      "text_file": "anthropic-claude-sonnet-5-5.md"
+    }
+  ]
+}
